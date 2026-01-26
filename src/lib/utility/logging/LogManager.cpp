@@ -1,7 +1,4 @@
 #include "LogManager.h"
-
-#include <algorithm>
-
 #include "MessageStatus.h"
 #include "Version.h"
 #include "logging.h"
@@ -34,10 +31,8 @@ void LogManager::setLoggingEnabled(bool enabled)
 		{
 			LOG_INFO(
 				std::string("Enabled logging for Sourcetrail ") +
-				(utility::getApplicationArchitectureType() == APPLICATION_ARCHITECTURE_X86_32
-					 ? "32"
-					 : "64") +
-				" bit, " + "version " + Version::getApplicationVersion().toDisplayString());
+				utility::getApplicationArchitectureString() + ", version " +
+				Version::getApplicationVersion().toDisplayString());
 			MessageStatus(L"Enabled console and file logging.").dispatch();
 		}
 		else

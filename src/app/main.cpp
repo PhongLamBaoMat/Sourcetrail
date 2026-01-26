@@ -24,11 +24,8 @@
 #include "ScopedFunctor.h"
 #include "SourceGroupFactory.h"
 #include "SourceGroupFactoryModuleCustom.h"
-#include "UserPaths.h"
 #include "Version.h"
-#include "logging.h"
 #include "productVersion.h"
-#include "utility.h"
 #include "utilityApp.h"
 #include "utilityQt.h"
 
@@ -93,9 +90,9 @@ void addLanguagePackages()
 
 int main(int argc, char* argv[])
 {
-	// auto p = utility::executeProcessBoost(utility::searchPath(L"mvn") + L" --version", FilePath("/Users/ebsi/Documents/boost_1_67_0"), 3000);
-	// std::wcout << p.first << " " << p.second << std::endl;
-	// return 0;
+	// auto p = utility::executeProcessBoost(utility::searchPath(L"mvn") + L" --version",
+	// FilePath("/Users/ebsi/Documents/boost_1_67_0"), 3000); std::wcout << p.first << " " <<
+	// p.second << std::endl; return 0;
 
 
 	QCoreApplication::addLibraryPath(QStringLiteral("."));
@@ -120,9 +117,8 @@ int main(int argc, char* argv[])
 	QApplication::setApplicationVersion(version.toDisplayString().c_str());
 
 	MessageStatus(
-		std::wstring(L"Starting Sourcetrail ") +
-		(utility::getApplicationArchitectureType() == APPLICATION_ARCHITECTURE_X86_32 ? L"32" : L"64") +
-		L" bit, " + L"version " + version.toDisplayWString())
+		std::wstring(L"Starting Sourcetrail ") + utility::getApplicationArchitectureWstring() +
+		L", version " + version.toDisplayWString())
 		.dispatch();
 
 	commandline::CommandLineParser commandLineParser(version.toDisplayString());

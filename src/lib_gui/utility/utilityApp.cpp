@@ -1,21 +1,26 @@
 #include "utilityApp.h"
 
+#include <boost/asio/readable_pipe.hpp>
+#include <boost/filesystem/file_status.hpp>
+#include <boost/process/v2/environment.hpp>
+#include <boost/process/v2/process.hpp>
+#include <boost/process/v2/start_dir.hpp>
+#include <boost/process/v2/stdio.hpp>
+#include <boost/system/detail/error_code.hpp>
 #include <chrono>
+#include <memory>
 #include <mutex>
 #include <set>
 
 #include <boost/asio/buffer.hpp>
-#include <boost/asio/io_service.hpp>
+#include <boost/asio/cancel_after.hpp>
+#include <boost/asio/io_context.hpp>
 #include <boost/asio/read.hpp>
 #include <boost/process.hpp>
-#include <boost/process/async_pipe.hpp>
-#include <boost/process/child.hpp>
-#include <boost/process/io.hpp>
-#include <boost/process/search_path.hpp>
-#include <boost/process/start_dir.hpp>
 
 #include <QThread>
 
+#include "ApplicationArchitectureType.h"
 #include "ScopedFunctor.h"
 #include "logging.h"
 #include "utilityString.h"
@@ -23,49 +28,13 @@
 namespace utility
 {
 std::mutex s_runningProcessesMutex;
-std::set<std::shared_ptr<boost::process::child>> s_runningProcesses;
+std::set<std::shared_ptr<boost::process::process>> s_runningProcesses;
 }	 // namespace utility
 
 std::string utility::getDocumentationLink()
 {
 	return "https://github.com/CoatiSoftware/Sourcetrail/blob/master/DOCUMENTATION.md";
 }
-
-std::wstring utility::searchPath(const std::wstring& bin, bool& ok)
-{
-	ok = false;
-	std::wstring r = boost::process::search_path(bin).generic_wstring();
-	if (!r.empty())
-	{
-		ok = true;
-		return r;
-	}
-	return bin;
-}
-
-std::wstring utility::searchPath(const std::wstring& bin)
-{
-	bool ok;
-	return searchPath(bin, ok);
-}
-
-namespace
-{
-template <typename Rep, typename Period>
-bool safely_wait_for(boost::process::child& process, const std::chrono::duration<Rep, Period>& rel_time)
-{
-	// This wrapper around boost::process::wait_for handles the following edge case:
-	// Calling wait_for on an already exitted process will wait for the entire timeout.
-	if (process.running())
-	{
-		return process.wait_for(rel_time);
-	}
-	else
-	{
-		return true;	// The process exitted
-	}
-}
-}	 // namespace
 
 utility::ProcessOutput utility::executeProcess(
 	const std::wstring& command,
@@ -77,39 +46,49 @@ utility::ProcessOutput utility::executeProcess(
 {
 	std::string output = "";
 	int exitCode = 255;
+
 	try
 	{
-		boost::asio::io_service ios;
-		boost::process::async_pipe ap(ios);
+		boost::asio::io_context ctx;
+		boost::asio::readable_pipe rp {ctx};
+		std::shared_ptr<boost::process::process> process;
 
-		std::shared_ptr<boost::process::child> process;
-
-		boost::process::environment env = boost::this_process::environment();
-		std::vector<std::string> previousPath = env["PATH"].to_vector();
-		env["PATH"] = {"/opt/local/bin", "/usr/local/bin", "$HOME/bin"};
-		for (const std::string& entry: previousPath)
+		std::unordered_map<boost::process::environment::key, boost::process::environment::value> env;
+		for (const auto& kv: boost::process::environment::current())
 		{
-			env["PATH"].append(entry);
+			if (kv.key().string() == "PATH")
+			{
+				env[kv.key()] = kv.value().string() + ":/opt/local/bin:/usr/local/bin:$HOME/bin";
+			}
+			else
+			{
+				env[kv.key()] = kv.value();
+			}
+		}
+		std::wstring executable_file = command;
+		if (!boost::filesystem::is_regular_file(executable_file))
+		{
+			executable_file = boost::process::environment::find_executable(command).wstring();
 		}
 
 		if (workingDirectory.empty())
 		{
-			process = std::make_shared<boost::process::child>(
-				searchPath(command),
-				boost::process::args(arguments),
-				env,
-				boost::process::std_in.close(),
-				(boost::process::std_out & boost::process::std_err) > ap);
+			process = std::make_shared<boost::process::process>(
+				ctx,
+				executable_file,
+				arguments,
+				boost::process::process_environment(env),
+				boost::process::process_stdio {.out = rp, .err = rp});
 		}
 		else
 		{
-			process = std::make_shared<boost::process::child>(
-				searchPath(command),
-				boost::process::args(arguments),
-				boost::process::start_dir(workingDirectory.wstr()),
-				env,
-				boost::process::std_in.close(),
-				(boost::process::std_out & boost::process::std_err) > ap);
+			process = std::make_shared<boost::process::process>(
+				ctx,
+				executable_file,
+				arguments,
+				boost::process::process_start_dir(workingDirectory.wstr()),
+				boost::process::process_environment(env),
+				boost::process::process_stdio {.out = rp, .err = rp});
 		}
 
 		{
@@ -130,7 +109,7 @@ utility::ProcessOutput utility::executeProcess(
 		std::string logBuffer;
 
 		std::function<void(const boost::system::error_code& ec, std::size_t n)> onStdOut =
-			[&output, &buf, &stdOutBuffer, &ap, &onStdOut, &outputReceived, &logBuffer, logProcessOutput](
+			[&output, &buf, &stdOutBuffer, &rp, &onStdOut, &outputReceived, &logBuffer, logProcessOutput](
 				const boost::system::error_code& ec, std::size_t size)
 		{
 			std::string text;
@@ -163,19 +142,23 @@ utility::ProcessOutput utility::executeProcess(
 			}
 			if (!ec)
 			{
-				boost::asio::async_read(ap, stdOutBuffer, onStdOut);
+				boost::asio::async_read(rp, stdOutBuffer, onStdOut);
 			}
 		};
 
-		boost::asio::async_read(ap, stdOutBuffer, onStdOut);
-		ios.run();
+		boost::asio::async_read(rp, stdOutBuffer, onStdOut);
+		ctx.run();
 
 		if (timeout > 0)
 		{
 			if (waitUntilNoOutput)
 			{
-				while (!safely_wait_for(*process, std::chrono::milliseconds(timeout)))
+				while (process->running())
 				{
+					process->async_wait(
+						boost::asio::cancel_after(
+							std::chrono::milliseconds(timeout),
+							[&](const boost::system::error_code ec, std::size_t) {}));
 					if (!outputReceived)
 					{
 						LOG_WARNING(
@@ -190,7 +173,11 @@ utility::ProcessOutput utility::executeProcess(
 			}
 			else
 			{
-				if (!safely_wait_for(*process, std::chrono::milliseconds(timeout)))
+				process->async_wait(
+					boost::asio::cancel_after(
+						std::chrono::milliseconds(timeout),
+						[&](const boost::system::error_code ec, std::size_t) {}));
+				if (process->running())
 				{
 					LOG_WARNING(
 						"Canceling process because it timed out after " +
@@ -214,15 +201,16 @@ utility::ProcessOutput utility::executeProcess(
 
 		exitCode = process->exit_code();
 	}
-	catch (const boost::process::process_error& e)
+	catch (const boost::system::system_error& e)
 	{
 		ProcessOutput ret;
-		ret.error = utility::decodeFromUtf8(e.code().message());
+		ret.error = utility::decodeFromUtf8(e.code().message()) + L" '" + command + L"'";
 		ret.exitCode = e.code().value();
 		LOG_ERROR_BARE(L"Process error: " + ret.error);
 
 		return ret;
 	}
+
 
 	ProcessOutput ret;
 	ret.output = utility::trim(utility::decodeFromUtf8(output));
@@ -230,10 +218,11 @@ utility::ProcessOutput utility::executeProcess(
 	return ret;
 }
 
+
 void utility::killRunningProcesses()
 {
 	std::lock_guard<std::mutex> lock(s_runningProcessesMutex);
-	for (std::shared_ptr<boost::process::child> process: s_runningProcesses)
+	for (auto process: s_runningProcesses)
 	{
 		process->terminate();
 	}
@@ -264,4 +253,34 @@ std::string utility::getOsTypeString()
 		break;
 	}
 	return "unknown";
+}
+
+std::string utility::getApplicationArchitectureString()
+{
+	switch (utility::getApplicationArchitectureType())
+	{
+	case APPLICATION_ARCHITECTURE_X86_32:
+		return "x86";
+	case APPLICATION_ARCHITECTURE_X86_64:
+		return "amd64";
+	case APPLICATION_ARCHITECTURE_ARM_64:
+		return "arm64";
+	default:
+		return "Unknown";
+	}
+}
+
+std::wstring utility::getApplicationArchitectureWstring()
+{
+	switch (utility::getApplicationArchitectureType())
+	{
+	case APPLICATION_ARCHITECTURE_X86_32:
+		return L"x86";
+	case APPLICATION_ARCHITECTURE_X86_64:
+		return L"amd64";
+	case APPLICATION_ARCHITECTURE_ARM_64:
+		return L"arm64";
+	default:
+		return L"Unknown";
+	}
 }

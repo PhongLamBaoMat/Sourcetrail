@@ -2,7 +2,6 @@
 #define FULLTEXTSEARCH_INDEX_H
 
 #include <mutex>
-#include <unordered_map>
 #include <vector>
 
 #include "SuffixArray.h"

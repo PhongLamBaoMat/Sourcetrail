@@ -1,17 +1,16 @@
 #include "CxxAstVisitor.h"
 
 #include <clang/AST/ASTContext.h>
+#include <clang/AST/TemplateBase.h>
 #include <clang/Lex/Preprocessor.h>
 
 #include "CanonicalFilePathCache.h"
 #include "CxxDeclNameResolver.h"
-#include "CxxTypeNameResolver.h"
 #include "IndexerStateInfo.h"
 #include "ParseLocation.h"
 #include "ParserClient.h"
 #include "logging.h"
 #include "utilityClang.h"
-#include "utilityString.h"
 
 CxxAstVisitor::CxxAstVisitor(
 	clang::ASTContext* astContext,
@@ -270,7 +269,7 @@ bool CxxAstVisitor::TraverseTemplateTypeParmDecl(clang::TemplateTypeParmDecl* d)
 	if (d->hasDefaultArgument() && !d->defaultArgumentWasInherited())
 	{
 		FOREACH_COMPONENT(beginTraverseTemplateDefaultArgumentLoc());
-		TraverseTypeLoc(d->getDefaultArgumentInfo()->getTypeLoc());
+		TraverseTypeLoc(d->getDefaultArgument().getTypeSourceInfo()->getTypeLoc());
 		FOREACH_COMPONENT(endTraverseTemplateDefaultArgumentLoc());
 	}
 
@@ -396,19 +395,15 @@ bool CxxAstVisitor::TraverseClassTemplateSpecializationDecl(clang::ClassTemplate
 
 	if (ReturnValue)
 	{
-		if (clang::TypeSourceInfo* TSI = D->getTypeAsWritten())
+		const clang::ArrayRef<clang::TemplateArgumentLoc> tstl =
+			D->getTemplateArgsAsWritten()->arguments();
+		if (!tstl.empty())
 		{
-			clang::TypeLoc::TypeLocClass ccccc = TSI->getTypeLoc().getTypeLocClass();
-			const clang::TemplateSpecializationTypeLoc tstl =
-				TSI->getTypeLoc().getAs<clang::TemplateSpecializationTypeLoc>();
-			if (!tstl.isNull())
+			for (unsigned I = 0, E = tstl.size(); I != E; ++I)
 			{
-				for (unsigned I = 0, E = tstl.getNumArgs(); I != E; ++I)
+				if (!TraverseTemplateArgumentLoc(tstl[I]))
 				{
-					if (!TraverseTemplateArgumentLoc(tstl.getArgLoc(I)))
-					{
-						ReturnValue = false;
-					}
+					ReturnValue = false;
 				}
 			}
 		}

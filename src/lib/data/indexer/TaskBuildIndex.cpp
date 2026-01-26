@@ -6,7 +6,6 @@
 #include "FileLogger.h"
 #include "InterprocessIndexer.h"
 #include "MessageIndexingStatus.h"
-#include "MessageStatus.h"
 #include "ParserClientImpl.h"
 #include "StorageProvider.h"
 #include "TimeStamp.h"

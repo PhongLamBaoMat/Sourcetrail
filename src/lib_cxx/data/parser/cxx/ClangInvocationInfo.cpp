@@ -4,14 +4,16 @@
 #include <clang/Driver/Driver.h>
 #include <clang/Driver/Options.h>
 #include <clang/Frontend/CompilerInvocation.h>
+#include <clang/Frontend/TextDiagnosticPrinter.h>
 #include <clang/Tooling/Tooling.h>
+#include <clang/Tooling/CompilationDatabase.h>
 #include <clang/Basic/Version.h>
+#include <llvm/ADT/ArrayRef.h>
 #include <llvm/Option/ArgList.h>
 #include <llvm/Support/TargetSelect.h>
-#include <llvm/Support/Host.h>
+#include <llvm/TargetParser/Host.h>
+#include <memory>
 
-#include "CxxCompilationDatabaseSingle.h"
-#include "CxxDiagnosticConsumer.h"
 #include "utilityString.h"
 
 namespace
@@ -51,7 +53,7 @@ ClangInvocationInfo ClangInvocationInfo::getClangInvocationString(
 		for (const std::string& Str: CommandLine)
 			Argv.push_back(Str.c_str());
 		const char* const BinaryName = Argv[0];
-		clang::IntrusiveRefCntPtr<clang::DiagnosticOptions> DiagOpts = new clang::DiagnosticOptions();
+		std::shared_ptr<clang::DiagnosticOptions> DiagOpts(new clang::DiagnosticOptions());
 		unsigned MissingArgIndex, MissingArgCount;
 		llvm::opt::OptTable Opts = clang::driver::getDriverOptTable();
 		llvm::opt::InputArgList ParsedArgs = Opts.ParseArgs(
@@ -59,10 +61,10 @@ ClangInvocationInfo ClangInvocationInfo::getClangInvocationString(
 		clang::ParseDiagnosticArgs(*DiagOpts, ParsedArgs);
 
 		llvm::raw_string_ostream diagnosticsStream(invocationInfo.errors);
-		clang::TextDiagnosticPrinter DiagnosticPrinter(diagnosticsStream, &*DiagOpts);
+		clang::TextDiagnosticPrinter DiagnosticPrinter(diagnosticsStream, *DiagOpts);
 		clang::DiagnosticsEngine Diagnostics(
 			clang::IntrusiveRefCntPtr<clang::DiagnosticIDs>(new clang::DiagnosticIDs()),
-			&*DiagOpts,
+			*DiagOpts,
 			&DiagnosticPrinter,
 			false);
 
@@ -74,7 +76,7 @@ ClangInvocationInfo ClangInvocationInfo::getClangInvocationString(
 		// Since the input might only be virtual, don't check whether it exists.
 		Driver->setCheckInputsExist(false);
 		const std::unique_ptr<clang::driver::Compilation> Compilation(
-			Driver->BuildCompilation(llvm::makeArrayRef(Argv)));
+			Driver->BuildCompilation(llvm::ArrayRef<const char*>(Argv)));
 
 		if (Compilation)
 		{

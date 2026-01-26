@@ -1,6 +1,7 @@
 #include "CxxDeclNameResolver.h"
 
 #include <clang/AST/ASTContext.h>
+#include <clang/AST/DeclTemplate.h>
 
 #include "CanonicalFilePathCache.h"
 #include "CxxFunctionDeclName.h"
@@ -173,14 +174,14 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 						{
 							llvm::PointerUnion<clang::ClassTemplateDecl*, clang::ClassTemplatePartialSpecializationDecl*>
 								pu = templateSpecialitarionDecl->getSpecializedTemplateOrPartial();
-							if (pu.is<clang::ClassTemplateDecl*>())
+							if (isa<clang::ClassTemplateDecl*>(pu))
 							{
-								return getDeclName(pu.get<clang::ClassTemplateDecl*>());
+								return getDeclName(cast<clang::ClassTemplateDecl*>(pu));
 							}
-							else if (pu.is<clang::ClassTemplatePartialSpecializationDecl*>())
+							else if (isa<clang::ClassTemplatePartialSpecializationDecl*>(pu))
 							{
 								return getDeclName(
-									pu.get<clang::ClassTemplatePartialSpecializationDecl*>());
+									cast<clang::ClassTemplatePartialSpecializationDecl*>(pu));
 							}
 						}
 
@@ -262,7 +263,7 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 						clang::dyn_cast_or_null<clang::SubstTemplateTypeParmType>(
 							functionDecl->parameters()[i]->getType().getTypePtr()))
 				{
-					if (const clang::TemplateTypeParmType* templateParamType =
+					if (const clang::TemplateTypeParmDecl* templateParamType =
 							substType->getReplacedParameter())
 					{
 						if (templateParamType->isParameterPack())
@@ -314,7 +315,7 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 			clang::isa<clang::NamespaceDecl>(declaration) &&
 			clang::dyn_cast<clang::NamespaceDecl>(declaration)->isAnonymousNamespace())
 		{
-			declaration = clang::dyn_cast<clang::NamespaceDecl>(declaration)->getOriginalNamespace();
+			declaration = clang::dyn_cast<clang::NamespaceDecl>(declaration)->getAnonymousNamespace();
 			return std::make_unique<CxxDeclName>(getNameForAnonymousSymbol(L"namespace", declaration));
 		}
 		else if (clang::isa<clang::EnumDecl>(declaration) && declNameString.empty())
@@ -409,14 +410,14 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 						{
 							llvm::PointerUnion<clang::VarTemplateDecl*, clang::VarTemplatePartialSpecializationDecl*>
 								pu = templateSpecializationDeclaration->getSpecializedTemplateOrPartial();
-							if (pu.is<clang::VarTemplateDecl*>())
+							if (isa<clang::VarTemplateDecl*>(pu))
 							{
-								return getDeclName(pu.get<clang::VarTemplateDecl*>());
+								return getDeclName(cast<clang::VarTemplateDecl*>(pu));
 							}
-							else if (pu.is<clang::VarTemplatePartialSpecializationDecl*>())
+							else if (isa<clang::VarTemplatePartialSpecializationDecl*>(pu))
 							{
 								return getDeclName(
-									pu.get<clang::VarTemplatePartialSpecializationDecl*>());
+									cast<clang::VarTemplatePartialSpecializationDecl*>(pu));
 							}
 						}
 						templateParameterNames.push_back(getTemplateArgumentName(templateArgument));

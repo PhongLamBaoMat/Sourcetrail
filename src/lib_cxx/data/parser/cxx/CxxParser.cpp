@@ -19,7 +19,6 @@
 #include "FileRegister.h"
 #include "IndexerCommandCxx.h"
 #include "ParserClient.h"
-#include "ResourcePaths.h"
 #include "SingleFrontendActionFactory.h"
 #include "TextAccess.h"
 #include "logging.h"
@@ -62,7 +61,9 @@ bool runToolOnCodeWithArgs(
 		new clang::FileManager(clang::FileSystemOptions(), OverlayFileSystem));
 
 	clang::tooling::ToolInvocation Invocation(
-		prependSyntaxOnlyToolArgs(appendFilePath(Args, FileNameRef)), std::move(ToolAction), Files.get());
+		prependSyntaxOnlyToolArgs(appendFilePath(Args, FileNameRef)),
+		std::move(ToolAction),
+		Files.get());
 
 	llvm::SmallString<1024> CodeStorage;
 	llvm::StringRef CodeRef = Code.toNullTerminatedStringRef(CodeStorage);
@@ -161,7 +162,11 @@ void CxxParser::buildIndex(
 	std::vector<std::string> args = getCommandlineArgumentsEssential(compilerFlags);
 
 	runToolOnCodeWithArgs(
-		diagnostics.get(), std::move(action), fileContent->getText(), args, utility::encodeToUtf8(fileName));
+		diagnostics.get(),
+		std::move(action),
+		fileContent->getText(),
+		args,
+		utility::encodeToUtf8(fileName));
 }
 
 void CxxParser::runTool(
@@ -227,7 +232,7 @@ std::shared_ptr<CxxDiagnosticConsumer> CxxParser::getDiagnostics(
 	std::shared_ptr<CanonicalFilePathCache> canonicalFilePathCache,
 	bool logErrors) const
 {
-	llvm::IntrusiveRefCntPtr<clang::DiagnosticOptions> options = new clang::DiagnosticOptions();
+	std::shared_ptr<clang::DiagnosticOptions> options(new clang::DiagnosticOptions());
 	return std::make_shared<CxxDiagnosticConsumer>(
-		llvm::errs(), &*options, m_client, canonicalFilePathCache, sourceFilePath, logErrors);
+		llvm::errs(), options, m_client, canonicalFilePathCache, sourceFilePath, logErrors);
 }

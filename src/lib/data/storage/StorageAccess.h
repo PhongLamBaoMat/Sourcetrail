@@ -13,7 +13,6 @@
 #include "ErrorFilter.h"
 #include "ErrorInfo.h"
 #include "LocationType.h"
-#include "Node.h"
 #include "NodeBookmark.h"
 #include "SearchMatch.h"
 #include "StorageEdge.h"

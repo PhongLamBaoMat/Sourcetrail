@@ -89,10 +89,9 @@ std::shared_ptr<Task> createBuildPchTask(
 				compilationDatabase, {utility::encodeToUtf8(pchInputFilePath.wstr())});
 			GeneratePCHAction* action = new GeneratePCHAction(client, canonicalFilePathCache);
 
-			llvm::IntrusiveRefCntPtr<clang::DiagnosticOptions> options =
-				new clang::DiagnosticOptions();
+			std::shared_ptr<clang::DiagnosticOptions> options(new clang::DiagnosticOptions());
 			CxxDiagnosticConsumer diagnostics(
-				llvm::errs(), &*options, client, canonicalFilePathCache, pchInputFilePath, true);
+				llvm::errs(), options, client, canonicalFilePathCache, pchInputFilePath, true);
 
 			tool.setDiagnosticConsumer(&diagnostics);
 			tool.clearArgumentsAdjusters();

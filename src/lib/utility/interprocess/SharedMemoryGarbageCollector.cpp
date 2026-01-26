@@ -60,16 +60,18 @@ void SharedMemoryGarbageCollector::run(const std::string& uuid)
 
 	m_uuid = uuid;
 
-	m_thread = std::make_shared<std::thread>([this]() {
-		m_loopIsRunning = true;
-
-		while (m_loopIsRunning)
+	m_thread = std::make_shared<std::thread>(
+		[this]()
 		{
-			update();
+			m_loopIsRunning = true;
 
-			std::this_thread::sleep_for(std::chrono::seconds(s_updateIntervalSeconds));
-		}
-	});
+			while (m_loopIsRunning)
+			{
+				update();
+
+				std::this_thread::sleep_for(std::chrono::seconds(s_updateIntervalSeconds));
+			}
+		});
 }
 
 void SharedMemoryGarbageCollector::stop()
@@ -161,8 +163,7 @@ void SharedMemoryGarbageCollector::unregisterSharedMemory(const std::string& sha
 
 std::string SharedMemoryGarbageCollector::getMemoryName()
 {
-	return s_memoryNamePrefix +
-		(utility::getApplicationArchitectureType() == APPLICATION_ARCHITECTURE_X86_32 ? "32" : "64");
+	return s_memoryNamePrefix + utility::getApplicationArchitectureString();
 }
 
 void SharedMemoryGarbageCollector::update()

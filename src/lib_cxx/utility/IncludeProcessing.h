@@ -5,8 +5,7 @@
 #include <set>
 #include <unordered_set>
 #include <vector>
-
-#include "OrderedCache.h"
+#include <functional>
 
 class FilePath;
 class IncludeDirective;

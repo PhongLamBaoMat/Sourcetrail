@@ -2,7 +2,6 @@
 
 #include <iterator>
 #include <set>
-#include <unordered_set>
 
 #include "ApplicationSettings.h"
 #include "FilePath.h"

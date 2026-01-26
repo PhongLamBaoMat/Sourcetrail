@@ -66,7 +66,7 @@ void TaskGroupParallel::doReset(std::shared_ptr<Blackboard> blackboard)
 		{
 			{
 				std::lock_guard<std::mutex> lock(*m_activeTaskCountMutex.get());
-				m_activeTaskCount++;
+				m_activeTaskCount += 1;
 			}
 			m_tasks[i]->thread->join();
 			m_tasks[i]->active = true;
@@ -104,7 +104,7 @@ void TaskGroupParallel::processTaskThreaded(
 {
 	ScopedFunctor functor([&]() {
 		std::lock_guard<std::mutex> lock(*activeTaskCountMutex.get());
-		m_activeTaskCount--;
+		m_activeTaskCount -= 1;
 	});
 
 	while (true)

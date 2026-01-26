@@ -11,12 +11,12 @@
 
 CxxDiagnosticConsumer::CxxDiagnosticConsumer(
 	clang::raw_ostream& os,
-	clang::DiagnosticOptions* diags,
+	std::shared_ptr<clang::DiagnosticOptions> diags,
 	std::shared_ptr<ParserClient> client,
 	std::shared_ptr<CanonicalFilePathCache> canonicalFilePathCache,
 	const FilePath& sourceFilePath,
 	bool useLogging)
-	: clang::TextDiagnosticPrinter(os, diags)
+	: clang::TextDiagnosticPrinter(os, *diags)
 	, m_client(client)
 	, m_canonicalFilePathCache(canonicalFilePathCache)
 	, m_sourceFilePath(sourceFilePath)
@@ -83,7 +83,7 @@ void CxxDiagnosticConsumer::HandleDiagnostic(
 			clang::FileID clangFileId = sourceManager.getFileID(loc);
 			const clang::FileEntry* fileEntry = sourceManager.getFileEntryForID(clangFileId);
 
-			if (fileEntry != nullptr && fileEntry->isValid())
+			if (fileEntry != nullptr && fileEntry->isDeviceFile())
 			{
 				ParseLocation location = utility::getParseLocation(
 					loc, sourceManager, nullptr, m_canonicalFilePathCache);
@@ -95,7 +95,7 @@ void CxxDiagnosticConsumer::HandleDiagnostic(
 			else
 			{
 				fileEntry = sourceManager.getFileEntryForID(sourceManager.getMainFileID());
-				if (fileEntry != nullptr && fileEntry->isValid())
+				if (fileEntry != nullptr && fileEntry->isDeviceFile())
 				{
 					filePath = m_canonicalFilePathCache->getCanonicalFilePath(fileEntry);
 					fileId = m_client->recordFile(

@@ -1,7 +1,5 @@
 #include "CxxTemplateArgumentNameResolver.h"
 
-#include <sstream>
-
 #include <clang/AST/DeclTemplate.h>
 #include <clang/AST/PrettyPrinter.h>
 
@@ -49,7 +47,7 @@ std::wstring CxxTemplateArgumentNameResolver::getTemplateArgumentName(
 
 		std::string buf;
 		llvm::raw_string_ostream os(buf);
-		argument.print(pp, os);
+		argument.print(pp, os, true);
 		return utility::decodeFromUtf8(os.str());
 	}
 	case clang::TemplateArgument::Pack:

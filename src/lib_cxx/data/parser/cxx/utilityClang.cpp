@@ -1,7 +1,9 @@
 #include "utilityClang.h"
 
+#include <clang/AST/Decl.h>
 #include <clang/AST/DeclCXX.h>
 #include <clang/AST/DeclTemplate.h>
+#include <clang/AST/Type.h>
 #include <clang/Lex/Preprocessor.h>
 #include <clang/Basic/FileManager.h>
 
@@ -78,22 +80,22 @@ SymbolKind utility::convertTagKind(const clang::TagTypeKind tagKind)
 {
 	switch (tagKind)
 	{
-	case clang::TTK_Struct:
+	case clang::TagTypeKind::Struct:
 		return SYMBOL_STRUCT;
-	case clang::TTK_Union:
+	case clang::TagTypeKind::Union:
 		return SYMBOL_UNION;
-	case clang::TTK_Class:
+	case clang::TagTypeKind::Class:
 		return SYMBOL_CLASS;
-	case clang::TTK_Enum:
+	case clang::TagTypeKind::Enum:
 		return SYMBOL_ENUM;
-	case clang::TTK_Interface:
+	case clang::TagTypeKind::Interface:
 		return SYMBOL_KIND_MAX;
 	default:
 		return SYMBOL_KIND_MAX;
 	}
 }
 
-bool utility::isLocalVariable(const clang::VarDecl* d)
+bool utility::isLocalVariable(const clang::ValueDecl* d)
 {
 	if (!llvm::isa<clang::ParmVarDecl>(d) && !(d->getParentFunctionOrMethod() == nullptr))
 	{
@@ -102,7 +104,7 @@ bool utility::isLocalVariable(const clang::VarDecl* d)
 	return false;
 }
 
-bool utility::isParameter(const clang::VarDecl* d)
+bool utility::isParameter(const clang::ValueDecl* d)
 {
 	return llvm::isa<clang::ParmVarDecl>(d);
 }
@@ -129,16 +131,16 @@ SymbolKind utility::getSymbolKind(const clang::VarDecl* d)
 std::wstring utility::getFileNameOfFileEntry(const clang::FileEntry* entry)
 {
 	std::wstring fileName = L"";
-	if (entry != nullptr && entry->isValid())
+	if (entry != nullptr && entry->isDeviceFile())
 	{
 		fileName = utility::decodeFromUtf8(entry->tryGetRealPathName().str());
 		if (fileName.empty())
 		{
-			fileName = utility::decodeFromUtf8(entry->getName().str());
+			fileName = utility::decodeFromUtf8(entry->tryGetRealPathName().str());
 		}
 		else
 		{
-			fileName = FilePath(utility::decodeFromUtf8(entry->getName().str()))
+			fileName = FilePath(utility::decodeFromUtf8(entry->tryGetRealPathName().str()))
 						   .getParentDirectory()
 						   .concatenate(FilePath(fileName).fileName())
 						   .wstr();

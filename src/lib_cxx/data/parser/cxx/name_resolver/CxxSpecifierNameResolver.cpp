@@ -50,7 +50,6 @@ std::unique_ptr<CxxName> CxxSpecifierNameResolver::getName(
 			return CxxDeclNameResolver(this).getName(nestedNameSpecifier->getAsNamespaceAlias());
 
 		case clang::NestedNameSpecifier::TypeSpec:
-		case clang::NestedNameSpecifier::TypeSpecWithTemplate:
 			return CxxTypeName::makeUnsolvedIfNull(
 				CxxTypeNameResolver(this).getName(nestedNameSpecifier->getAsType()));
 

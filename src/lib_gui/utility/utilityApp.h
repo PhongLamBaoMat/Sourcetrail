@@ -2,6 +2,7 @@
 #define UTILITY_APP_H
 
 #include <string>
+#include <vector>
 
 #include "ApplicationArchitectureType.h"
 #include "FilePath.h"
@@ -17,10 +18,6 @@ struct ProcessOutput
 };
 
 std::string getDocumentationLink();
-
-std::wstring searchPath(const std::wstring& bin, bool& ok);
-
-std::wstring searchPath(const std::wstring& bin);
 
 ProcessOutput executeProcess(
 	const std::wstring& command,
@@ -48,14 +45,18 @@ constexpr OsType getOsType()
 }
 
 std::string getOsTypeString();
+std::string getApplicationArchitectureString();
+std::wstring getApplicationArchitectureWstring();
 
 constexpr ApplicationArchitectureType getApplicationArchitectureType()
 {
 #if defined(__x86_64) || defined(__x86_64__) || defined(__amd64) || defined(_M_X64) ||             \
 	defined(WIN64)
 	return APPLICATION_ARCHITECTURE_X86_64;
-#else
+#elif defined(__x86_32) || defined(__x86_32__) || defined(_M_IX86)
 	return APPLICATION_ARCHITECTURE_X86_32;
+#elif defined(__arm64) || defined(__arm64__) || defined(__aarch64__)
+	return APPLICATION_ARCHITECTURE_ARM_64;
 #endif
 	return APPLICATION_ARCHITECTURE_UNKNOWN;
 }

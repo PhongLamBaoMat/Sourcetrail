@@ -1,7 +1,6 @@
 #ifndef TASK_GROUP_PARALLEL_H
 #define TASK_GROUP_PARALLEL_H
 
-#include <map>
 #include <mutex>
 #include <thread>
 

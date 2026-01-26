@@ -1,8 +1,4 @@
 #include "SqliteIndexStorage.h"
-
-#include <sstream>
-#include <unordered_map>
-
 #include "FileSystem.h"
 #include "LocationType.h"
 #include "SourceLocationCollection.h"
@@ -85,19 +81,21 @@ std::vector<Id> SqliteIndexStorage::addNodes(const std::vector<StorageNode>& nod
 {
 	if (m_tempNodeNameIndex.empty() && m_tempWNodeNameIndex.empty())
 	{
-		forEach<StorageNode>([this](StorageNode&& node) {
-			std::string name = utility::encodeToUtf8(node.serializedName);
-			if (name.size() != node.serializedName.size())
+		forEach<StorageNode>(
+			[this](StorageNode&& node)
 			{
-				m_tempWNodeNameIndex.add(node.serializedName, static_cast<uint32_t>(node.id));
-			}
-			else
-			{
-				m_tempNodeNameIndex.add(name, static_cast<uint32_t>(node.id));
-			}
+				std::string name = utility::encodeToUtf8(node.serializedName);
+				if (name.size() != node.serializedName.size())
+				{
+					m_tempWNodeNameIndex.add(node.serializedName, static_cast<uint32_t>(node.id));
+				}
+				else
+				{
+					m_tempNodeNameIndex.add(name, static_cast<uint32_t>(node.id));
+				}
 
-			m_tempNodeTypes.emplace(static_cast<uint32_t>(node.id), node.type);
-		});
+				m_tempNodeTypes.emplace(static_cast<uint32_t>(node.id), node.type);
+			});
 	}
 
 	std::vector<Id> nodeIds(nodes.size(), 0);
@@ -222,11 +220,13 @@ std::vector<Id> SqliteIndexStorage::addEdges(const std::vector<StorageEdge>& edg
 {
 	if (m_tempEdgeIndex.empty())
 	{
-		forEach<StorageEdge>([this](StorageEdge&& edge) {
-			m_tempEdgeIndex.emplace(
-				StorageEdgeData(edge.type, edge.sourceNodeId, edge.targetNodeId),
-				static_cast<uint32_t>(edge.id));
-		});
+		forEach<StorageEdge>(
+			[this](StorageEdge&& edge)
+			{
+				m_tempEdgeIndex.emplace(
+					StorageEdgeData(edge.type, edge.sourceNodeId, edge.targetNodeId),
+					static_cast<uint32_t>(edge.id));
+			});
 	}
 
 	std::vector<Id> edgeIds(edges.size(), 0);
@@ -269,14 +269,16 @@ std::vector<Id> SqliteIndexStorage::addLocalSymbols(const std::set<StorageLocalS
 {
 	if (m_tempLocalSymbolIndex.empty())
 	{
-		forEach<StorageLocalSymbol>([this](StorageLocalSymbol&& localSymbol) {
-			std::pair<std::wstring, std::wstring> name = splitLocalSymbolName(localSymbol.name);
-			if (name.second.size())
+		forEach<StorageLocalSymbol>(
+			[this](StorageLocalSymbol&& localSymbol)
 			{
-				m_tempLocalSymbolIndex[name.first].emplace(
-					name.second, static_cast<uint32_t>(localSymbol.id));
-			}
-		});
+				std::pair<std::wstring, std::wstring> name = splitLocalSymbolName(localSymbol.name);
+				if (name.second.size())
+				{
+					m_tempLocalSymbolIndex[name.first].emplace(
+						name.second, static_cast<uint32_t>(localSymbol.id));
+				}
+			});
 	}
 
 	std::vector<Id> symbolIds(symbols.size(), 0);
@@ -333,18 +335,20 @@ std::vector<Id> SqliteIndexStorage::addSourceLocations(const std::vector<Storage
 {
 	if (m_tempSourceLocationIndices.empty())
 	{
-		forEach<StorageSourceLocation>([this](StorageSourceLocation&& loc) {
-			std::map<TempSourceLocation, uint32_t>& index =
-				m_tempSourceLocationIndices[static_cast<uint32_t>(loc.fileNodeId)];
-			index.emplace(
-				TempSourceLocation(
-					static_cast<uint32_t>(loc.startLine),
-					static_cast<uint16_t>(loc.endLine - loc.startLine),
-					static_cast<uint16_t>(loc.startCol),
-					static_cast<uint16_t>(loc.endCol),
-					loc.type),
-				static_cast<uint32_t>(loc.id));
-		});
+		forEach<StorageSourceLocation>(
+			[this](StorageSourceLocation&& loc)
+			{
+				std::map<TempSourceLocation, uint32_t>& index =
+					m_tempSourceLocationIndices[static_cast<uint32_t>(loc.fileNodeId)];
+				index.emplace(
+					TempSourceLocation(
+						static_cast<uint32_t>(loc.startLine),
+						static_cast<uint16_t>(loc.endLine - loc.startLine),
+						static_cast<uint16_t>(loc.startCol),
+						static_cast<uint16_t>(loc.endCol),
+						loc.type),
+					static_cast<uint32_t>(loc.id));
+			});
 	}
 
 	std::vector<Id> locationIds(locations.size(), 0);
@@ -1359,7 +1363,8 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 		m_insertNodeBatchStatement.compile(
 			"INSERT INTO node(id, type, serialized_name) VALUES",
 			3,
-			[](CppSQLite3Statement& stmt, const StorageNode& node, size_t index) {
+			[](CppSQLite3Statement& stmt, const StorageNode& node, size_t index)
+			{
 				stmt.bind(int(index) * 3 + 1, int(node.id));
 				stmt.bind(int(index) * 3 + 2, int(node.type));
 				stmt.bind(int(index) * 3 + 3, utility::encodeToUtf8(node.serializedName).c_str());
@@ -1368,7 +1373,8 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 		m_insertEdgeBatchStatement.compile(
 			"INSERT INTO edge(id, type, source_node_id, target_node_id) VALUES",
 			4,
-			[](CppSQLite3Statement& stmt, const StorageEdge& edge, size_t index) {
+			[](CppSQLite3Statement& stmt, const StorageEdge& edge, size_t index)
+			{
 				stmt.bind(int(index) * 4 + 1, int(edge.id));
 				stmt.bind(int(index) * 4 + 2, int(edge.type));
 				stmt.bind(int(index) * 4 + 3, int(edge.sourceNodeId));
@@ -1378,7 +1384,8 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 		m_insertSymbolBatchStatement.compile(
 			"INSERT OR IGNORE INTO symbol(id, definition_kind) VALUES",
 			2,
-			[](CppSQLite3Statement& stmt, const StorageSymbol& symbol, size_t index) {
+			[](CppSQLite3Statement& stmt, const StorageSymbol& symbol, size_t index)
+			{
 				stmt.bind(int(index) * 2 + 1, int(symbol.id));
 				stmt.bind(int(index) * 2 + 2, int(symbol.definitionKind));
 			},
@@ -1386,7 +1393,8 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 		m_insertLocalSymbolBatchStatement.compile(
 			"INSERT INTO local_symbol(id, name) VALUES",
 			2,
-			[](CppSQLite3Statement& stmt, const StorageLocalSymbol& symbol, size_t index) {
+			[](CppSQLite3Statement& stmt, const StorageLocalSymbol& symbol, size_t index)
+			{
 				stmt.bind(int(index) * 2 + 1, int(symbol.id));
 				stmt.bind(int(index) * 2 + 2, utility::encodeToUtf8(symbol.name).c_str());
 			},
@@ -1395,7 +1403,8 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 			"INSERT INTO source_location(file_node_id, start_line, start_column, end_line, "
 			"end_column, type) VALUES",
 			6,
-			[](CppSQLite3Statement& stmt, const StorageSourceLocationData& location, size_t index) {
+			[](CppSQLite3Statement& stmt, const StorageSourceLocationData& location, size_t index)
+			{
 				stmt.bind(int(index) * 6 + 1, int(location.fileNodeId));
 				stmt.bind(int(index) * 6 + 2, int(location.startLine));
 				stmt.bind(int(index) * 6 + 3, int(location.startCol));
@@ -1407,7 +1416,8 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 		m_insertOccurrenceBatchStatement.compile(
 			"INSERT OR IGNORE INTO occurrence(element_id, source_location_id) VALUES",
 			2,
-			[](CppSQLite3Statement& stmt, const StorageOccurrence& occurrence, size_t index) {
+			[](CppSQLite3Statement& stmt, const StorageOccurrence& occurrence, size_t index)
+			{
 				stmt.bind(int(index) * 2 + 1, int(occurrence.elementId));
 				stmt.bind(int(index) * 2 + 2, int(occurrence.sourceLocationId));
 			},
@@ -1415,7 +1425,8 @@ void SqliteIndexStorage::setupPrecompiledStatements()
 		m_insertComponentAccessBatchStatement.compile(
 			"INSERT OR IGNORE INTO component_access(node_id, type) VALUES",
 			2,
-			[](CppSQLite3Statement& stmt, const StorageComponentAccess& componentAccess, size_t index) {
+			[](CppSQLite3Statement& stmt, const StorageComponentAccess& componentAccess, size_t index)
+			{
 				stmt.bind(int(index) * 2 + 1, int(componentAccess.nodeId));
 				stmt.bind(int(index) * 2 + 2, int(componentAccess.type));
 			},

@@ -1,6 +1,7 @@
 #include "CxxAstVisitorComponentIndexer.h"
 
 #include <clang/AST/ASTContext.h>
+#include <clang/AST/Decl.h>
 #include <clang/Basic/SourceLocation.h>
 #include <clang/Basic/SourceManager.h>
 #include <clang/Lex/Preprocessor.h>
@@ -56,7 +57,6 @@ void CxxAstVisitorComponentIndexer::beginTraverseNestedNameSpecifierLoc(
 	case clang::NestedNameSpecifier::Super:
 		break;
 	case clang::NestedNameSpecifier::TypeSpec:
-	case clang::NestedNameSpecifier::TypeSpecWithTemplate:
 		if (const clang::CXXRecordDecl* recordDecl = loc.getNestedNameSpecifier()->getAsRecordDecl())
 		{
 			SymbolKind symbolKind = SYMBOL_KIND_MAX;
@@ -164,7 +164,7 @@ void CxxAstVisitorComponentIndexer::beginTraverseLambdaCapture(
 {
 	if ((!lambdaExpr->isInitCapture(capture)) && (capture->capturesVariable()))
 	{
-		clang::VarDecl* d = capture->getCapturedVar();
+		clang::ValueDecl* d = capture->getCapturedVar();
 		if (utility::isLocalVariable(d) || utility::isParameter(d))
 		{
 			if (!d->getNameAsString().empty())	  // don't record anonymous parameters
@@ -220,13 +220,13 @@ void CxxAstVisitorComponentIndexer::visitClassTemplateSpecializationDecl(
 
 		llvm::PointerUnion<clang::ClassTemplateDecl*, clang::ClassTemplatePartialSpecializationDecl*> pu =
 			d->getSpecializedTemplateOrPartial();
-		if (pu.is<clang::ClassTemplateDecl*>())
+		if (isa<clang::ClassTemplateDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::ClassTemplateDecl*>()->getTemplatedDecl();
+			specializedFromDecl = cast<clang::ClassTemplateDecl*>(pu)->getTemplatedDecl();
 		}
-		else if (pu.is<clang::ClassTemplatePartialSpecializationDecl*>())
+		else if (isa<clang::ClassTemplatePartialSpecializationDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::ClassTemplatePartialSpecializationDecl*>();
+			specializedFromDecl = cast<clang::ClassTemplatePartialSpecializationDecl*>(pu);
 		}
 
 		m_client->recordReference(
@@ -277,13 +277,13 @@ void CxxAstVisitorComponentIndexer::visitVarTemplateSpecializationDecl(
 		// todo: use context and childcontext!!
 		llvm::PointerUnion<clang::VarTemplateDecl*, clang::VarTemplatePartialSpecializationDecl*> pu =
 			d->getSpecializedTemplateOrPartial();
-		if (pu.is<clang::VarTemplateDecl*>())
+		if (isa<clang::VarTemplateDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::VarTemplateDecl*>();
+			specializedFromDecl = cast<clang::VarTemplateDecl*>(pu);
 		}
-		else if (pu.is<clang::VarTemplatePartialSpecializationDecl*>())
+		else if (isa<clang::VarTemplatePartialSpecializationDecl*>(pu))
 		{
-			specializedFromDecl = pu.get<clang::VarTemplatePartialSpecializationDecl*>();
+			specializedFromDecl = cast<clang::VarTemplatePartialSpecializationDecl*>(pu);
 		}
 
 		m_client->recordReference(
@@ -915,17 +915,17 @@ ParseLocation CxxAstVisitorComponentIndexer::getSignatureLocation(clang::Functio
 
 		while (sm.isBeforeInTranslationUnit(endLoc, signatureRange.getEnd()))
 		{
-			llvm::Optional<clang::Token> token = clang::Lexer::findNextToken(endLoc, sm, opts);
-			if (token.hasValue())
+			std::optional<clang::Token> token = clang::Lexer::findNextToken(endLoc, sm, opts);
+			if (token.has_value())
 			{
-				const clang::tok::TokenKind tokenKind = token.getValue().getKind();
+				const clang::tok::TokenKind tokenKind = token.value().getKind();
 				if (tokenKind == clang::tok::l_brace || tokenKind == clang::tok::colon)
 				{
 					signatureRange.setEnd(endLoc);
 					return getParseLocation(signatureRange);
 				}
 
-				clang::SourceLocation nextEndLoc = token.getValue().getLocation();
+				clang::SourceLocation nextEndLoc = token.value().getLocation();
 				if (nextEndLoc == endLoc)
 				{
 					return ParseLocation();

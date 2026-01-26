@@ -160,17 +160,17 @@ std::unique_ptr<CxxTypeName> CxxTypeNameResolver::getName(const clang::Type* typ
 					resolver.ignoreContextDecl(templateSpecializationType->getTemplateName()
 												   .getAsTemplateDecl()
 												   ->getTemplatedDecl());
-					for (unsigned i = 0; i < templateSpecializationType->getNumArgs(); i++)
+					auto templateArgs = templateSpecializationType->template_arguments();
+					for (unsigned i = 0; i < templateArgs.size(); i++)
 					{
-						if (templateSpecializationType->getArg(i).isDependent())
+						if (templateArgs[i].isDependent())
 						{
 							return std::make_unique<CxxTypeName>(
 								declName->getName(),
 								declName->getTemplateParameterNames(),
 								declName->getParent());
 						}
-						templateArguments.push_back(
-							resolver.getTemplateArgumentName(templateSpecializationType->getArg(i)));
+						templateArguments.push_back(resolver.getTemplateArgumentName(templateArgs[i]));
 					}
 
 					return std::make_unique<CxxTypeName>(
@@ -214,18 +214,19 @@ std::unique_ptr<CxxTypeName> CxxTypeNameResolver::getName(const clang::Type* typ
 			const clang::DependentTemplateSpecializationType* dependentType =
 				clang::dyn_cast<clang::DependentTemplateSpecializationType>(type);
 			std::unique_ptr<CxxName> specifierName = CxxSpecifierNameResolver(this).getName(
-				dependentType->getQualifier());
+				dependentType->getDependentTemplateName().getQualifier());
 
 			std::vector<std::wstring> templateArguments;
 			CxxTemplateArgumentNameResolver resolver(this);
-			for (unsigned i = 0; i < dependentType->getNumArgs(); i++)
+			auto dependentTypeArgs = dependentType->template_arguments();
+			for (unsigned i = 0; i < dependentTypeArgs.size(); i++)
 			{
-				templateArguments.push_back(
-					resolver.getTemplateArgumentName(dependentType->getArg(i)));
+				templateArguments.push_back(resolver.getTemplateArgumentName(dependentTypeArgs[i]));
 			}
 
 			return std::make_unique<CxxTypeName>(
-				utility::decodeFromUtf8(dependentType->getIdentifier()->getName().str()),
+				utility::decodeFromUtf8(
+					dependentType->getDependentTemplateName().getName().getIdentifier()->getName().str()),
 				std::move(templateArguments),
 				std::move(specifierName));
 		}

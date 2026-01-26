@@ -1,6 +1,7 @@
 #ifndef PREPROCESSOR_CALLBACKS_H
 #define PREPROCESSOR_CALLBACKS_H
 
+#include <clang/Basic/FileEntry.h>
 #include <memory>
 #include <set>
 
@@ -9,7 +10,6 @@
 #include <clang/Lex/PPCallbacks.h>
 #include <clang/Lex/Token.h>
 
-#include "FilePath.h"
 #include "types.h"
 
 class CanonicalFilePathCache;
@@ -37,10 +37,11 @@ public:
 		llvm::StringRef fileName,
 		bool isAngled,
 		clang::CharSourceRange fileNameRange,
-		const clang::FileEntry* fileEntry,
+		const clang::OptionalFileEntryRef fileEntry,
 		llvm::StringRef searchPath,
 		llvm::StringRef relativePath,
 		const clang::Module* imported,
+		bool moduleImported,
 		clang::SrcMgr::CharacteristicKind fileType) override;
 
 	void MacroDefined(
