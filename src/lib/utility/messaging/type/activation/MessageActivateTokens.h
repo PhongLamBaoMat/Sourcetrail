@@ -46,7 +46,7 @@ public:
 		if (isBundledEdges)
 		{
 			SearchMatch match;
-			match.name = match.text = L"bundled edges";	 // TODO: show bundled edges source and target
+			match.name = match.text = L"bundled edges";	   // TODO: show bundled edges source and target
 			match.searchType = SearchMatch::SEARCH_TOKEN;
 			match.nodeType = NodeType(NODE_TYPE);
 			return {match};

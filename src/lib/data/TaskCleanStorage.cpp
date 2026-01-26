@@ -43,10 +43,13 @@ Task::TaskState TaskCleanStorage::doUpdate(std::shared_ptr<Blackboard> blackboar
 			storage->clearAllErrors();
 		}
 
-		storage->clearFileElements(m_filePaths, [=, this](int progress) {
-			m_dialogView->showProgressDialog(
-				L"Clearing", std::to_wstring(m_filePaths.size()) + L" Files", progress);
-		});
+		storage->clearFileElements(
+			m_filePaths,
+			[=, this](int progress)
+			{
+				m_dialogView->showProgressDialog(
+					L"Clearing", std::to_wstring(m_filePaths.size()) + L" Files", progress);
+			});
 	}
 
 	m_filePaths.clear();

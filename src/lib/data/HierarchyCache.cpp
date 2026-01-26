@@ -114,11 +114,11 @@ void HierarchyCache::HierarchyNode::setIsImplicit(bool isImplicit)
 	m_isImplicit = isImplicit;
 }
 
-std::map</*target*/ Id, std::vector<std::pair</*source*/ Id, /*edge*/ Id>>>
-HierarchyCache::HierarchyNode::getReverseReachableInheritanceSubgraph() const
+std::map</*target*/ Id, std::vector<std::pair</*source*/ Id, /*edge*/ Id>>> HierarchyCache::
+	HierarchyNode::getReverseReachableInheritanceSubgraph() const
 {
 	std::map<Id, std::vector<std::pair<Id, Id>>> reverseGraph;
-	reverseGraph.try_emplace(getNodeId());  // mark start node as visited
+	reverseGraph.try_emplace(getNodeId());	  // mark start node as visited
 	getReverseReachableInheritanceSubgraphHelper(reverseGraph);
 	return reverseGraph;
 }
@@ -336,9 +336,8 @@ bool HierarchyCache::nodeIsImplicit(Id nodeId) const
 	return false;
 }
 
-std::vector<std::tuple</*source*/ Id, /*target*/ Id, std::vector</*edge*/ Id>>>
-HierarchyCache::getInheritanceEdgesForNodeId(
-	Id sourceId, const std::set<Id>& targetIds) const
+std::vector<std::tuple</*source*/ Id, /*target*/ Id, std::vector</*edge*/ Id>>> HierarchyCache::
+	getInheritanceEdgesForNodeId(Id sourceId, const std::set<Id>& targetIds) const
 {
 	// For two nodes s and t of a graph g0, this function determines the subgraph g2 that consists
 	// of all nodes and edges that are reachable by going from s forwards and from t backwards as
@@ -375,10 +374,10 @@ HierarchyCache::getInheritanceEdgesForNodeId(
 		return inheritanceEdges;
 	}
 
-	std::map<Id, std::vector<std::pair<Id, Id>>> reverseGraph
-		= sourceNode->getReverseReachableInheritanceSubgraph();
+	std::map<Id, std::vector<std::pair<Id, Id>>> reverseGraph =
+		sourceNode->getReverseReachableInheritanceSubgraph();
 
-	for (Id targetId : targetIds)
+	for (Id targetId: targetIds)
 	{
 		std::set<Id> nodes;
 		std::vector<Id> edges;
@@ -410,7 +409,7 @@ void HierarchyCache::getReverseReachable(
 		return;
 	}
 
-	for (const std::pair<Id, Id>& nodeAndEdge : search->second)
+	for (const std::pair<Id, Id>& nodeAndEdge: search->second)
 	{
 		Id node = nodeAndEdge.first;
 		Id edge = nodeAndEdge.second;

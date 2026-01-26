@@ -65,13 +65,17 @@ QtHistoryItem::QtHistoryItem(const SearchMatch& match, size_t index, bool isCurr
 
 	if (isCurrent)
 	{
-		QtDeviceScaledPixmap pixmap(QString::fromStdWString(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"history_list/images/arrow.png").wstr()));
+		QtDeviceScaledPixmap pixmap(
+			QString::fromStdWString(
+				ResourcePaths::getGuiDirectoryPath()
+					.concatenate(L"history_list/images/arrow.png")
+					.wstr()));
 		pixmap.scaleToHeight(size.height() / 3);
 
 		QLabel* arrow = new QLabel(this);
-		arrow->setPixmap(utility::colorizePixmap(
-			pixmap.pixmap(), QColor(scheme->getColor("search/popup/text").c_str())));
+		arrow->setPixmap(
+			utility::colorizePixmap(
+				pixmap.pixmap(), QColor(scheme->getColor("search/popup/text").c_str())));
 		arrow->setGeometry(15, size.height() / 3, size.height() / 3, size.height() / 3);
 		arrow->show();
 	}
@@ -163,9 +167,10 @@ QtHistoryList::QtHistoryList(const std::vector<SearchMatch>& history, size_t cur
 		m_list->setItemWidget(item, line);
 	}
 
-	setStyleSheet(utility::getStyleSheet(
-					  ResourcePaths::getGuiDirectoryPath().concatenate(L"history_list/history_list.css"))
-					  .c_str());
+	setStyleSheet(
+		utility::getStyleSheet(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"history_list/history_list.css"))
+			.c_str());
 
 	connect(m_list, &QListWidget::itemClicked, this, &QtHistoryList::onItemClicked);
 }

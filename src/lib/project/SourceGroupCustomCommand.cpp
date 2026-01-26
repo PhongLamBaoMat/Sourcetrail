@@ -49,14 +49,15 @@ std::vector<std::shared_ptr<IndexerCommand>> SourceGroupCustomCommand::getIndexe
 	{
 		if (info.filesToIndex.find(sourcePath) != info.filesToIndex.end())
 		{
-			indexerCommands.push_back(std::make_shared<IndexerCommandCustom>(
-				m_settings->getCustomCommand(),
-				std::vector<std::wstring> {},
-				m_settings->getProjectSettings()->getProjectFilePath(),
-				m_settings->getProjectSettings()->getTempDBFilePath(),
-				std::to_wstring(SqliteIndexStorage::getStorageVersion()),
-				sourcePath,
-				runInParallel));
+			indexerCommands.push_back(
+				std::make_shared<IndexerCommandCustom>(
+					m_settings->getCustomCommand(),
+					std::vector<std::wstring> {},
+					m_settings->getProjectSettings()->getProjectFilePath(),
+					m_settings->getProjectSettings()->getTempDBFilePath(),
+					std::to_wstring(SqliteIndexStorage::getStorageVersion()),
+					sourcePath,
+					runInParallel));
 		}
 	}
 

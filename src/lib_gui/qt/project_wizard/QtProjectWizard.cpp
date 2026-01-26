@@ -902,10 +902,12 @@ void QtProjectWizard::newSourceGroup()
 		return;
 	}
 
-	QtProjectWizardWindow* window = createWindowWithContent([](QtProjectWizardWindow* window) {
-		window->setPreferredSize(QSize(560, 520));
-		return new QtProjectWizardContentSelect(window);
-	});
+	QtProjectWizardWindow* window = createWindowWithContent(
+		[](QtProjectWizardWindow* window)
+		{
+			window->setPreferredSize(QSize(560, 520));
+			return new QtProjectWizardContentSelect(window);
+		});
 	window->resize(QSize(560, 520));
 
 	connect(
@@ -923,15 +925,16 @@ void QtProjectWizard::newSourceGroup()
 void QtProjectWizard::newSourceGroupFromVS()
 {
 #if BUILD_CXX_LANGUAGE_PACKAGE
-	QtProjectWizardWindow* window = createWindowWithContent([](QtProjectWizardWindow* window) {
-		window->setPreferredSize(QSize(560, 320));
-		return new QtProjectWizardContentVS(window);
-	});
+	QtProjectWizardWindow* window = createWindowWithContent(
+		[](QtProjectWizardWindow* window)
+		{
+			window->setPreferredSize(QSize(560, 320));
+			return new QtProjectWizardContentVS(window);
+		});
 	window->resize(QSize(560, 320));
 
-	connect(window, &QtProjectWizardWindow::next, [this]() {
-		selectedProjectType(SOURCE_GROUP_CXX_CDB);
-	});
+	connect(
+		window, &QtProjectWizardWindow::next, [this]() { selectedProjectType(SOURCE_GROUP_CXX_CDB); });
 
 	window->show();
 	window->setNextEnabled(true);
@@ -1044,9 +1047,11 @@ void QtProjectWizard::createProject()
 
 		QMessageBox msgBox(this);
 		msgBox.setText(QStringLiteral("Could not create Project"));
-		msgBox.setInformativeText(QString::fromStdWString(
-			L"<p>Sourcetrail was unable to save the project to the specified path. Please pick a "
-			L"different project location.</p>"));
+		msgBox.setInformativeText(
+			QString::fromStdWString(
+				L"<p>Sourcetrail was unable to save the project to the specified path. Please pick "
+				L"a "
+				L"different project location.</p>"));
 		msgBox.addButton(QStringLiteral("Ok"), QMessageBox::ButtonRole::AcceptRole);
 		msgBox.exec();
 

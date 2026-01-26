@@ -430,66 +430,69 @@ void QtCodeField::createAnnotations(std::shared_ptr<SourceLocationFile> location
 	size_t endLineNumber = getEndLineNumber();
 	std::set<Id> locationIds;
 
-	locationFile->forEachSourceLocation([&](const SourceLocation* location) {
-		if (location->getLocationId() &&
-			locationIds.find(location->getLocationId()) != locationIds.end())
+	locationFile->forEachSourceLocation(
+		[&](const SourceLocation* location)
 		{
-			return;
-		}
-		locationIds.insert(location->getLocationId());
+			if (location->getLocationId() &&
+				locationIds.find(location->getLocationId()) != locationIds.end())
+			{
+				return;
+			}
+			locationIds.insert(location->getLocationId());
 
-		Annotation annotation;
+			Annotation annotation;
 
-		const SourceLocation* startLocation = location->getStartLocation();
-		if (!startLocation || startLocation->getLineNumber() < m_startLineNumber)
-		{
-			annotation.start = startTextEditPosition();
-			annotation.startLine = static_cast<int>(m_startLineNumber);
-			annotation.startCol = 0;
-		}
-		else if (startLocation->getLineNumber() <= endLineNumber)
-		{
-			const int startLine = static_cast<int>(startLocation->getLineNumber());
-			const int startCol = getColumnCorrectedForMultibyteCharacters(
-				startLine, static_cast<int>(startLocation->getColumnNumber() - 1));
+			const SourceLocation* startLocation = location->getStartLocation();
+			if (!startLocation || startLocation->getLineNumber() < m_startLineNumber)
+			{
+				annotation.start = startTextEditPosition();
+				annotation.startLine = static_cast<int>(m_startLineNumber);
+				annotation.startCol = 0;
+			}
+			else if (startLocation->getLineNumber() <= endLineNumber)
+			{
+				const int startLine = static_cast<int>(startLocation->getLineNumber());
+				const int startCol = getColumnCorrectedForMultibyteCharacters(
+					startLine, static_cast<int>(startLocation->getColumnNumber() - 1));
 
-			annotation.start = toTextEditPosition(startLine, startCol);
-			annotation.startLine = startLine;
-			annotation.startCol = startCol;
-		}
-		else
-		{
-			return;
-		}
+				annotation.start = toTextEditPosition(startLine, startCol);
+				annotation.startLine = startLine;
+				annotation.startCol = startCol;
+			}
+			else
+			{
+				return;
+			}
 
-		const SourceLocation* endLocation = location->getEndLocation();
-		if (!endLocation || endLocation->getLineNumber() > endLineNumber)
-		{
-			annotation.end = endTextEditPosition();
-			annotation.endLine = static_cast<int>(endLineNumber);
-			annotation.endCol = m_lineLengths[document()->blockCount() - 1];
-		}
-		else if (endLocation->getLineNumber() >= m_startLineNumber)
-		{
-			const int endLine = static_cast<int>(endLocation->getLineNumber());
-			const int endCol = getColumnCorrectedForMultibyteCharacters(
-				endLine, static_cast<int>(endLocation->getColumnNumber()));
+			const SourceLocation* endLocation = location->getEndLocation();
+			if (!endLocation || endLocation->getLineNumber() > endLineNumber)
+			{
+				annotation.end = endTextEditPosition();
+				annotation.endLine = static_cast<int>(endLineNumber);
+				annotation.endCol = m_lineLengths[document()->blockCount() - 1];
+			}
+			else if (endLocation->getLineNumber() >= m_startLineNumber)
+			{
+				const int endLine = static_cast<int>(endLocation->getLineNumber());
+				const int endCol = getColumnCorrectedForMultibyteCharacters(
+					endLine, static_cast<int>(endLocation->getColumnNumber()));
 
-			annotation.end = toTextEditPosition(endLine, endCol);
-			annotation.endLine = endLine;
-			annotation.endCol = endCol;
-		}
-		else
-		{
-			return;
-		}
+				annotation.end = toTextEditPosition(endLine, endCol);
+				annotation.endLine = endLine;
+				annotation.endCol = endCol;
+			}
+			else
+			{
+				return;
+			}
 
-		annotation.tokenIds.insert(location->getTokenIds().begin(), location->getTokenIds().end());
-		annotation.locationId = location->getLocationId();
-		annotation.locationType = location->getType();
+			annotation.tokenIds.insert(
+				location->getTokenIds().begin(), location->getTokenIds().end());
+			annotation.locationId = location->getLocationId();
+			annotation.locationType = location->getType();
 
-		m_annotations.push_back(annotation);
-	});
+			m_annotations.push_back(annotation);
+		});
 }
 
 void QtCodeField::activateAnnotations(

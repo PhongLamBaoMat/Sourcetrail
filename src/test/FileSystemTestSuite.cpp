@@ -52,8 +52,9 @@ TEST_CASE("find cpp files")
 
 	REQUIRE(cppFiles.size() == 4);
 	REQUIRE(utility::containsElement<std::wstring>(cppFiles, L"data/FileSystemTestSuite/main.cpp"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		cppFiles, L"data/FileSystemTestSuite/Settings/sample.cpp"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			cppFiles, L"data/FileSystemTestSuite/Settings/sample.cpp"));
 	REQUIRE(
 		utility::containsElement<std::wstring>(cppFiles, L"data/FileSystemTestSuite/src/main.cpp"));
 	REQUIRE(
@@ -67,12 +68,14 @@ TEST_CASE("find h files")
 		[](const FilePath& filePath) { return filePath.wstr(); });
 
 	REQUIRE(headerFiles.size() == 3);
-	REQUIRE(utility::containsElement<std::wstring>(
-		headerFiles, L"data/FileSystemTestSuite/tictactoe.h"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		headerFiles, L"data/FileSystemTestSuite/Settings/player.h"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		headerFiles, L"data/FileSystemTestSuite/src/test.h"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			headerFiles, L"data/FileSystemTestSuite/tictactoe.h"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			headerFiles, L"data/FileSystemTestSuite/Settings/player.h"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(headerFiles, L"data/FileSystemTestSuite/src/test.h"));
 }
 
 TEST_CASE("find all source files")

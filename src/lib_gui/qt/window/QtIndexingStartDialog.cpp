@@ -43,14 +43,15 @@ QtIndexingStartDialog::QtIndexingStartDialog(
 
 	QtHelpButton* helpButton = new QtHelpButton(QtHelpButtonInfo(
 		QStringLiteral("Indexing Modes"),
-		QString("<b>Updated files:</b> Reindexes all files that were modified since the last "
-				"indexing, all new files and all files depending "
-				"on those.<br /><br />"
-				"<b>Incomplete & updated files:</b> Reindexes all files that had errors during "
-				"last indexing, all updated files and all files "
-				"depending on those.<br /><br />"
-				"<b>All files:</b> Deletes the previous index and reindexes all files from "
-				"scratch.<br /><br />") +
+		QString(
+			"<b>Updated files:</b> Reindexes all files that were modified since the last "
+			"indexing, all new files and all files depending "
+			"on those.<br /><br />"
+			"<b>Incomplete & updated files:</b> Reindexes all files that had errors during "
+			"last indexing, all updated files and all files "
+			"depending on those.<br /><br />"
+			"<b>All files:</b> Deletes the previous index and reindexes all files from "
+			"scratch.<br /><br />") +
 			(enabledShallowOption
 				 ? "<br /><b>Shallow Python Indexing:</b> References within your code base (calls, "
 				   "usages, etc.) are resolved by name, which is "
@@ -74,7 +75,8 @@ QtIndexingStartDialog::QtIndexingStartDialog(
 		new QRadioButton(QStringLiteral("Incomplete && updated files")));
 	m_refreshModeButtons.emplace(REFRESH_ALL_FILES, new QRadioButton(QStringLiteral("All files")));
 
-	std::function<void(bool)> func = [=, this](bool checked) {
+	std::function<void(bool)> func = [=, this](bool checked)
+	{
 		if (!checked)
 		{
 			return;
@@ -112,9 +114,10 @@ QtIndexingStartDialog::QtIndexingStartDialog(
 	{
 		QCheckBox* shallowIndexingCheckBox = new QCheckBox(
 			QStringLiteral("Shallow Python Indexing"));
-		connect(shallowIndexingCheckBox, &QCheckBox::toggled, [=, this]() {
-			emit setShallowIndexing(shallowIndexingCheckBox->isChecked());
-		});
+		connect(
+			shallowIndexingCheckBox,
+			&QCheckBox::toggled,
+			[=, this]() { emit setShallowIndexing(shallowIndexingCheckBox->isChecked()); });
 		shallowIndexingCheckBox->setChecked(initialShallowState);
 		modeLayout->addWidget(shallowIndexingCheckBox);
 	}

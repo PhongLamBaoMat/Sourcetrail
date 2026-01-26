@@ -61,30 +61,36 @@ void QtProjectWizardContentPathPythonEnvironment::onTextChanged(const QString& t
 	else
 	{
 		m_resultLabel->setText("Checking validity of Python environment...");
-		std::thread([=]() {
-			const utility::ProcessOutput out = utility::executeProcess(
-				ResourcePaths::getPythonIndexerFilePath().wstr(),
-				{L"check-environment",
-				 L"--environment-path",
-				 utility::getExpandedAndAbsolutePath(
-					 FilePath(text.toStdWString()), m_settings->getProjectDirectoryPath())
-					 .wstr()},
-				FilePath(),
-				false,
-				5000);
-			m_onQtThread([=]() {
-				if (out.exitCode == 0)
-				{
-					m_resultLabel->setText(QString::fromStdWString(out.output));
-				}
-				else
-				{
-					m_resultLabel->setText(
-						"An error occurred while checking environment path. Unable to check "
-						"validity.");
-				}
-			});
-		}).detach();
+		std::thread(
+			[=]()
+			{
+				const utility::ProcessOutput out = utility::executeProcess(
+					ResourcePaths::getPythonIndexerFilePath().wstr(),
+					{L"check-environment",
+					 L"--environment-path",
+					 utility::getExpandedAndAbsolutePath(
+						 FilePath(text.toStdWString()), m_settings->getProjectDirectoryPath())
+						 .wstr()},
+					FilePath(),
+					false,
+					5000);
+				m_onQtThread(
+					[=]()
+					{
+						if (out.exitCode == 0)
+						{
+							m_resultLabel->setText(QString::fromStdWString(out.output));
+						}
+						else
+						{
+							m_resultLabel->setText(
+								"An error occurred while checking environment path. Unable to "
+								"check "
+								"validity.");
+						}
+					});
+			})
+			.detach();
 	}
 }
 

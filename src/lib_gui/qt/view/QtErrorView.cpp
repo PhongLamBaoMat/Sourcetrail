@@ -28,8 +28,9 @@ QIcon QtErrorView::s_errorIcon;
 QtErrorView::QtErrorView(ViewLayout* viewLayout)
 	: ErrorView(viewLayout), m_controllerProxy(this, TabId::app())
 {
-	s_errorIcon = QIcon(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/error.png").wstr()));
+	s_errorIcon = QIcon(
+		QString::fromStdWString(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/error.png").wstr()));
 
 	setWidgetWrapper(std::make_shared<QtViewWidgetWrapper>(new QFrame()));
 
@@ -62,20 +63,24 @@ QtErrorView::QtErrorView(ViewLayout* viewLayout)
 			<< QStringLiteral("Translation Unit");
 	m_model->setHorizontalHeaderLabels(headers);
 
-	connect(m_table, &QTableView::clicked, [=, this](const QModelIndex& index) {
-		if (index.isValid())
+	connect(
+		m_table,
+		&QTableView::clicked,
+		[=, this](const QModelIndex& index)
 		{
-			if (m_model->item(index.row(), Column::FILE) == nullptr)
+			if (index.isValid())
 			{
-				return;
+				if (m_model->item(index.row(), Column::FILE) == nullptr)
+				{
+					return;
+				}
+
+				const Id errorId = static_cast<Id>(
+					m_model->item(index.row(), Column::ID)->text().toLongLong());
+
+				m_controllerProxy.executeAsTaskWithArgs(&ErrorController::showError, errorId);
 			}
-
-			const Id errorId = static_cast<Id>(
-				m_model->item(index.row(), Column::ID)->text().toLongLong());
-
-			m_controllerProxy.executeAsTaskWithArgs(&ErrorController::showError, errorId);
-		}
-	});
+		});
 
 	layout->addWidget(m_table);
 
@@ -110,10 +115,14 @@ QtErrorView::QtErrorView(ViewLayout* viewLayout)
 
 		m_allButton = new QPushButton(QLatin1String(""));
 		m_allButton->setObjectName(QStringLiteral("screen_button"));
-		connect(m_allButton, &QPushButton::clicked, [=, this]() {
-			m_errorFilter.limit = 0;
-			errorFilterChanged();
-		});
+		connect(
+			m_allButton,
+			&QPushButton::clicked,
+			[=, this]()
+			{
+				m_errorFilter.limit = 0;
+				errorFilterChanged();
+			});
 		checkboxes->addWidget(m_allButton);
 		m_allButton->hide();
 
@@ -149,69 +158,75 @@ void QtErrorView::refreshView()
 
 void QtErrorView::clear()
 {
-	m_onQtThread([=, this]() {
-		if (!m_model->index(0, 0).data(Qt::DisplayRole).toString().isEmpty())
+	m_onQtThread(
+		[=, this]()
 		{
-			m_model->removeRows(0, m_model->rowCount());
-		}
+			if (!m_model->index(0, 0).data(Qt::DisplayRole).toString().isEmpty())
+			{
+				m_model->removeRows(0, m_model->rowCount());
+			}
 
-		m_table->updateRows();
+			m_table->updateRows();
 
-		m_allLabel->setVisible(false);
-		m_allButton->setVisible(false);
-		m_errorLabel->setVisible(false);
-	});
+			m_allLabel->setVisible(false);
+			m_allButton->setVisible(false);
+			m_errorLabel->setVisible(false);
+		});
 }
 
 void QtErrorView::addErrors(
 	const std::vector<ErrorInfo>& errors, const ErrorCountInfo& errorCount, bool scrollTo)
 {
-	m_onQtThread([=, this]() {
-		for (const ErrorInfo& error: errors)
+	m_onQtThread(
+		[=, this]()
 		{
-			addErrorToTable(error);
-		}
-		m_table->updateRows();
+			for (const ErrorInfo& error: errors)
+			{
+				addErrorToTable(error);
+			}
+			m_table->updateRows();
 
-		if (scrollTo)
-		{
-			m_table->showLastRow();
-		}
-		else
-		{
-			m_table->showFirstRow();
-		}
+			if (scrollTo)
+			{
+				m_table->showLastRow();
+			}
+			else
+			{
+				m_table->showFirstRow();
+			}
 
-		bool limited = m_errorFilter.limit > 0 && errorCount.total > m_errorFilter.limit;
+			bool limited = m_errorFilter.limit > 0 && errorCount.total > m_errorFilter.limit;
 
-		m_allLabel->setVisible(limited);
-		m_allLabel->setText(
-			"<b>Only displaying first " + QString::number(m_errorFilter.limit) + " errors</b>");
+			m_allLabel->setVisible(limited);
+			m_allLabel->setText(
+				"<b>Only displaying first " + QString::number(m_errorFilter.limit) + " errors</b>");
 
-		m_allButton->setVisible(limited);
-		m_allButton->setText("Show all " + QString::number(errorCount.total));
+			m_allButton->setVisible(limited);
+			m_allButton->setText("Show all " + QString::number(errorCount.total));
 
-		m_errorLabel->setVisible(!limited);
-		m_errorLabel->setText(
-			"<b>displaying " + QString::number(errorCount.total) + " error" +
-			(errorCount.total != 1 ? "s" : "") +
-			(errorCount.fatal > 0 ? " (" + QString::number(errorCount.fatal) + " fatal)"
-								  : QLatin1String("")) +
-			"</b>");
-	});
+			m_errorLabel->setVisible(!limited);
+			m_errorLabel->setText(
+				"<b>displaying " + QString::number(errorCount.total) + " error" +
+				(errorCount.total != 1 ? "s" : "") +
+				(errorCount.fatal > 0 ? " (" + QString::number(errorCount.fatal) + " fatal)"
+									  : QLatin1String("")) +
+				"</b>");
+		});
 }
 
 void QtErrorView::setErrorId(Id errorId)
 {
-	m_onQtThread([=, this]() {
-		QList<QStandardItem*> items = m_model->findItems(
-			QString::number(errorId), Qt::MatchExactly, Column::ID);
-
-		if (items.size() == 1)
+	m_onQtThread(
+		[=, this]()
 		{
-			m_table->selectRow(items.at(0)->row());
-		}
-	});
+			QList<QStandardItem*> items = m_model->findItems(
+				QString::number(errorId), Qt::MatchExactly, Column::ID);
+
+			if (items.size() == 1)
+			{
+				m_table->selectRow(items.at(0)->row());
+			}
+		});
 }
 
 ErrorFilter QtErrorView::getErrorFilter() const
@@ -228,22 +243,24 @@ void QtErrorView::setErrorFilter(const ErrorFilter& filter)
 
 	m_errorFilter = filter;
 
-	m_onQtThread([=, this]() {
-		m_showErrors->blockSignals(true);
-		m_showFatals->blockSignals(true);
-		m_showNonIndexedErrors->blockSignals(true);
-		m_showNonIndexedFatals->blockSignals(true);
+	m_onQtThread(
+		[=, this]()
+		{
+			m_showErrors->blockSignals(true);
+			m_showFatals->blockSignals(true);
+			m_showNonIndexedErrors->blockSignals(true);
+			m_showNonIndexedFatals->blockSignals(true);
 
-		m_showErrors->setChecked(m_errorFilter.error);
-		m_showFatals->setChecked(m_errorFilter.fatal);
-		m_showNonIndexedErrors->setChecked(m_errorFilter.unindexedError);
-		m_showNonIndexedFatals->setChecked(m_errorFilter.unindexedFatal);
+			m_showErrors->setChecked(m_errorFilter.error);
+			m_showFatals->setChecked(m_errorFilter.fatal);
+			m_showNonIndexedErrors->setChecked(m_errorFilter.unindexedError);
+			m_showNonIndexedFatals->setChecked(m_errorFilter.unindexedFatal);
 
-		m_showErrors->blockSignals(false);
-		m_showFatals->blockSignals(false);
-		m_showNonIndexedErrors->blockSignals(false);
-		m_showNonIndexedFatals->blockSignals(false);
-	});
+			m_showErrors->blockSignals(false);
+			m_showFatals->blockSignals(false);
+			m_showNonIndexedErrors->blockSignals(false);
+			m_showNonIndexedFatals->blockSignals(false);
+		});
 }
 
 void QtErrorView::errorFilterChanged(int i)

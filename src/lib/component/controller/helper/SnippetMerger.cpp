@@ -29,9 +29,10 @@ std::deque<SnippetMerger::Range> SnippetMerger::merge(std::vector<SnippetMerger:
 					mergedFromChild[j], snippetExpandRange, atomicRanges));
 			}
 		}
-		std::sort(merged.begin(), merged.end(), [](const Range& a, const Range& b) {
-			return a.start.row < b.start.row;
-		});
+		std::sort(
+			merged.begin(),
+			merged.end(),
+			[](const Range& a, const Range& b) { return a.start.row < b.start.row; });
 
 		// merge children
 		const int snippetMergeRange = 2 * snippetExpandRange +

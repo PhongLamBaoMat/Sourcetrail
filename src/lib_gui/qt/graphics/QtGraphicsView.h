@@ -5,9 +5,9 @@
 
 #include <QGraphicsView>
 
-#include "types.h"
 #include "MessageListener.h"
 #include "MessageSaveAsImage.h"
+#include "types.h"
 
 
 class GraphFocusHandler;
@@ -17,7 +17,9 @@ class QtGraphEdge;
 class QtGraphNode;
 class QtSelfRefreshIconButton;
 
-class QtGraphicsView: public QGraphicsView, public MessageListener<MessageSaveAsImage>
+class QtGraphicsView
+	: public QGraphicsView
+	, public MessageListener<MessageSaveAsImage>
 {
 	Q_OBJECT
 

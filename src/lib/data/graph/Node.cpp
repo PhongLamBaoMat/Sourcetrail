@@ -167,13 +167,17 @@ Edge* Node::findEdgeOfType(Edge::TypeMask mask) const
 
 Edge* Node::findEdgeOfType(Edge::TypeMask mask, std::function<bool(Edge*)> func) const
 {
-	auto it = find_if(m_edges.begin(), m_edges.end(), [mask, func](std::pair<Id, Edge*> p) {
-		if (p.second->isType(mask))
+	auto it = find_if(
+		m_edges.begin(),
+		m_edges.end(),
+		[mask, func](std::pair<Id, Edge*> p)
 		{
-			return func(p.second);
-		}
-		return false;
-	});
+			if (p.second->isType(mask))
+			{
+				return func(p.second);
+			}
+			return false;
+		});
 
 	if (it != m_edges.end())
 	{
@@ -185,13 +189,17 @@ Edge* Node::findEdgeOfType(Edge::TypeMask mask, std::function<bool(Edge*)> func)
 
 Node* Node::findChildNode(std::function<bool(Node*)> func) const
 {
-	auto it = find_if(m_edges.begin(), m_edges.end(), [&func](std::pair<Id, Edge*> p) {
-		if (p.second->getType() == Edge::EDGE_MEMBER)
+	auto it = find_if(
+		m_edges.begin(),
+		m_edges.end(),
+		[&func](std::pair<Id, Edge*> p)
 		{
-			return func(p.second->getTo());
-		}
-		return false;
-	});
+			if (p.second->getType() == Edge::EDGE_MEMBER)
+			{
+				return func(p.second->getTo());
+			}
+			return false;
+		});
 
 	if (it != m_edges.end())
 	{
@@ -208,34 +216,44 @@ void Node::forEachEdge(std::function<void(Edge*)> func) const
 
 void Node::forEachEdgeOfType(Edge::TypeMask mask, std::function<void(Edge*)> func) const
 {
-	for_each(m_edges.begin(), m_edges.end(), [mask, func](std::pair<Id, Edge*> p) {
-		if (p.second->isType(mask))
+	for_each(
+		m_edges.begin(),
+		m_edges.end(),
+		[mask, func](std::pair<Id, Edge*> p)
 		{
-			func(p.second);
-		}
-	});
+			if (p.second->isType(mask))
+			{
+				func(p.second);
+			}
+		});
 }
 
 void Node::forEachChildNode(std::function<void(Node*)> func) const
 {
-	forEachEdgeOfType(Edge::EDGE_MEMBER, [func, this](Edge* e) {
-		if (this != e->getTo())
+	forEachEdgeOfType(
+		Edge::EDGE_MEMBER,
+		[func, this](Edge* e)
 		{
-			func(e->getTo());
-		}
-	});
+			if (this != e->getTo())
+			{
+				func(e->getTo());
+			}
+		});
 }
 
 void Node::forEachNodeRecursive(std::function<void(const Node*)> func) const
 {
 	func(this);
 
-	forEachEdgeOfType(Edge::EDGE_MEMBER, [func, this](Edge* e) {
-		if (this != e->getTo())
+	forEachEdgeOfType(
+		Edge::EDGE_MEMBER,
+		[func, this](Edge* e)
 		{
-			e->getTo()->forEachNodeRecursive(func);
-		}
-	});
+			if (this != e->getTo())
+			{
+				e->getTo()->forEachNodeRecursive(func);
+			}
+		});
 }
 
 bool Node::isNode() const

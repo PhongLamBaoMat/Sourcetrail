@@ -144,7 +144,8 @@ SourceLocation* SourceLocationFile::addSourceLocationCopy(const SourceLocation* 
 
 void SourceLocationFile::copySourceLocations(std::shared_ptr<SourceLocationFile> file)
 {
-	file->forEachSourceLocation([this](SourceLocation* location) { addSourceLocationCopy(location); });
+	file->forEachSourceLocation([this](SourceLocation* location)
+								{ addSourceLocationCopy(location); });
 }
 
 SourceLocation* SourceLocationFile::getSourceLocationById(Id locationId) const
@@ -266,28 +267,30 @@ std::wostream& operator<<(std::wostream& ostream, const SourceLocationFile& file
 	}
 
 	size_t line = 0;
-	file.forEachSourceLocation([&ostream, &line](SourceLocation* location) {
-		if (location->getLineNumber() != line)
+	file.forEachSourceLocation(
+		[&ostream, &line](SourceLocation* location)
 		{
-			while (line < location->getLineNumber())
+			if (location->getLineNumber() != line)
 			{
-				if (!line)
+				while (line < location->getLineNumber())
 				{
-					line = location->getLineNumber();
-				}
-				else
-				{
-					line++;
+					if (!line)
+					{
+						line = location->getLineNumber();
+					}
+					else
+					{
+						line++;
+					}
+
+					ostream << L'\n' << line;
 				}
 
-				ostream << L'\n' << line;
+				ostream << L":  ";
 			}
 
-			ostream << L":  ";
-		}
-
-		ostream << *location;
-	});
+			ostream << *location;
+		});
 
 	ostream << L'\n';
 	return ostream;

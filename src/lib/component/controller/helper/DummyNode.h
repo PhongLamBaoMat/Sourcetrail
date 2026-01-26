@@ -421,9 +421,8 @@ public:
 		std::sort(
 			subNodes.begin(),
 			subNodes.end(),
-			[](const std::shared_ptr<DummyNode>& a, const std::shared_ptr<DummyNode>& b) -> bool {
-				return a->name < b->name;
-			});
+			[](const std::shared_ptr<DummyNode>& a, const std::shared_ptr<DummyNode>& b) -> bool
+			{ return a->name < b->name; });
 	}
 
 	bool getsLayouted() const

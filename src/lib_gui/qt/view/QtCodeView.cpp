@@ -31,16 +31,18 @@ void QtCodeView::refreshView()
 		m_widget->setSchedulerId(getController()->getTabId());
 	}
 
-	m_onQtThread([=, this]() {
-		TRACE("refresh");
+	m_onQtThread(
+		[=, this]()
+		{
+			TRACE("refresh");
 
-		setStyleSheet();
+			setStyleSheet();
 
-		QtCodeArea::clearAnnotationColors();
-		QtHighlighter::clearHighlightingRules();
+			QtCodeArea::clearAnnotationColors();
+			QtHighlighter::clearHighlightingRules();
 
-		m_widget->clearCache();
-	});
+			m_widget->clearCache();
+		});
 }
 
 bool QtCodeView::isVisible() const
@@ -50,10 +52,12 @@ bool QtCodeView::isVisible() const
 
 void QtCodeView::findMatches(ScreenSearchSender* sender, const std::wstring& query)
 {
-	m_onQtThread([sender, query, this]() {
-		size_t matchCount = m_widget->findScreenMatches(query);
-		sender->foundMatches(this, matchCount);
-	});
+	m_onQtThread(
+		[sender, query, this]()
+		{
+			size_t matchCount = m_widget->findScreenMatches(query);
+			sender->foundMatches(this, matchCount);
+		});
 }
 
 void QtCodeView::activateMatch(size_t matchIndex)
@@ -91,87 +95,93 @@ void QtCodeView::showSnippets(
 	const CodeParams& params,
 	const CodeScrollParams& scrollParams)
 {
-	m_onQtThread([=, this]() {
-		TRACE("show snippets");
-
-		m_widget->setMode(QtCodeNavigator::MODE_LIST);
-
-		if (params.clearSnippets)
+	m_onQtThread(
+		[=, this]()
 		{
-			m_widget->clearSnippets();
-		}
+			TRACE("show snippets");
 
-		setNavigationState(params);
+			m_widget->setMode(QtCodeNavigator::MODE_LIST);
 
-		for (const CodeFileParams& file: files)
-		{
-			m_widget->addSnippetFile(file);
-		}
+			if (params.clearSnippets)
+			{
+				m_widget->clearSnippets();
+			}
 
-		m_widget->updateFiles();
-		m_widget->scrollTo(scrollParams, !params.clearSnippets, !params.locationIdToFocus);
-		m_widget->focusInitialLocation(params.locationIdToFocus);
-	});
+			setNavigationState(params);
+
+			for (const CodeFileParams& file: files)
+			{
+				m_widget->addSnippetFile(file);
+			}
+
+			m_widget->updateFiles();
+			m_widget->scrollTo(scrollParams, !params.clearSnippets, !params.locationIdToFocus);
+			m_widget->focusInitialLocation(params.locationIdToFocus);
+		});
 }
 
 void QtCodeView::showSingleFile(
 	const CodeFileParams& file, const CodeParams& params, const CodeScrollParams& scrollParams)
 {
-	m_onQtThread([=, this]() {
-		TRACE("show single file");
-
-		bool animatedScroll = !m_widget->isInListMode();
-
-		m_widget->setMode(QtCodeNavigator::MODE_SINGLE);
-
-		if (params.clearSnippets)
+	m_onQtThread(
+		[=, this]()
 		{
-			m_widget->clearSnippets();
-		}
+			TRACE("show single file");
 
-		setNavigationState(params);
+			bool animatedScroll = !m_widget->isInListMode();
 
-		if (file.locationFile)
-		{
-			if (m_widget->addSingleFile(file, params.useSingleFileCache))
+			m_widget->setMode(QtCodeNavigator::MODE_SINGLE);
+
+			if (params.clearSnippets)
 			{
-				animatedScroll = false;
+				m_widget->clearSnippets();
 			}
 
-			m_widget->updateFiles();
-			m_widget->scrollTo(scrollParams, animatedScroll, !params.locationIdToFocus);
-			m_widget->focusInitialLocation(params.locationIdToFocus);
-		}
-		else
-		{
-			m_widget->clearFile();
-		}
-	});
+			setNavigationState(params);
+
+			if (file.locationFile)
+			{
+				if (m_widget->addSingleFile(file, params.useSingleFileCache))
+				{
+					animatedScroll = false;
+				}
+
+				m_widget->updateFiles();
+				m_widget->scrollTo(scrollParams, animatedScroll, !params.locationIdToFocus);
+				m_widget->focusInitialLocation(params.locationIdToFocus);
+			}
+			else
+			{
+				m_widget->clearFile();
+			}
+		});
 }
 
 void QtCodeView::updateSourceLocations(const std::vector<CodeFileParams>& files)
 {
-	m_onQtThread([=, this]() {
-		TRACE("update source locations");
-
-		for (const CodeFileParams& file: files)
+	m_onQtThread(
+		[=, this]()
 		{
-			for (const CodeSnippetParams& snippet: file.snippetParams)
+			TRACE("update source locations");
+
+			for (const CodeFileParams& file: files)
 			{
-				if (snippet.hasAllSourceLocations)
+				for (const CodeSnippetParams& snippet: file.snippetParams)
 				{
-					m_widget->updateSourceLocations(snippet);
+					if (snippet.hasAllSourceLocations)
+					{
+						m_widget->updateSourceLocations(snippet);
+					}
+				}
+
+				if (file.fileParams && file.fileParams->hasAllSourceLocations)
+				{
+					m_widget->updateSourceLocations(*file.fileParams.get());
 				}
 			}
 
-			if (file.fileParams && file.fileParams->hasAllSourceLocations)
-			{
-				m_widget->updateSourceLocations(*file.fileParams.get());
-			}
-		}
-
-		m_widget->focusInitialLocation(0);
-	});
+			m_widget->focusInitialLocation(0);
+		});
 }
 
 void QtCodeView::scrollTo(const CodeScrollParams& params, bool animated)
@@ -213,11 +223,13 @@ void QtCodeView::setNavigationFocus(bool focus)
 
 	m_hasFocus = focus;
 
-	m_onQtThread([this, focus]() {
-		m_widget->blockSignals(true);
-		m_widget->setNavigationFocus(focus);
-		m_widget->blockSignals(false);
-	});
+	m_onQtThread(
+		[this, focus]()
+		{
+			m_widget->blockSignals(true);
+			m_widget->setNavigationFocus(focus);
+			m_widget->blockSignals(false);
+		});
 }
 
 bool QtCodeView::hasNavigationFocus() const

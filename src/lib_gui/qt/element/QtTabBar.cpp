@@ -33,15 +33,20 @@ void QtTabBar::contextMenuEvent(QContextMenuEvent* event)
 	QAction* m_closeTabsToRight = new QAction(QStringLiteral("Close tabs to the right"), this);
 	menu.addAction(m_closeTabsToRight);
 
-	connect(m_closeTabsToRight, &QAction::triggered, this, [&]() {
-		// We don't want to close tabs right of the current active tab.
-		// No, our intend is to close tabs right of the currently hovered tab.
-		auto tabNum = tabAt(event->pos());
-		LOG_INFO(
-			"Handling closeTabs... emitting signal to close tabs right of tab nr. " +
-			std::to_string(tabNum));
-		emit signalCloseTabsToRight(tabNum);
-	});
+	connect(
+		m_closeTabsToRight,
+		&QAction::triggered,
+		this,
+		[&]()
+		{
+			// We don't want to close tabs right of the current active tab.
+			// No, our intend is to close tabs right of the currently hovered tab.
+			auto tabNum = tabAt(event->pos());
+			LOG_INFO(
+				"Handling closeTabs... emitting signal to close tabs right of tab nr. " +
+				std::to_string(tabNum));
+			emit signalCloseTabsToRight(tabNum);
+		});
 
 	menu.show();
 	return;

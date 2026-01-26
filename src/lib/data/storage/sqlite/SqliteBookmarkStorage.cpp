@@ -25,7 +25,8 @@ void SqliteBookmarkStorage::migrateIfNecessary()
 	migrator.addMigration(
 		2,
 		std::make_shared<SqliteStorageMigrationLambda>(
-			[](const SqliteStorageMigration* migration, SqliteStorage* storage) {
+			[](const SqliteStorageMigration* migration, SqliteStorage* storage)
+			{
 				std::string separator = "::";
 				if (Application::getInstance())
 				{

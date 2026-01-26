@@ -345,24 +345,26 @@ void CodeController::handleMessage(MessageCodeShowDefinition* message)
 			std::make_shared<SourceLocationCollection>();
 		bool addedLocation = false;
 
-		collection->forEachSourceLocation([&](SourceLocation* location) {
-			if (addedLocation || !location->isStartLocation())
+		collection->forEachSourceLocation(
+			[&](SourceLocation* location)
 			{
-				return;
-			}
+				if (addedLocation || !location->isStartLocation())
+				{
+					return;
+				}
 
-			if (location->isScopeLocation())
-			{
-				filteredCollection->addSourceLocationCopy(location);
-				filteredCollection->addSourceLocationCopy(location->getEndLocation());
+				if (location->isScopeLocation())
+				{
+					filteredCollection->addSourceLocationCopy(location);
+					filteredCollection->addSourceLocationCopy(location->getEndLocation());
 
-				filePath = location->getFilePath();
-				lineNumber = location->getLineNumber();
-				columnNumber = location->getColumnNumber();
-				addedLocation = true;
-				return;
-			}
-		});
+					filePath = location->getFilePath();
+					lineNumber = location->getLineNumber();
+					columnNumber = location->getColumnNumber();
+					addedLocation = true;
+					return;
+				}
+			});
 
 		if (!addedLocation)
 		{
@@ -668,32 +670,36 @@ std::vector<CodeFileParams> CodeController::getFilesForActiveSourceLocations(
 	TRACE();
 
 	std::vector<CodeFileParams> files;
-	collection->forEachSourceLocationFile([&](std::shared_ptr<SourceLocationFile> file) -> void {
-		bool isDeclarationFile = false;
-		bool isDefinitionFile = false;
-		file->forEachSourceLocation([&](SourceLocation* location) {
-			for (Id i: location->getTokenIds())
-			{
-				if (i == declarationId)
+	collection->forEachSourceLocationFile(
+		[&](std::shared_ptr<SourceLocationFile> file) -> void
+		{
+			bool isDeclarationFile = false;
+			bool isDefinitionFile = false;
+			file->forEachSourceLocation(
+				[&](SourceLocation* location)
 				{
-					isDeclarationFile = true;
-
-					if (location->getType() == LOCATION_SCOPE)
+					for (Id i: location->getTokenIds())
 					{
-						isDefinitionFile = true;
+						if (i == declarationId)
+						{
+							isDeclarationFile = true;
+
+							if (location->getType() == LOCATION_SCOPE)
+							{
+								isDefinitionFile = true;
+							}
+
+							break;
+						}
 					}
+				});
 
-					break;
-				}
-			}
+			CodeFileParams params;
+			params.locationFile = file;
+			params.isDeclaration = isDeclarationFile;
+			params.isDefinition = isDefinitionFile;
+			files.push_back(params);
 		});
-
-		CodeFileParams params;
-		params.locationFile = file;
-		params.isDeclaration = isDeclarationFile;
-		params.isDefinition = isDefinitionFile;
-		files.push_back(params);
-	});
 
 	std::sort(files.begin(), files.end(), CodeFileParams::sort);
 
@@ -707,11 +713,13 @@ std::vector<CodeFileParams> CodeController::getFilesForCollection(
 
 	std::vector<CodeFileParams> files;
 
-	collection->forEachSourceLocationFile([&](std::shared_ptr<SourceLocationFile> file) -> void {
-		CodeFileParams params;
-		params.locationFile = file;
-		files.push_back(params);
-	});
+	collection->forEachSourceLocationFile(
+		[&](std::shared_ptr<SourceLocationFile> file) -> void
+		{
+			CodeFileParams params;
+			params.locationFile = file;
+			files.push_back(params);
+		});
 
 	return files;
 }
@@ -775,20 +783,23 @@ std::vector<CodeSnippetParams> CodeController::getSnippetsForFile(
 	std::shared_ptr<SourceLocationFile> scopeLocations =
 		m_storageAccess->getSourceLocationsOfTypeInFile(
 			activeSourceLocations->getFilePath(), LOCATION_SCOPE);
-	activeSourceLocations->forEachStartSourceLocation([&](SourceLocation* location) {
-		buildMergerHierarchy(location, scopeLocations.get(), fileScopedMerger, mergers);
-	});
+	activeSourceLocations->forEachStartSourceLocation(
+		[&](SourceLocation* location)
+		{ buildMergerHierarchy(location, scopeLocations.get(), fileScopedMerger, mergers); });
 
 	std::vector<SnippetMerger::Range> atomicRanges;
 	std::shared_ptr<SourceLocationFile> commentLocations =
 		m_storageAccess->getSourceLocationsOfTypeInFile(
 			activeSourceLocations->getFilePath(), LOCATION_COMMENT);
-	commentLocations->forEachStartSourceLocation([&](SourceLocation* location) {
-		atomicRanges.push_back(SnippetMerger::Range(
-			SnippetMerger::Border(static_cast<int>(location->getLineNumber()), false),
-			SnippetMerger::Border(
-				static_cast<int>(location->getOtherLocation()->getLineNumber()), false)));
-	});
+	commentLocations->forEachStartSourceLocation(
+		[&](SourceLocation* location)
+		{
+			atomicRanges.push_back(
+				SnippetMerger::Range(
+					SnippetMerger::Border(static_cast<int>(location->getLineNumber()), false),
+					SnippetMerger::Border(
+						static_cast<int>(location->getOtherLocation()->getLineNumber()), false)));
+		});
 
 	atomicRanges = SnippetMerger::Range::mergeAdjacent(atomicRanges);
 	std::deque<SnippetMerger::Range> ranges = fileScopedMerger.merge(atomicRanges);
@@ -893,14 +904,16 @@ const SourceLocation* CodeController::getSourceLocationOfParentScope(
 {
 	const SourceLocation* location = nullptr;
 
-	scopeLocations->forEachStartSourceLocation([&location, lineNumber](SourceLocation* scopeLocation) {
-		if (scopeLocation->getLineNumber() < lineNumber &&
-			scopeLocation->getEndLocation()->getLineNumber() >= lineNumber &&
-			(!location || *location < *scopeLocation))
+	scopeLocations->forEachStartSourceLocation(
+		[&location, lineNumber](SourceLocation* scopeLocation)
 		{
-			location = scopeLocation;
-		}
-	});
+			if (scopeLocation->getLineNumber() < lineNumber &&
+				scopeLocation->getEndLocation()->getLineNumber() >= lineNumber &&
+				(!location || *location < *scopeLocation))
+			{
+				location = scopeLocation;
+			}
+		});
 
 	return location;
 }
@@ -1001,56 +1014,60 @@ void CodeController::createReferences()
 		{
 			std::map<Id, Id> scopeLocationIds;
 
-			file.locationFile->forEachStartSourceLocation([&](SourceLocation* location) {
-				if (location->isScopeLocation())
+			file.locationFile->forEachStartSourceLocation(
+				[&](SourceLocation* location)
 				{
-					for (Id tokenId: location->getTokenIds())
+					if (location->isScopeLocation())
 					{
-						scopeLocationIds.emplace(tokenId, location->getLocationId());
+						for (Id tokenId: location->getTokenIds())
+						{
+							scopeLocationIds.emplace(tokenId, location->getLocationId());
+						}
 					}
-				}
-			});
+				});
 
-			file.locationFile->forEachStartSourceLocation([&](SourceLocation* location) {
-				if (location->isScopeLocation() || location->getType() == LOCATION_SIGNATURE ||
-					location->getType() == LOCATION_COMMENT ||
-					location->getType() == LOCATION_QUALIFIER)
+			file.locationFile->forEachStartSourceLocation(
+				[&](SourceLocation* location)
 				{
-					return;
-				}
-
-				if (!location->getTokenIds().size())
-				{
-					Reference ref;
-					ref.filePath = location->getFilePath();
-					ref.tokenId = 0;
-					ref.locationId = location->getLocationId();
-					ref.locationType = location->getType();
-					ref.lineNumber = location->getLineNumber();
-					ref.columnNumber = location->getColumnNumber();
-					m_references.push_back(ref);
-					return;
-				}
-
-				for (Id i: location->getTokenIds())
-				{
-					Reference ref;
-					ref.filePath = location->getFilePath();
-					ref.tokenId = i;
-					ref.locationId = location->getLocationId();
-					ref.locationType = location->getType();
-					ref.lineNumber = location->getLineNumber();
-					ref.columnNumber = location->getColumnNumber();
-
-					std::map<Id, Id>::const_iterator it = scopeLocationIds.find(i);
-					if (it != scopeLocationIds.end())
+					if (location->isScopeLocation() || location->getType() == LOCATION_SIGNATURE ||
+						location->getType() == LOCATION_COMMENT ||
+						location->getType() == LOCATION_QUALIFIER)
 					{
-						ref.scopeLocationId = it->second;
+						return;
 					}
 
-					m_references.push_back(ref);
-				}
-			});
+					if (!location->getTokenIds().size())
+					{
+						Reference ref;
+						ref.filePath = location->getFilePath();
+						ref.tokenId = 0;
+						ref.locationId = location->getLocationId();
+						ref.locationType = location->getType();
+						ref.lineNumber = location->getLineNumber();
+						ref.columnNumber = location->getColumnNumber();
+						m_references.push_back(ref);
+						return;
+					}
+
+					for (Id i: location->getTokenIds())
+					{
+						Reference ref;
+						ref.filePath = location->getFilePath();
+						ref.tokenId = i;
+						ref.locationId = location->getLocationId();
+						ref.locationType = location->getType();
+						ref.lineNumber = location->getLineNumber();
+						ref.columnNumber = location->getColumnNumber();
+
+						std::map<Id, Id>::const_iterator it = scopeLocationIds.find(i);
+						if (it != scopeLocationIds.end())
+						{
+							ref.scopeLocationId = it->second;
+						}
+
+						m_references.push_back(ref);
+					}
+				});
 		}
 
 		file.referenceCount = m_references.size() - referenceCountBefore;
@@ -1069,7 +1086,8 @@ void CodeController::createLocalReferences(const std::set<Id>& localSymbolIds)
 
 	if (localSymbolIds.size())
 	{
-		auto func = [&localSymbolIds, this](const SourceLocation* location) {
+		auto func = [&localSymbolIds, this](const SourceLocation* location)
+		{
 			for (Id tokenId: location->getTokenIds())
 			{
 				if (localSymbolIds.find(tokenId) != localSymbolIds.end())
@@ -1600,31 +1618,33 @@ void CodeController::showFirstActiveReference(Id tokenId, bool updateView)
 	{
 		std::shared_ptr<SourceLocationCollection> collection =
 			m_storageAccess->getSourceLocationsForTokenIds({tokenId});
-		collection->forEachSourceLocation([&](SourceLocation* location) {
-			if (!location->isStartLocation())
+		collection->forEachSourceLocation(
+			[&](SourceLocation* location)
 			{
-				return;
-			}
-
-			for (Id i: location->getTokenIds())
-			{
-				if (i == tokenId)
+				if (!location->isStartLocation())
 				{
-					locationIds.push_back(location->getLocationId());
-					filePathsToExpand.insert(location->getFilePath());
-
-					if (!firstReference.tokenId ||
-						filePathOrder[location->getFilePath()] <
-							filePathOrder[firstReference.filePath])
-					{
-						firstReference.tokenId = tokenId;
-						firstReference.locationId = location->getLocationId();
-						firstReference.filePath = location->getFilePath();
-					}
 					return;
 				}
-			}
-		});
+
+				for (Id i: location->getTokenIds())
+				{
+					if (i == tokenId)
+					{
+						locationIds.push_back(location->getLocationId());
+						filePathsToExpand.insert(location->getFilePath());
+
+						if (!firstReference.tokenId ||
+							filePathOrder[location->getFilePath()] <
+								filePathOrder[firstReference.filePath])
+						{
+							firstReference.tokenId = tokenId;
+							firstReference.locationId = location->getLocationId();
+							firstReference.filePath = location->getFilePath();
+						}
+						return;
+					}
+				}
+			});
 	}
 
 	if (getView()->isInListMode())

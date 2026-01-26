@@ -140,11 +140,11 @@ Tree<NodeType::BundleInfo> NodeType::getOverviewBundleTree() const
 	case NODE_NAMESPACE:
 	{
 		Tree<BundleInfo> tree(BundleInfo(L"Namespaces"));
-		tree.children.push_back(Tree<BundleInfo>(BundleInfo(
-			[](const std::wstring& nodeName) {
-				return nodeName.find(L"anonymous namespace") != std::wstring::npos;
-			},
-			L"Anonymous Namespaces")));
+		tree.children.push_back(
+			Tree<BundleInfo>(BundleInfo(
+				[](const std::wstring& nodeName)
+				{ return nodeName.find(L"anonymous namespace") != std::wstring::npos; },
+				L"Anonymous Namespaces")));
 		return tree;
 	}
 	case NODE_MODULE:

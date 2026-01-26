@@ -27,31 +27,35 @@ void InterprocessIndexer::work()
 		LOG_INFO_STREAM(<< m_processId << " starting up indexer");
 		indexer = LanguagePackageManager::getInstance()->instantiateSupportedIndexers();
 
-		updaterThread = std::make_shared<std::thread>([&]() {
-			while (updaterThreadRunning)
+		updaterThread = std::make_shared<std::thread>(
+			[&]()
 			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-				if (m_interprocessIndexingStatusManager.getIndexingInterrupted())
+				while (updaterThreadRunning)
 				{
-					LOG_INFO_STREAM(<< m_processId << " received indexer interrupt command.");
-					if (indexer)
-					{
-						indexer->interrupt();
-					}
-					updaterThreadRunning = false;
-				}
-			}
-		});
+					std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-		ScopedFunctor threadStopper([&]() {
-			updaterThreadRunning = false;
-			if (updaterThread)
+					if (m_interprocessIndexingStatusManager.getIndexingInterrupted())
+					{
+						LOG_INFO_STREAM(<< m_processId << " received indexer interrupt command.");
+						if (indexer)
+						{
+							indexer->interrupt();
+						}
+						updaterThreadRunning = false;
+					}
+				}
+			});
+
+		ScopedFunctor threadStopper(
+			[&]()
 			{
-				updaterThread->join();
-				updaterThread.reset();
-			}
-		});
+				updaterThreadRunning = false;
+				if (updaterThread)
+				{
+					updaterThread->join();
+					updaterThread.reset();
+				}
+			});
 
 		while (std::shared_ptr<IndexerCommand> indexerCommand =
 				   m_interprocessIndexerCommandManager.popIndexerCommand())

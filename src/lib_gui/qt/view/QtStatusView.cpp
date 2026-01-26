@@ -66,70 +66,76 @@ void QtStatusView::createWidgetWrapper() {}
 
 void QtStatusView::refreshView()
 {
-	m_onQtThread([this]() {
-		QWidget* widget = QtViewWidgetWrapper::getWidgetOfView(this);
-		utility::setWidgetBackgroundColor(
-			widget, ColorScheme::getInstance()->getColor("window/background"));
+	m_onQtThread(
+		[this]()
+		{
+			QWidget* widget = QtViewWidgetWrapper::getWidgetOfView(this);
+			utility::setWidgetBackgroundColor(
+				widget, ColorScheme::getInstance()->getColor("window/background"));
 
-		QPalette palette(m_showErrors->palette());
-		palette.setColor(
-			QPalette::WindowText,
-			QColor(ColorScheme::getInstance()->getColor("table/text/normal").c_str()));
+			QPalette palette(m_showErrors->palette());
+			palette.setColor(
+				QPalette::WindowText,
+				QColor(ColorScheme::getInstance()->getColor("table/text/normal").c_str()));
 
-		m_showErrors->setPalette(palette);
-		m_showInfo->setPalette(palette);
+			m_showErrors->setPalette(palette);
+			m_showInfo->setPalette(palette);
 
-		m_table->updateRows();
-	});
+			m_table->updateRows();
+		});
 }
 
 void QtStatusView::clear()
 {
-	m_onQtThread([this]() {
-		if (!m_model->index(0, 0).data(Qt::DisplayRole).toString().isEmpty())
+	m_onQtThread(
+		[this]()
 		{
-			m_model->removeRows(0, m_model->rowCount());
-		}
+			if (!m_model->index(0, 0).data(Qt::DisplayRole).toString().isEmpty())
+			{
+				m_model->removeRows(0, m_model->rowCount());
+			}
 
-		m_table->showFirstRow();
+			m_table->showFirstRow();
 
-		m_status.clear();
-	});
+			m_status.clear();
+		});
 }
 
 void QtStatusView::addStatus(const std::vector<Status>& status)
 {
-	m_onQtThread([=, this]() {
-		for (const Status& s: status)
+	m_onQtThread(
+		[=, this]()
 		{
-			const int rowNumber = m_table->getFilledRowCount();
-			if (rowNumber < m_model->rowCount())
+			for (const Status& s: status)
 			{
-				m_model->insertRow(rowNumber);
+				const int rowNumber = m_table->getFilledRowCount();
+				if (rowNumber < m_model->rowCount())
+				{
+					m_model->insertRow(rowNumber);
+				}
+
+				QString statusType =
+					(s.type == StatusType::STATUS_ERROR ? QStringLiteral("ERROR")
+														: QStringLiteral("INFO"));
+				m_model->setItem(rowNumber, STATUSVIEW_COLUMN::TYPE, new QStandardItem(statusType));
+				m_model->setItem(
+					rowNumber,
+					STATUSVIEW_COLUMN::STATUS,
+					new QStandardItem(QString::fromStdWString(s.message)));
+
+				if (s.type == StatusType::STATUS_ERROR)
+				{
+					m_model->item(rowNumber, STATUSVIEW_COLUMN::TYPE)->setForeground(QBrush(Qt::red));
+				}
 			}
 
-			QString statusType =
-				(s.type == StatusType::STATUS_ERROR ? QStringLiteral("ERROR")
-													: QStringLiteral("INFO"));
-			m_model->setItem(rowNumber, STATUSVIEW_COLUMN::TYPE, new QStandardItem(statusType));
-			m_model->setItem(
-				rowNumber,
-				STATUSVIEW_COLUMN::STATUS,
-				new QStandardItem(QString::fromStdWString(s.message)));
+			m_table->updateRows();
 
-			if (s.type == StatusType::STATUS_ERROR)
+			if (!m_table->hasSelection())
 			{
-				m_model->item(rowNumber, STATUSVIEW_COLUMN::TYPE)->setForeground(QBrush(Qt::red));
+				m_table->showLastRow();
 			}
-		}
-
-		m_table->updateRows();
-
-		if (!m_table->hasSelection())
-		{
-			m_table->showLastRow();
-		}
-	});
+		});
 }
 
 QCheckBox* QtStatusView::createFilterCheckbox(const QString& name, QBoxLayout* layout, bool checked)
@@ -137,14 +143,18 @@ QCheckBox* QtStatusView::createFilterCheckbox(const QString& name, QBoxLayout* l
 	QCheckBox* checkbox = new QCheckBox(name);
 	checkbox->setChecked(checked);
 
-	connect(checkbox, &QCheckBox::stateChanged, [=, this](int) {
-		m_table->selectionModel()->clearSelection();
+	connect(
+		checkbox,
+		&QCheckBox::stateChanged,
+		[=, this](int)
+		{
+			m_table->selectionModel()->clearSelection();
 
-		const StatusFilter statusMask = (m_showInfo->isChecked() ? StatusType::STATUS_INFO : 0) +
-			(m_showErrors->isChecked() ? StatusType::STATUS_ERROR : 0);
+			const StatusFilter statusMask = (m_showInfo->isChecked() ? StatusType::STATUS_INFO : 0) +
+				(m_showErrors->isChecked() ? StatusType::STATUS_ERROR : 0);
 
-		MessageStatusFilterChanged(statusMask).dispatch();
-	});
+			MessageStatusFilterChanged(statusMask).dispatch();
+		});
 
 	layout->addWidget(checkbox);
 

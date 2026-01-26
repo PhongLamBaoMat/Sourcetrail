@@ -67,9 +67,9 @@ std::vector<FilePathFilter> SourceGroupSettingsWithExcludeFilters::getFiltersExp
 					utility::append(
 						result,
 						utility::convert<FilePath, FilePathFilter>(
-							utility::toVector(symLinkPaths), [match](const FilePath& filePath) {
-								return FilePathFilter(filePath.wstr() + L"/" + match.suffix().str());
-							}));
+							utility::toVector(symLinkPaths),
+							[match](const FilePath& filePath)
+							{ return FilePathFilter(filePath.wstr() + L"/" + match.suffix().str()); }));
 				}
 				else
 				{
@@ -88,9 +88,9 @@ std::vector<FilePathFilter> SourceGroupSettingsWithExcludeFilters::getFiltersExp
 				utility::append(
 					result,
 					utility::convert<FilePath, FilePathFilter>(
-						utility::toVector(symLinkPaths), [isFile](const FilePath& filePath) {
-							return FilePathFilter(filePath.wstr() + (isFile ? L"" : L"**"));
-						}));
+						utility::toVector(symLinkPaths),
+						[isFile](const FilePath& filePath)
+						{ return FilePathFilter(filePath.wstr() + (isFile ? L"" : L"**")); }));
 			}
 		}
 	}

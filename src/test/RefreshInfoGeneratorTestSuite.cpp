@@ -199,8 +199,9 @@ TEST_CASE("refresh info for all files clears nothing and indexes previously unkn
 		REQUIRE(0 == refreshInfo.filesToClear.size());
 		REQUIRE(1 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), sourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), sourceFilePath));
 	}
 	cleanup();
 }
@@ -257,8 +258,9 @@ TEST_CASE("refresh info for all files is clears indexed files of disabled source
 		REQUIRE(1 == refreshInfo.filesToClear.size());
 		REQUIRE(0 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), sourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), sourceFilePath));
 	}
 	cleanup();
 }
@@ -303,11 +305,13 @@ TEST_CASE("refresh info for all files is clears nonindexed files of disabled sou
 		REQUIRE(1 == refreshInfo.filesToClear.size());
 		REQUIRE(0 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.nonIndexedFilesToClear), upToDateHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.nonIndexedFilesToClear), upToDateHeaderFilePath));
 	}
 	cleanup();
 }
@@ -389,8 +393,8 @@ RefreshInfo getRefreshInfo(
 		}
 		else	// if (indexingState == TO_INDEX)
 		{
-			sourceGroups.push_back(std::shared_ptr<SourceGroupTest>(
-				new SourceGroupTest(sourceFilePaths, allFilePaths)));
+			sourceGroups.push_back(
+				std::shared_ptr<SourceGroupTest>(new SourceGroupTest(sourceFilePaths, allFilePaths)));
 		}
 
 		std::shared_ptr<PersistentStorage> storage = std::make_shared<PersistentStorage>(
@@ -672,8 +676,9 @@ TEST_CASE(
 			L"outdated_file.cpp");
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
-		sourceGroups.push_back(std::shared_ptr<SourceGroupTest>(
-			new SourceGroupTest({upToDateSourceFilePath, outdatedSourceFilePath})));
+		sourceGroups.push_back(
+			std::shared_ptr<SourceGroupTest>(
+				new SourceGroupTest({upToDateSourceFilePath, outdatedSourceFilePath})));
 
 		std::shared_ptr<PersistentStorage> storage = std::make_shared<PersistentStorage>(
 			m_indexDbPath, m_bookmarkDbPath);
@@ -699,14 +704,18 @@ TEST_CASE(
 		REQUIRE(2 == refreshInfo.filesToClear.size());
 		REQUIRE(2 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), outdatedSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), outdatedSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), outdatedSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), outdatedSourceFilePath));
 	}
 	cleanup();
 }
@@ -722,8 +731,9 @@ TEST_CASE(
 		const FilePath outdatedHeaderFilePath = m_sourceFolder.getConcatenated(L"outdated_file.h");
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
-		sourceGroups.push_back(std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
-			{upToDateSourceFilePath}, {upToDateSourceFilePath, outdatedHeaderFilePath})));
+		sourceGroups.push_back(
+			std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
+				{upToDateSourceFilePath}, {upToDateSourceFilePath, outdatedHeaderFilePath})));
 
 		std::shared_ptr<PersistentStorage> storage = std::make_shared<PersistentStorage>(
 			m_indexDbPath, m_bookmarkDbPath);
@@ -749,12 +759,15 @@ TEST_CASE(
 		REQUIRE(2 == refreshInfo.filesToClear.size());
 		REQUIRE(1 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), outdatedHeaderFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), outdatedHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
 	}
 	cleanup();
 }
@@ -797,12 +810,15 @@ TEST_CASE(
 		REQUIRE(1 == refreshInfo.filesToClear.size());
 		REQUIRE(1 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.nonIndexedFilesToClear), outdatedHeaderFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.nonIndexedFilesToClear), outdatedHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
 	}
 	cleanup();
 }
@@ -848,7 +864,8 @@ TEST_CASE("refresh info for updated files does not clear unknown uptodate header
 }
 
 TEST_CASE(
-	"refresh info for updated files clears outdated source file and referenced uptodate header file")
+	"refresh info for updated files clears outdated source file and referenced uptodate header "
+	"file")
 {
 	cleanup();
 	{
@@ -858,8 +875,9 @@ TEST_CASE(
 			L"up_to_date_file.h");
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
-		sourceGroups.push_back(std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
-			{outdatedSourceFilePath}, {outdatedSourceFilePath, upToDateHeaderFilePath})));
+		sourceGroups.push_back(
+			std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
+				{outdatedSourceFilePath}, {outdatedSourceFilePath, upToDateHeaderFilePath})));
 
 		std::shared_ptr<PersistentStorage> storage = std::make_shared<PersistentStorage>(
 			m_indexDbPath, m_bookmarkDbPath);
@@ -885,12 +903,15 @@ TEST_CASE(
 		REQUIRE(2 == refreshInfo.filesToClear.size());
 		REQUIRE(1 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), outdatedSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateHeaderFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), outdatedSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), outdatedSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), outdatedSourceFilePath));
 	}
 	cleanup();
 }
@@ -908,9 +929,10 @@ TEST_CASE(
 			L"up_to_date_file.h");
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
-		sourceGroups.push_back(std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
-			{outdatedSourceFilePath, upToDateSourceFilePath},
-			{outdatedSourceFilePath, upToDateSourceFilePath, upToDateHeaderFilePath})));
+		sourceGroups.push_back(
+			std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
+				{outdatedSourceFilePath, upToDateSourceFilePath},
+				{outdatedSourceFilePath, upToDateSourceFilePath, upToDateHeaderFilePath})));
 
 		std::shared_ptr<PersistentStorage> storage = std::make_shared<PersistentStorage>(
 			m_indexDbPath, m_bookmarkDbPath);
@@ -941,10 +963,12 @@ TEST_CASE(
 		REQUIRE(1 == refreshInfo.filesToClear.size());
 		REQUIRE(1 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), outdatedSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), outdatedSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), outdatedSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), outdatedSourceFilePath));
 	}
 	cleanup();
 }
@@ -962,12 +986,13 @@ TEST_CASE(
 			L"out_of_date_file.h");
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
-		sourceGroups.push_back(std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
-			{upToDateSourceFilePath},
-			{
-				upToDateSourceFilePath,
-				outOfDateHeaderFilePath,
-			})));
+		sourceGroups.push_back(
+			std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
+				{upToDateSourceFilePath},
+				{
+					upToDateSourceFilePath,
+					outOfDateHeaderFilePath,
+				})));
 
 		std::shared_ptr<PersistentStorage> storage = std::make_shared<PersistentStorage>(
 			m_indexDbPath, m_bookmarkDbPath);
@@ -998,14 +1023,18 @@ TEST_CASE(
 		REQUIRE(2 == refreshInfo.filesToClear.size());
 		REQUIRE(1 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.nonIndexedFilesToClear), upToDateHeaderFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), outOfDateHeaderFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.nonIndexedFilesToClear), upToDateHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), outOfDateHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
 	}
 	cleanup();
 }
@@ -1023,12 +1052,13 @@ TEST_CASE(
 			L"out_of_date_file.h");
 
 		std::vector<std::shared_ptr<SourceGroup>> sourceGroups;
-		sourceGroups.push_back(std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
-			{upToDateSourceFilePath},
-			{
-				upToDateSourceFilePath,
-				upToDateHeaderFilePath,
-			})));
+		sourceGroups.push_back(
+			std::shared_ptr<SourceGroupTest>(new SourceGroupTest(
+				{upToDateSourceFilePath},
+				{
+					upToDateSourceFilePath,
+					upToDateHeaderFilePath,
+				})));
 
 		std::shared_ptr<PersistentStorage> storage = std::make_shared<PersistentStorage>(
 			m_indexDbPath, m_bookmarkDbPath);
@@ -1059,14 +1089,18 @@ TEST_CASE(
 		REQUIRE(2 == refreshInfo.filesToClear.size());
 		REQUIRE(1 == refreshInfo.filesToIndex.size());
 
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.nonIndexedFilesToClear), outOfDateHeaderFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToClear), upToDateHeaderFilePath));
-		REQUIRE(utility::containsElement<FilePath>(
-			utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.nonIndexedFilesToClear), outOfDateHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateSourceFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToClear), upToDateHeaderFilePath));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				utility::toVector(refreshInfo.filesToIndex), upToDateSourceFilePath));
 	}
 	cleanup();
 }

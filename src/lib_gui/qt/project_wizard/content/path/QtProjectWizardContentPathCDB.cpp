@@ -9,11 +9,15 @@
 
 QtProjectWizardContentPathCDB::QtProjectWizardContentPathCDB(
 	std::shared_ptr<SourceGroupSettingsCxxCdb> settings, QtProjectWizardWindow* window)
-	: QtProjectWizardContentPath(window), m_settings(settings), m_filePaths([&]() {
-		return utility::getAsRelativeIfShorter(
-			utility::toVector(SourceGroupCxxCdb(m_settings).getAllSourceFilePaths()),
-			m_settings->getProjectDirectoryPath());
-	})
+	: QtProjectWizardContentPath(window)
+	, m_settings(settings)
+	, m_filePaths(
+		  [&]()
+		  {
+			  return utility::getAsRelativeIfShorter(
+				  utility::toVector(SourceGroupCxxCdb(m_settings).getAllSourceFilePaths()),
+				  m_settings->getProjectDirectoryPath());
+		  })
 {
 	setTitleString(QStringLiteral("Compilation Database (compile_commands.json)"));
 	setHelpString(

@@ -89,19 +89,21 @@ std::shared_ptr<SourceLocationCollection> StorageCache::getErrorSourceLocations(
 			fileIndexed.emplace(error.filePath, error.indexed);
 		}
 
-		collection->forEachSourceLocationFile([&](std::shared_ptr<SourceLocationFile> file) {
-			file->setIsComplete(false);
+		collection->forEachSourceLocationFile(
+			[&](std::shared_ptr<SourceLocationFile> file)
+			{
+				file->setIsComplete(false);
 
-			auto it = fileIndexed.find(file->getFilePath().wstr());
-			if (it != fileIndexed.end())
-			{
-				file->setIsIndexed(it->second);
-			}
-			else
-			{
-				file->setIsIndexed(true);
-			}
-		});
+				auto it = fileIndexed.find(file->getFilePath().wstr());
+				if (it != fileIndexed.end())
+				{
+					file->setIsIndexed(it->second);
+				}
+				else
+				{
+					file->setIsIndexed(true);
+				}
+			});
 	}
 
 	return collection;

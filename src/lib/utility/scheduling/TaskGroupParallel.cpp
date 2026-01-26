@@ -102,10 +102,12 @@ void TaskGroupParallel::processTaskThreaded(
 	std::shared_ptr<Blackboard> blackboard,
 	std::shared_ptr<std::mutex> activeTaskCountMutex)
 {
-	ScopedFunctor functor([&]() {
-		std::lock_guard<std::mutex> lock(*activeTaskCountMutex.get());
-		m_activeTaskCount -= 1;
-	});
+	ScopedFunctor functor(
+		[&]()
+		{
+			std::lock_guard<std::mutex> lock(*activeTaskCountMutex.get());
+			m_activeTaskCount -= 1;
+		});
 
 	while (true)
 	{

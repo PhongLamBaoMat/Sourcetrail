@@ -71,19 +71,21 @@ void QtTabsView::refreshView()
 
 void QtTabsView::clear()
 {
-	m_onQtThread([=, this]() {
-		getController<TabsController>()->onClearTabs();
-
-		m_tabBar->blockSignals(true);
-
-		int c = m_tabBar->count();
-		for (int i = c - 1; i >= 0; i--)
+	m_onQtThread(
+		[=, this]()
 		{
-			removeTab(i);
-		}
+			getController<TabsController>()->onClearTabs();
 
-		m_tabBar->blockSignals(false);
-	});
+			m_tabBar->blockSignals(true);
+
+			int c = m_tabBar->count();
+			for (int i = c - 1; i >= 0; i--)
+			{
+				removeTab(i);
+			}
+
+			m_tabBar->blockSignals(false);
+		});
 }
 
 void QtTabsView::openTab(bool showTab, const SearchMatch& match)
@@ -103,28 +105,32 @@ void QtTabsView::destroyTab(Id tabId)
 
 void QtTabsView::selectTab(bool next)
 {
-	m_onQtThread([=, this]() {
-		int idx = m_tabBar->currentIndex();
-		if (idx != -1)
+	m_onQtThread(
+		[=, this]()
 		{
-			idx += next ? 1 : -1;
-			m_tabBar->setCurrentIndex((idx + m_tabBar->count()) % m_tabBar->count());
-		}
-	});
+			int idx = m_tabBar->currentIndex();
+			if (idx != -1)
+			{
+				idx += next ? 1 : -1;
+				m_tabBar->setCurrentIndex((idx + m_tabBar->count()) % m_tabBar->count());
+			}
+		});
 }
 
 void QtTabsView::updateTab(Id tabId, const std::vector<SearchMatch>& matches)
 {
-	m_onQtThread([=, this]() {
-		for (int i = 0; i < m_tabBar->count(); i++)
+	m_onQtThread(
+		[=, this]()
 		{
-			if (m_tabBar->tabData(i).toInt() == int(tabId))
+			for (int i = 0; i < m_tabBar->count(); i++)
 			{
-				setTabState(i, matches);
-				return;
+				if (m_tabBar->tabData(i).toInt() == int(tabId))
+				{
+					setTabState(i, matches);
+					return;
+				}
 			}
-		}
-	});
+		});
 }
 
 void QtTabsView::addTab()
@@ -151,16 +157,20 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	typeCircle->setObjectName(QStringLiteral("type_circle"));
 	m_tabBar->setTabButton(idx, QTabBar::LeftSide, typeCircle);
 
-	connect(typeCircle, &QPushButton::clicked, [tabId, this]() {
-		for (int i = 0; i < m_tabBar->count(); i++)
+	connect(
+		typeCircle,
+		&QPushButton::clicked,
+		[tabId, this]()
 		{
-			if (m_tabBar->tabData(i).toInt() == tabId)
+			for (int i = 0; i < m_tabBar->count(); i++)
 			{
-				m_tabBar->setCurrentIndex(i);
-				return;
+				if (m_tabBar->tabData(i).toInt() == tabId)
+				{
+					m_tabBar->setCurrentIndex(i);
+					return;
+				}
 			}
-		}
-	});
+		});
 
 	QPushButton* closeButton = new QtSelfRefreshIconButton(
 		QLatin1String(""),
@@ -170,16 +180,20 @@ void QtTabsView::insertTab(bool showTab, const SearchMatch& match)
 	closeButton->setIconSize(QSize(10, 10));
 	m_tabBar->setTabButton(idx, QTabBar::RightSide, closeButton);
 
-	connect(closeButton, &QPushButton::clicked, [tabId, this]() {
-		for (int i = 0; i < m_tabBar->count(); i++)
+	connect(
+		closeButton,
+		&QPushButton::clicked,
+		[tabId, this]()
 		{
-			if (m_tabBar->tabData(i).toInt() == tabId)
+			for (int i = 0; i < m_tabBar->count(); i++)
 			{
-				removeTab(i);
-				return;
+				if (m_tabBar->tabData(i).toInt() == tabId)
+				{
+					removeTab(i);
+					return;
+				}
 			}
-		}
-	});
+		});
 
 	m_tabBar->blockSignals(false);
 
@@ -261,8 +275,9 @@ void QtTabsView::setTabState(int idx, const std::vector<SearchMatch>& matches)
 	m_tabBar->tabButton(idx, QTabBar::LeftSide)
 		->setStyleSheet(
 			QStringLiteral("#type_circle { background-color: ") + QString::fromStdString(color) +
-			QStringLiteral("; } "
-						   "#type_circle[selected=true] { background-color: ") +
+			QStringLiteral(
+				"; } "
+				"#type_circle[selected=true] { background-color: ") +
 			QString::fromStdString(activeColor) + QStringLiteral("; } "));
 }
 

@@ -116,9 +116,11 @@ void QtLocationPicker::onHandleButtonPressed()
 
 	if (!fileName.isEmpty())
 	{
-		m_data->setText(QString::fromStdWString(
-			utility::getAsRelativeIfShorter(FilePath(fileName.toStdWString()), m_relativeRootDirectory)
-				.wstr()));
+		m_data->setText(
+			QString::fromStdWString(
+				utility::getAsRelativeIfShorter(
+					FilePath(fileName.toStdWString()), m_relativeRootDirectory)
+					.wstr()));
 		emit locationPicked();
 	}
 }

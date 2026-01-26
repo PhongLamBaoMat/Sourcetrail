@@ -9,7 +9,7 @@
 class FilePathFilter
 {
 public:
-	template<typename ContainerType>
+	template <typename ContainerType>
 	static bool areMatching(const ContainerType& filters, const FilePath& filePath);
 
 	explicit FilePathFilter(const std::wstring& filterString);
@@ -28,7 +28,7 @@ private:
 	std::wregex m_filterRegex;
 };
 
-template<typename ContainerType>
+template <typename ContainerType>
 bool FilePathFilter::areMatching(const ContainerType& filters, const FilePath& filePath)
 {
 	const std::wstring fileStr = filePath.wstr();

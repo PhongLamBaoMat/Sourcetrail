@@ -18,10 +18,12 @@ void QtSearchView::createWidgetWrapper()
 
 void QtSearchView::refreshView()
 {
-	m_onQtThread([this]() {
-		setStyleSheet();
-		m_widget->refreshStyle();
-	});
+	m_onQtThread(
+		[this]()
+		{
+			setStyleSheet();
+			m_widget->refreshStyle();
+		});
 }
 
 std::wstring QtSearchView::getQuery() const
@@ -36,18 +38,22 @@ void QtSearchView::setMatches(const std::vector<SearchMatch>& matches)
 
 void QtSearchView::setFocus()
 {
-	m_onQtThread([this]() {
-		getViewLayout()->showView(this);
-		m_widget->setFocus();
-	});
+	m_onQtThread(
+		[this]()
+		{
+			getViewLayout()->showView(this);
+			m_widget->setFocus();
+		});
 }
 
 void QtSearchView::findFulltext()
 {
-	m_onQtThread([this]() {
-		getViewLayout()->showView(this);
-		m_widget->findFulltext();
-	});
+	m_onQtThread(
+		[this]()
+		{
+			getViewLayout()->showView(this);
+			m_widget->findFulltext();
+		});
 }
 
 void QtSearchView::setAutocompletionList(const std::vector<SearchMatch>& autocompletionList)

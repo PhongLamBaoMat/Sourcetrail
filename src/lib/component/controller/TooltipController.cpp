@@ -147,29 +147,31 @@ void TooltipController::requestTooltipShow(
 	Task::dispatch(
 		TabId::app(),
 		std::make_shared<TaskDecoratorDelay>(delayMS)->addChildTask(
-			std::make_shared<TaskLambda>([requestId, this]() {
-				std::unique_ptr<TooltipRequest> request;
+			std::make_shared<TaskLambda>(
+				[requestId, this]()
 				{
-					std::lock_guard<std::mutex> lock(m_showRequestMutex);
-					if (!m_showRequest || m_showRequest->requestId != requestId)
+					std::unique_ptr<TooltipRequest> request;
 					{
-						return;
+						std::lock_guard<std::mutex> lock(m_showRequestMutex);
+						if (!m_showRequest || m_showRequest->requestId != requestId)
+						{
+							return;
+						}
+						request = std::move(m_showRequest);
 					}
-					request = std::move(m_showRequest);
-				}
 
-				if (!request->info.isValid() && request->tokenIds.size())
-				{
-					request->info = m_storageAccess->getTooltipInfoForTokenIds(
-						request->tokenIds, request->origin);
-				}
+					if (!request->info.isValid() && request->tokenIds.size())
+					{
+						request->info = m_storageAccess->getTooltipInfoForTokenIds(
+							request->tokenIds, request->origin);
+					}
 
-				if (request->info.isValid())
-				{
-					getView()->showTooltip(request->info, getViewForOrigin(request->origin));
-					m_hideRequest = false;
-				}
-			})));
+					if (request->info.isValid())
+					{
+						getView()->showTooltip(request->info, getViewForOrigin(request->origin));
+						m_hideRequest = false;
+					}
+				})));
 }
 
 void TooltipController::requestTooltipHide()
@@ -182,12 +184,15 @@ void TooltipController::requestTooltipHide()
 
 	Task::dispatch(
 		TabId::app(),
-		std::make_shared<TaskDecoratorDelay>(500)->addChildTask(std::make_shared<TaskLambda>([this]() {
-			if (m_hideRequest)
-			{
-				m_hideRequest = false;
+		std::make_shared<TaskDecoratorDelay>(500)->addChildTask(
+			std::make_shared<TaskLambda>(
+				[this]()
+				{
+					if (m_hideRequest)
+					{
+						m_hideRequest = false;
 
-				getView()->hideTooltip(false);
-			}
-		})));
+						getView()->hideTooltip(false);
+					}
+				})));
 }

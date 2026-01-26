@@ -25,10 +25,14 @@ QtRefreshView::QtRefreshView(ViewLayout* viewLayout): RefreshView(viewLayout)
 		ResourcePaths::getGuiDirectoryPath().concatenate(L"refresh_view/images/refresh.png"));
 	refreshButton->setObjectName(QStringLiteral("refresh_button"));
 	refreshButton->setToolTip(QStringLiteral("refresh"));
-	m_widget->connect(refreshButton, &QPushButton::clicked, []() {
-		MessageIndexingShowDialog().dispatch();
-		MessageRefresh().dispatch();
-	});
+	m_widget->connect(
+		refreshButton,
+		&QPushButton::clicked,
+		[]()
+		{
+			MessageIndexingShowDialog().dispatch();
+			MessageRefresh().dispatch();
+		});
 
 	layout->addWidget(refreshButton);
 	m_widget->setLayout(layout);
@@ -41,9 +45,12 @@ void QtRefreshView::createWidgetWrapper()
 
 void QtRefreshView::refreshView()
 {
-	m_onQtThread([this]() {
-		m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-														   L"refresh_view/refresh_view.css"))
-									.c_str());
-	});
+	m_onQtThread(
+		[this]()
+		{
+			m_widget->setStyleSheet(
+				utility::getStyleSheet(
+					ResourcePaths::getGuiDirectoryPath().concatenate(L"refresh_view/refresh_view.css"))
+					.c_str());
+		});
 }

@@ -16,16 +16,17 @@ QtProjectWizardContentPathsHeaderSearchGlobal::QtProjectWizardContentPathsHeader
 		  true)
 {
 	setTitleString(QStringLiteral("Global Include Paths"));
-	setHelpString(QString::fromStdString(
-		"The Global Include Paths will be used in all your projects in addition to the project "
-		"specific Include Paths. "
-		"These paths are usually passed to the compiler with the '-isystem' flag.<br />"
-		"<br />"
-		"Use them to add system header paths (See <a "
-		"href=\"" +
-		utility::getDocumentationLink() +
-		"#finding-system-header-locations\">"
-		"Finding System Header Locations</a> or use the auto detection below)."));
+	setHelpString(
+		QString::fromStdString(
+			"The Global Include Paths will be used in all your projects in addition to the project "
+			"specific Include Paths. "
+			"These paths are usually passed to the compiler with the '-isystem' flag.<br />"
+			"<br />"
+			"Use them to add system header paths (See <a "
+			"href=\"" +
+			utility::getDocumentationLink() +
+			"#finding-system-header-locations\">"
+			"Finding System Header Locations</a> or use the auto detection below)."));
 
 	m_pathDetector = utility::getCxxHeaderPathDetector();
 	m_makePathsRelativeToProjectFileLocation = false;

@@ -101,13 +101,14 @@ std::shared_ptr<IndexerCommandProvider> SourceGroupCxxEmpty::getIndexerCommandPr
 	{
 		if (info.filesToIndex.find(sourcePath) != info.filesToIndex.end())
 		{
-			provider->addCommand(std::make_shared<IndexerCommandCxx>(
-				sourcePath,
-				indexedPaths,
-				excludeFilters,
-				std::set<FilePathFilter>(),
-				m_settings->getProjectDirectoryPath(),
-				utility::concat(compilerFlags, sourcePath.wstr())));
+			provider->addCommand(
+				std::make_shared<IndexerCommandCxx>(
+					sourcePath,
+					indexedPaths,
+					excludeFilters,
+					std::set<FilePathFilter>(),
+					m_settings->getProjectDirectoryPath(),
+					utility::concat(compilerFlags, sourcePath.wstr())));
 		}
 	}
 
@@ -235,18 +236,20 @@ std::vector<std::wstring> SourceGroupCxxEmpty::getBaseCompilerFlags() const
 
 		utility::append(
 			compilerFlags,
-			IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(utility::concat(
-				indexedDirectoryPaths,
+			IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(
 				utility::concat(
-					settingsCxx->getHeaderSearchPathsExpandedAndAbsolute(),
-					appSettings->getHeaderSearchPathsExpanded()))));
+					indexedDirectoryPaths,
+					utility::concat(
+						settingsCxx->getHeaderSearchPathsExpandedAndAbsolute(),
+						appSettings->getHeaderSearchPathsExpanded()))));
 	}
 	{
 		utility::append(
 			compilerFlags,
-			IndexerCommandCxx::getCompilerFlagsForFrameworkSearchPaths(utility::concat(
-				settingsCxx->getFrameworkSearchPathsExpandedAndAbsolute(),
-				appSettings->getFrameworkSearchPathsExpanded())));
+			IndexerCommandCxx::getCompilerFlagsForFrameworkSearchPaths(
+				utility::concat(
+					settingsCxx->getFrameworkSearchPathsExpandedAndAbsolute(),
+					appSettings->getFrameworkSearchPathsExpanded())));
 	}
 
 	return compilerFlags;

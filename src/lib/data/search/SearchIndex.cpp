@@ -44,8 +44,8 @@ void SearchIndex::addNode(Id id, std::wstring name, NodeType type)
 				m_nodes.push_back(std::make_unique<SearchNode>(currentNode->containedTypes));
 				SearchNode* n = m_nodes.back().get();
 
-				m_edges.push_back(std::make_unique<SearchEdge>(
-					currentEdge->target, edgeString.substr(matchCount)));
+				m_edges.push_back(
+					std::make_unique<SearchEdge>(currentEdge->target, edgeString.substr(matchCount)));
 				SearchEdge* e = m_edges.back().get();
 
 				n->edges.emplace(e->s[0], e);

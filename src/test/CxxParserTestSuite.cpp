@@ -45,16 +45,18 @@ TEST_CASE("cxx parser finds static global variable declaration")
 {
 	std::shared_ptr<TestStorage> client = parseCode("static int x;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->globalVariables, L"int x (input.cc) <1:12 1:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->globalVariables, L"int x (input.cc) <1:12 1:12>"));
 }
 
 TEST_CASE("cxx parser finds static const global variable declaration")
 {
 	std::shared_ptr<TestStorage> client = parseCode("static const int x;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->globalVariables, L"const int x (input.cc) <1:18 1:18>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->globalVariables, L"const int x (input.cc) <1:18 1:18>"));
 }
 
 TEST_CASE("cxx parser finds global class definition")
@@ -115,10 +117,12 @@ TEST_CASE("cxx parser finds fields in class with access type")
 
 	REQUIRE(utility::containsElement<std::wstring>(client->fields, L"private int A::a <3:6 3:6>"));
 	REQUIRE(utility::containsElement<std::wstring>(client->fields, L"public int A::b <6:6 6:6>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->fields, L"protected static int A::c <8:13 8:13>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->fields, L"private const int A::d <10:12 10:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->fields, L"protected static int A::c <8:13 8:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->fields, L"private const int A::d <10:12 10:12>"));
 }
 
 TEST_CASE("cxx parser finds function declaration")
@@ -129,8 +133,9 @@ TEST_CASE("cxx parser finds function declaration")
 		"	return 1;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->functions, L"int ceil(float) <1:1 <1:1 <1:5 1:8> 1:17> 4:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->functions, L"int ceil(float) <1:1 <1:1 <1:5 1:8> 1:17> 4:1>"));
 }
 
 TEST_CASE("cxx parser finds static function declaration")
@@ -141,8 +146,10 @@ TEST_CASE("cxx parser finds static function declaration")
 		"	return static_cast<int>(a) + 1;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->functions, L"static int ceil(float) (input.cc) <1:1 <1:1 <1:12 1:15> 1:24> 4:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->functions,
+			L"static int ceil(float) (input.cc) <1:1 <1:1 <1:12 1:15> 1:24> 4:1>"));
 }
 
 TEST_CASE("cxx parser finds method declaration")
@@ -154,8 +161,9 @@ TEST_CASE("cxx parser finds method declaration")
 		"	B();\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"public void B::B() <4:2 <4:2 4:2> 4:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"public void B::B() <4:2 <4:2 4:2> 4:4>"));
 }
 
 TEST_CASE("cxx parser finds overloaded operator declaration")
@@ -167,8 +175,9 @@ TEST_CASE("cxx parser finds overloaded operator declaration")
 		"	B& operator=(const B& other);\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"public B & B::operator=(const B &) <4:2 <4:5 4:13> 4:29>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"public B & B::operator=(const B &) <4:2 <4:5 4:13> 4:29>"));
 }
 
 TEST_CASE("cxx parser finds method declaration and definition")
@@ -183,8 +192,9 @@ TEST_CASE("cxx parser finds method declaration and definition")
 		"{\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"public void B::B() <6:1 <6:4 6:4> 8:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"public void B::B() <6:1 <6:4 6:4> 8:1>"));
 }
 
 TEST_CASE("cxx parser finds virtual method declaration")
@@ -196,8 +206,9 @@ TEST_CASE("cxx parser finds virtual method declaration")
 		"	virtual void process();\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"public void B::process() <4:2 <4:15 4:21> 4:23>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"public void B::process() <4:2 <4:15 4:21> 4:23>"));
 }
 
 TEST_CASE("cxx parser finds pure virtual method declaration")
@@ -209,8 +220,9 @@ TEST_CASE("cxx parser finds pure virtual method declaration")
 		"	virtual void process() = 0;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"protected void B::process() <4:2 <4:15 4:21> 4:27>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"protected void B::process() <4:2 <4:15 4:21> 4:27>"));
 }
 
 TEST_CASE("cxx parser finds named namespace declaration")
@@ -230,8 +242,9 @@ TEST_CASE("cxx parser finds anonymous namespace declaration")
 		"{\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"anonymous namespace (input.cc<1:1>) <1:1 <2:1 2:1> 3:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"anonymous namespace (input.cc<1:1>) <1:1 <2:1 2:1> 3:1>"));
 }
 
 TEST_CASE("cxx parser finds multiple anonymous namespace declarations as same symbol")
@@ -244,11 +257,13 @@ TEST_CASE("cxx parser finds multiple anonymous namespace declarations as same sy
 		"{\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"anonymous namespace (input.cc<1:1>) <1:1 <2:1 2:1> 3:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"anonymous namespace (input.cc<1:1>) <1:1 <2:1 2:1> 3:1>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"anonymous namespace (input.cc<1:1>) <4:1 <5:1 5:1> 6:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"anonymous namespace (input.cc<1:1>) <4:1 <5:1 5:1> 6:1>"));
 }
 
 TEST_CASE("cxx parser finds multiple nested anonymous namespace declarations as different symbol")
@@ -261,13 +276,16 @@ TEST_CASE("cxx parser finds multiple nested anonymous namespace declarations as 
 		"	}\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"anonymous namespace (input.cc<1:1>) <1:1 <2:1 2:1> 6:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"anonymous namespace (input.cc<1:1>) <1:1 <2:1 2:1> 6:1>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces,
-		L"anonymous namespace (input.cc<1:1>)::anonymous namespace (input.cc<3:2>) <3:2 <4:2 4:2> "
-		L"5:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces,
+			L"anonymous namespace (input.cc<1:1>)::anonymous namespace (input.cc<3:2>) <3:2 <4:2 "
+			L"4:2> "
+			L"5:2>"));
 }
 
 TEST_CASE(
@@ -290,13 +308,15 @@ TEST_CASE(
 
 	REQUIRE(utility::containsElement<std::wstring>(client->namespaces, L"a <1:1 <1:11 1:11> 6:1>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"a::anonymous namespace (input.cc<3:2>) <3:2 <4:2 4:2> 5:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"a::anonymous namespace (input.cc<3:2>) <3:2 <4:2 4:2> 5:2>"));
 
 	REQUIRE(utility::containsElement<std::wstring>(client->namespaces, L"b <7:1 <7:11 7:11> 12:1>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"b::anonymous namespace (input.cc<9:2>) <9:2 <10:2 10:2> 11:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"b::anonymous namespace (input.cc<9:2>) <9:2 <10:2 10:2> 11:2>"));
 }
 
 TEST_CASE(
@@ -319,13 +339,15 @@ TEST_CASE(
 
 	REQUIRE(utility::containsElement<std::wstring>(client->namespaces, L"a <1:1 <1:11 1:11> 6:1>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"a::anonymous namespace (input.cc<3:2>) <3:2 <4:2 4:2> 5:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"a::anonymous namespace (input.cc<3:2>) <3:2 <4:2 4:2> 5:2>"));
 
 	REQUIRE(utility::containsElement<std::wstring>(client->namespaces, L"a <7:1 <7:11 7:11> 12:1>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->namespaces, L"a::anonymous namespace (input.cc<3:2>) <9:2 <10:2 10:2> 11:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->namespaces, L"a::anonymous namespace (input.cc<3:2>) <9:2 <10:2 10:2> 11:2>"));
 }
 
 TEST_CASE("cxx parser finds anonymous struct declaration")
@@ -336,8 +358,9 @@ TEST_CASE("cxx parser finds anonymous struct declaration")
 		"	int x;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->structs, L"anonymous struct (input.cc<1:9>) <1:9 <1:9 1:14> 4:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->structs, L"anonymous struct (input.cc<1:9>) <1:9 <1:9 1:14> 4:1>"));
 }
 
 TEST_CASE("cxx parser finds multiple anonymous struct declarations as distinct elements")
@@ -368,8 +391,9 @@ TEST_CASE("cxx parser finds anonymous union declaration")
 		"	float f;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->unions, L"anonymous union (input.cc<1:9>) <1:9 <1:9 1:13> 5:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->unions, L"anonymous union (input.cc<1:9>) <1:9 <1:9 1:13> 5:1>"));
 }
 
 TEST_CASE("cxx parser finds name of anonymous struct declared inside typedef")
@@ -517,8 +541,9 @@ TEST_CASE("cxx parser finds typedef in anonymous namespace")
 		"	typedef unsigned int uint;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typedefs, L"anonymous namespace (input.cc<1:1>)::uint <3:23 3:26>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typedefs, L"anonymous namespace (input.cc<1:1>)::uint <3:23 3:26>"));
 }
 
 TEST_CASE("cxx parser finds type alias in class")
@@ -637,8 +662,8 @@ TEST_CASE("cxx parser finds type template parameter definition of template type 
 		"template<class T>\n"
 		"using MyType = int;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:16> <1:16 1:16>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:16> <1:16 1:16>"));
 }
 
 TEST_CASE("cxx parser finds type template parameter definition of class template")
@@ -649,8 +674,8 @@ TEST_CASE("cxx parser finds type template parameter definition of class template
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
 }
 
 TEST_CASE(
@@ -667,8 +692,8 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<5:20> <5:20 5:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:20> <5:20 5:20>"));
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:20> <6:9 6:9>"));
@@ -680,8 +705,8 @@ TEST_CASE("cxx parser finds type template parameter definition of variable templ
 		"template <typename T>\n"
 		"T v;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
 }
 
 TEST_CASE(
@@ -695,11 +720,11 @@ TEST_CASE(
 		"template <typename R>\n"
 		"int t<int, R> = 9;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:20> <4:20 4:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:20> <4:20 4:20>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:20> <5:12 5:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:20> <5:12 5:12>"));
 }
 
 TEST_CASE("cxx parser finds type template parameter defined with class keyword")
@@ -710,8 +735,8 @@ TEST_CASE("cxx parser finds type template parameter defined with class keyword")
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:17> <1:17 1:17>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:17> <1:17 1:17>"));
 }
 
 TEST_CASE("cxx parser finds non type int template parameter definition of template class")
@@ -722,8 +747,8 @@ TEST_CASE("cxx parser finds non type int template parameter definition of templa
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:15> <1:15 1:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:15> <1:15 1:15>"));
 }
 
 TEST_CASE("cxx parser finds non type bool template parameter definition of template class")
@@ -734,8 +759,8 @@ TEST_CASE("cxx parser finds non type bool template parameter definition of templ
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:16> <1:16 1:16>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:16> <1:16 1:16>"));
 }
 
 TEST_CASE(
@@ -748,8 +773,8 @@ TEST_CASE(
 		"class A\n"
 		"{};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
 }
 
 TEST_CASE(
@@ -762,8 +787,8 @@ TEST_CASE(
 		"class A\n"
 		"{};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
 }
 
 TEST_CASE(
@@ -775,12 +800,12 @@ TEST_CASE(
 		"class A\n"
 		"{};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:28> <1:28 1:29>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:28> <1:28 1:29>"));
 
 	// and usage
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:20> <1:24 1:25>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <1:24 1:25>"));
 }
 
 TEST_CASE(
@@ -792,11 +817,11 @@ TEST_CASE(
 		"class A\n"
 		"{};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:49> <1:49 1:50>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:49> <1:49 1:50>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:36> <1:40 1:41>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:36> <1:40 1:41>"));
 }
 
 TEST_CASE(
@@ -809,11 +834,11 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:45> <1:45 1:45>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:45> <1:45 1:45>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:29> <1:32 1:32>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:29> <1:32 1:32>"));
 }
 
 TEST_CASE("cxx parser finds template argument of dependent non type template parameter")
@@ -823,8 +848,10 @@ TEST_CASE("cxx parser finds template argument of dependent non type template par
 		"class A\n"
 		"{};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"A<template<typename> typename T1, T1<int> & T2> -> int <1:43 1:45>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses,
+			L"A<template<typename> typename T1, T1<int> & T2> -> int <1:43 1:45>"));
 }
 
 // void _test_foofoo()
@@ -862,8 +889,8 @@ TEST_CASE("cxx parser finds template template parameter of template class")
 		"	B<A> ba;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:36> <4:36 4:36>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:36> <4:36 4:36>"));
 }
 
 TEST_CASE("cxx parser finds type template parameter pack type of template class")
@@ -874,8 +901,8 @@ TEST_CASE("cxx parser finds type template parameter pack type of template class"
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:23> <1:23 1:23>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:23> <1:23 1:23>"));
 }
 
 TEST_CASE("cxx parser finds non type int template parameter pack type of template class")
@@ -886,8 +913,8 @@ TEST_CASE("cxx parser finds non type int template parameter pack type of templat
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:18> <1:18 1:18>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:18> <1:18 1:18>"));
 }
 
 TEST_CASE("cxx parser finds template template parameter pack type of template class")
@@ -898,8 +925,8 @@ TEST_CASE("cxx parser finds template template parameter pack type of template cl
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:42> <1:42 1:42>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:42> <1:42 1:42>"));
 }
 
 TEST_CASE("cxx parser finds type template parameters of template class with multiple parameters")
@@ -910,10 +937,10 @@ TEST_CASE("cxx parser finds type template parameters of template class with mult
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:32> <1:32 1:32>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:32> <1:32 1:32>"));
 }
 
 TEST_CASE("cxx parser skips creating node for template parameter without a name")
@@ -926,8 +953,8 @@ TEST_CASE("cxx parser skips creating node for template parameter without a name"
 	);
 
 	REQUIRE(client->localSymbols.size() == 2);
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->classes, L"A<typename> <1:1 <2:7 2:7> 4:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->classes, L"A<typename> <1:1 <2:7 2:7> 4:1>"));
 }
 
 TEST_CASE(
@@ -945,8 +972,8 @@ TEST_CASE(
 		"U A<T>::foo()\n"
 		"{}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<8:20> <8:20 8:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<8:20> <8:20 8:20>"));
 }
 
 TEST_CASE("cxx parser finds explicit class template specialization")
@@ -989,8 +1016,9 @@ TEST_CASE("cxx parser finds explicit partial class template specialization")
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->classes, L"A<typename T, int> <5:1 <6:7 6:7> 8:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->classes, L"A<typename T, int> <5:1 <6:7 6:7> 8:1>"));
 }
 
 TEST_CASE("cxx parser finds explicit partial variable template specialization")
@@ -1002,8 +1030,9 @@ TEST_CASE("cxx parser finds explicit partial variable template specialization")
 		"template <typename R>\n"
 		"int t<int, R> = 9;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->globalVariables, L"int t<int, typename R> <5:5 5:5>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->globalVariables, L"int t<int, typename R> <5:5 5:5>"));
 }
 
 TEST_CASE("cxx parser finds correct field member name of template class in declaration")
@@ -1015,8 +1044,9 @@ TEST_CASE("cxx parser finds correct field member name of template class in decla
 		"	int foo;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->fields, L"private int A<typename T>::foo <4:6 4:8>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->fields, L"private int A<typename T>::foo <4:6 4:8>"));
 }
 
 TEST_CASE("cxx parser finds correct type of field member of template class in declaration")
@@ -1029,8 +1059,9 @@ TEST_CASE("cxx parser finds correct type of field member of template class in de
 		"};\n"
 		"A<int> a; \n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int A<int>::foo -> int <4:2 4:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int A<int>::foo -> int <4:2 4:2>"));
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->typeUses, L"A<int> a -> A<int> <6:1 6:1>"));
@@ -1050,8 +1081,9 @@ TEST_CASE("cxx parser finds correct method member name of template class in decl
 		"	int foo();\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"private int A<typename T>::foo() <4:2 <4:6 4:8> 4:10>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"private int A<typename T>::foo() <4:2 <4:6 4:8> 4:10>"));
 }
 
 TEST_CASE("cxx parser finds type template parameter definition of template function")
@@ -1063,8 +1095,8 @@ TEST_CASE("cxx parser finds type template parameter definition of template funct
 		"	return a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
 }
 
 TEST_CASE("cxx parser finds non type int template parameter definition of template function")
@@ -1076,8 +1108,8 @@ TEST_CASE("cxx parser finds non type int template parameter definition of templa
 		"	return a + T;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:15> <1:15 1:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:15> <1:15 1:15>"));
 }
 
 TEST_CASE("cxx parser finds non type bool template parameter definition of template function")
@@ -1089,8 +1121,8 @@ TEST_CASE("cxx parser finds non type bool template parameter definition of templ
 		"	return T ? a : 0;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:16> <1:16 1:16>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:16> <1:16 1:16>"));
 }
 
 TEST_CASE(
@@ -1105,8 +1137,8 @@ TEST_CASE(
 		"	return a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
 }
 
 TEST_CASE(
@@ -1121,8 +1153,8 @@ TEST_CASE(
 		"	return a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<3:14> <3:14 3:14>"));
 }
 
 TEST_CASE("cxx parser finds template template parameter definition of template function")
@@ -1137,8 +1169,8 @@ TEST_CASE("cxx parser finds template template parameter definition of template f
 		"	return a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:36> <4:36 4:36>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:36> <4:36 4:36>"));
 }
 
 TEST_CASE("cxx parser finds function for implicit instantiation of template function")
@@ -1155,8 +1187,9 @@ TEST_CASE("cxx parser finds function for implicit instantiation of template func
 		"	return test(1);\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->functions, L"int test<int>(int) <2:1 <2:1 <2:3 2:6> 2:11> 5:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->functions, L"int test<int>(int) <2:1 <2:1 <2:3 2:6> 2:11> 5:1>"));
 }
 
 TEST_CASE(
@@ -1179,9 +1212,10 @@ TEST_CASE(
 
 	REQUIRE(/*NOT!*/ !utility::containsElement<std::wstring>(
 		client->methods, L"public void A<int>::foo<typename U>() <6:2 <6:7 6:9> 6:14>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations,
-		L"void A<int>::foo<float>() -> void A<typename T>::foo<typename U>() <6:7 6:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations,
+			L"void A<int>::foo<float>() -> void A<typename T>::foo<typename U>() <6:7 6:9>"));
 }
 
 TEST_CASE("cxx parser finds lambda definition and call in function")
@@ -1196,9 +1230,10 @@ TEST_CASE("cxx parser finds lambda definition and call in function")
 	// TS_ASSERT(utility::containsElement<std::wstring>(
 	// 	client->functions, L"void lambdaCaller::lambda at 3:2() const <3:5 <3:2 3:2> 3:7>"
 	// ));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls,
-		L"void lambdaCaller() -> void lambdaCaller::lambda at 3:2() const <3:8 3:8>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls,
+			L"void lambdaCaller() -> void lambdaCaller::lambda at 3:2() const <3:8 3:8>"));
 }
 
 TEST_CASE("cxx parser finds mutable lambda definition")
@@ -1236,8 +1271,8 @@ TEST_CASE("cxx parser finds definition of local symbol in function parameter lis
 		"{\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:15> <1:15 1:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:15> <1:15 1:15>"));
 }
 
 TEST_CASE("cxx parser finds definition of local symbol in function scope")
@@ -1288,8 +1323,9 @@ TEST_CASE("cxx parser finds struct definition in class")
 		"	};\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->structs, L"private A::B <3:2 <3:9 3:9> 5:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->structs, L"private A::B <3:2 <3:9 3:9> 5:2>"));
 }
 
 TEST_CASE("cxx parser finds struct definition in namespace")
@@ -1349,8 +1385,9 @@ TEST_CASE("cxx parser finds field in nested class")
 		"	};\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->fields, L"private static const int B::C::amount <7:20 7:25>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->fields, L"private static const int B::C::amount <7:20 7:25>"));
 }
 
 TEST_CASE("cxx parser finds function in anonymous namespace")
@@ -1361,9 +1398,10 @@ TEST_CASE("cxx parser finds function in anonymous namespace")
 		"	int sum(int a, int b);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->functions,
-		L"int anonymous namespace (input.cc<1:1>)::sum(int, int) <3:2 <3:6 3:8> 3:22>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->functions,
+			L"int anonymous namespace (input.cc<1:1>)::sum(int, int) <3:2 <3:6 3:8> 3:22>"));
 }
 
 TEST_CASE("cxx parser finds method declared in nested class")
@@ -1377,8 +1415,9 @@ TEST_CASE("cxx parser finds method declared in nested class")
 		"	};\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"private bool B::C::isGreat() const <5:3 <5:8 5:14> 5:22>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"private bool B::C::isGreat() const <5:3 <5:8 5:14> 5:22>"));
 }
 
 TEST_CASE("cxx parser finds nested named namespace")
@@ -1436,8 +1475,9 @@ TEST_CASE("cxx parser finds enum definition in template class")
 		"	};\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->enums, L"private A<typename T>::TestType <4:2 <4:7 4:14> 8:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->enums, L"private A<typename T>::TestType <4:2 <4:7 4:14> 8:2>"));
 }
 
 TEST_CASE("cxx parser finds enum constants in template class")
@@ -1453,8 +1493,9 @@ TEST_CASE("cxx parser finds enum constants in template class")
 		"	};\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->enumConstants, L"A<typename T>::TestType::TEST_ONE <6:3 6:10>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->enumConstants, L"A<typename T>::TestType::TEST_ONE <6:3 6:10>"));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1568,13 +1609,17 @@ TEST_CASE("cxx parser finds implicit copy constructor")
 		"	TestClass b(a);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"public void TestClass::TestClass() <1:7 <1:7 1:15> 1:15>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods,
-		L"public void TestClass::TestClass(const TestClass &) <1:7 <1:7 1:15> 1:15>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"public void TestClass::TestClass(TestClass &&) <1:7 <1:7 1:15> 1:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"public void TestClass::TestClass() <1:7 <1:7 1:15> 1:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods,
+			L"public void TestClass::TestClass(const TestClass &) <1:7 <1:7 1:15> 1:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods,
+			L"public void TestClass::TestClass(TestClass &&) <1:7 <1:7 1:15> 1:15>"));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1594,9 +1639,10 @@ TEST_CASE("cxx parser finds enum usage in template class")
 		"	TestType foo;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses,
-		L"A<typename T>::TestType A<typename T>::foo -> A<typename T>::TestType <9:2 9:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses,
+			L"A<typename T>::TestType A<typename T>::foo -> A<typename T>::TestType <9:2 9:9>"));
 }
 
 TEST_CASE("cxx parser finds correct field member type of nested template class in declaration")
@@ -1616,15 +1662,17 @@ TEST_CASE("cxx parser finds correct field member type of nested template class i
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <7:3 7:3>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int A<int>::B::foo -> int <7:3 7:3>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"A<int> a -> A<int> <10:1 10:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int A<int>::B::foo -> int <7:3 7:3>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->typeUses, L"A<int> a -> A<int> <10:1 10:1>"));
 	REQUIRE(utility::containsElement<std::wstring>(client->typeUses, L"A<int> -> int <10:3 10:5>"));
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->typeUses, L"A<int> a -> int <10:3 10:5>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"A<int>::B b -> A<int>::B <11:9 11:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"A<int>::B b -> A<int>::B <11:9 11:9>"));
 }
 
 TEST_CASE("cxx parser finds type usage of global variable")
@@ -1638,8 +1686,9 @@ TEST_CASE("cxx parser finds typedefs type use")
 {
 	std::shared_ptr<TestStorage> client = parseCode("typedef unsigned int uint;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"uint -> unsigned int <1:9 1:16>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"uint -> unsigned int <1:9 1:16>"));
 }
 
 TEST_CASE("cxx parser finds typedef that uses type defined in named namespace")
@@ -1651,8 +1700,9 @@ TEST_CASE("cxx parser finds typedef that uses type defined in named namespace")
 		"}\n"
 		"typedef test::TestStruct globalTestStruct;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"globalTestStruct -> test::TestStruct <5:15 5:24>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"globalTestStruct -> test::TestStruct <5:15 5:24>"));
 }
 
 TEST_CASE("cxx parser finds type use of typedef")
@@ -1775,8 +1825,9 @@ TEST_CASE("cxx parser finds method override when virtual")
 		"	void foo();\n"
 		"};");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->overrides, L"void B::foo() -> void A::foo() <5:7 5:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->overrides, L"void B::foo() -> void A::foo() <5:7 5:9>"));
 }
 
 TEST_CASE("cxx parser finds multi layer method overrides")
@@ -1792,10 +1843,12 @@ TEST_CASE("cxx parser finds multi layer method overrides")
 		"	void foo();\n"
 		"};");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->overrides, L"void B::foo() -> void A::foo() <5:7 5:9>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->overrides, L"void C::foo() -> void B::foo() <8:7 8:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->overrides, L"void B::foo() -> void A::foo() <5:7 5:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->overrides, L"void C::foo() -> void B::foo() <8:7 8:9>"));
 }
 
 TEST_CASE("cxx parser finds method overrides on different return types")
@@ -1809,8 +1862,9 @@ TEST_CASE("cxx parser finds method overrides on different return types")
 		"};\n");
 
 	REQUIRE(client->errors.size() == 1);
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->overrides, L"int B::foo() -> void A::foo() <5:6 5:8>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->overrides, L"int B::foo() -> void A::foo() <5:6 5:8>"));
 }
 
 TEST_CASE("cxx parser finds no method override when not virtual")
@@ -1870,8 +1924,8 @@ TEST_CASE("cxx parser finds using decl in function context")
 		"	using foo::a;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void bar() -> foo::a <7:13 7:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->usages, L"void bar() -> foo::a <7:13 7:13>"));
 }
 
 TEST_CASE("cxx parser finds using decl in file context")
@@ -1899,8 +1953,9 @@ TEST_CASE("cxx parser finds call in function")
 		"	sum(1, 2);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> int sum(int, int) <7:2 7:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> int sum(int, int) <7:2 7:4>"));
 }
 
 TEST_CASE("cxx parser finds call in function with correct signature")
@@ -1918,8 +1973,9 @@ TEST_CASE("cxx parser finds call in function with correct signature")
 		"	sum(1, 2);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"void func(bool) -> int sum(int, int) <10:2 10:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"void func(bool) -> int sum(int, int) <10:2 10:4>"));
 }
 
 TEST_CASE("cxx parser finds call to function with right signature")
@@ -1939,10 +1995,12 @@ TEST_CASE("cxx parser finds call to function with right signature")
 		"	sum(1.0f, 0.5f);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> int sum(int, int) <11:2 11:4>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> float sum(float, float) <12:2 12:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> int sum(int, int) <11:2 11:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> float sum(float, float) <12:2 12:4>"));
 }
 
 TEST_CASE("cxx parser finds function call in function parameter list")
@@ -1957,8 +2015,9 @@ TEST_CASE("cxx parser finds function call in function parameter list")
 		"	return sum(1, sum(2, 3));\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> int sum(int, int) <7:16 7:18>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> int sum(int, int) <7:16 7:18>"));
 }
 
 TEST_CASE("cxx parser finds function call in method")
@@ -1976,8 +2035,9 @@ TEST_CASE("cxx parser finds function call in method")
 		"	}\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int App::main() -> int sum(int, int) <9:10 9:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int App::main() -> int sum(int, int) <9:10 9:12>"));
 }
 
 TEST_CASE("cxx parser finds implicit constructor without definition call")
@@ -1991,8 +2051,9 @@ TEST_CASE("cxx parser finds implicit constructor without definition call")
 		"	App app;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> void App::App() <6:6 6:8>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> void App::App() <6:6 6:8>"));
 }
 
 TEST_CASE("cxx parser finds explicit constructor call")
@@ -2008,8 +2069,9 @@ TEST_CASE("cxx parser finds explicit constructor call")
 		"	App();\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> void App::App() <8:2 8:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> void App::App() <8:2 8:4>"));
 }
 
 TEST_CASE("cxx parser finds call of explicitly defined destructor at delete keyword")
@@ -2028,8 +2090,9 @@ TEST_CASE("cxx parser finds call of explicitly defined destructor at delete keyw
 		"	delete f; \n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"void foo() -> void Foo::~Foo() <11:2 11:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"void foo() -> void Foo::~Foo() <11:2 11:7>"));
 }
 
 TEST_CASE("cxx parser finds call of implicitly defined destructor at delete keyword")
@@ -2045,8 +2108,9 @@ TEST_CASE("cxx parser finds call of implicitly defined destructor at delete keyw
 		"	delete f; \n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"void foo() -> void Foo::~Foo() <8:2 8:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"void foo() -> void Foo::~Foo() <8:2 8:7>"));
 }
 
 TEST_CASE("cxx parser finds explicit constructor call of field")
@@ -2062,8 +2126,9 @@ TEST_CASE("cxx parser finds explicit constructor call of field")
 		"	Item item;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"void App::App() -> void Item::Item() <7:10 7:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"void App::App() -> void Item::Item() <7:10 7:13>"));
 }
 
 TEST_CASE("cxx parser finds function call in member initialization")
@@ -2083,8 +2148,9 @@ TEST_CASE("cxx parser finds function call in member initialization")
 		"	Item item;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"void App::App() -> int one() <10:10 10:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"void App::App() -> int one() <10:10 10:12>"));
 }
 
 TEST_CASE("cxx parser finds copy constructor call")
@@ -2102,8 +2168,9 @@ TEST_CASE("cxx parser finds copy constructor call")
 		"	App app2(app);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> void App::App(const App &) <10:6 10:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> void App::App(const App &) <10:6 10:9>"));
 }
 
 TEST_CASE("cxx parser finds global variable constructor call")
@@ -2116,8 +2183,9 @@ TEST_CASE("cxx parser finds global variable constructor call")
 		"};\n"
 		"App app;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"App app -> void App::App() <6:5 6:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"App app -> void App::App() <6:5 6:7>"));
 }
 
 TEST_CASE("cxx parser finds global variable function call")
@@ -2145,8 +2213,9 @@ TEST_CASE("cxx parser finds operator call")
 		"	app + 2;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> void App::operator+(int) <11:6 11:6>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> void App::operator+(int) <11:6 11:6>"));
 }
 
 TEST_CASE("cxx parser finds usage of function pointer")
@@ -2162,8 +2231,9 @@ TEST_CASE("cxx parser finds usage of function pointer")
 		"	foo = &my_int_func;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void test() -> void my_int_func(int) <8:9 8:19>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void test() -> void my_int_func(int) <8:9 8:19>"));
 }
 
 TEST_CASE("cxx parser finds usage of global variable in function")
@@ -2203,8 +2273,9 @@ TEST_CASE("cxx parser finds usage of global variable in method")
 		"	}\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void App::foo() -> int bar <7:3 7:5>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void App::foo() -> int bar <7:3 7:5>"));
 }
 
 TEST_CASE("cxx parser finds usage of field in method")
@@ -2220,10 +2291,12 @@ TEST_CASE("cxx parser finds usage of field in method")
 		"	int bar;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void App::foo() -> int App::bar <5:3 5:5>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void App::foo() -> int App::bar <6:9 6:11>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void App::foo() -> int App::bar <5:3 5:5>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void App::foo() -> int App::bar <6:9 6:11>"));
 }
 
 TEST_CASE("cxx parser finds usage of field in function call arguments")
@@ -2239,8 +2312,9 @@ TEST_CASE("cxx parser finds usage of field in function call arguments")
 		"	int bar;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void A::foo(int) -> int A::bar <6:7 6:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void A::foo(int) -> int A::bar <6:7 6:9>"));
 }
 
 TEST_CASE("cxx parser finds usage of field in function call context")
@@ -2256,8 +2330,9 @@ TEST_CASE("cxx parser finds usage of field in function call context")
 		"	A* a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void A::foo(int) -> A * A::a <6:3 6:3>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void A::foo(int) -> A * A::a <6:3 6:3>"));
 }
 
 TEST_CASE("cxx parser finds usage of field in initialization list")
@@ -2271,8 +2346,9 @@ TEST_CASE("cxx parser finds usage of field in initialization list")
 		"	int bar;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void App::App() -> int App::bar <4:5 4:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void App::App() -> int App::bar <4:5 4:7>"));
 }
 
 TEST_CASE("cxx parser finds usage of member in call expression to unresolved member expression")
@@ -2290,8 +2366,9 @@ TEST_CASE("cxx parser finds usage of member in call expression to unresolved mem
 		"	A a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"T B::run<typename T>() -> A B::a <8:10 8:10>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"T B::run<typename T>() -> A B::a <8:10 8:10>"));
 }
 
 TEST_CASE("cxx parser finds usage of member in temporary object expression")
@@ -2317,8 +2394,9 @@ TEST_CASE("cxx parser finds usage of member in temporary object expression")
 		"	const Foo m_i;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void Bar::baba() -> const Foo Bar::m_i <15:7 15:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void Bar::baba() -> const Foo Bar::m_i <15:7 15:9>"));
 }
 
 TEST_CASE("cxx parser finds usage of member in dependent scope member expression")
@@ -2335,8 +2413,9 @@ TEST_CASE("cxx parser finds usage of member in dependent scope member expression
 		"	}\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void A<typename T>::foo() -> T A<typename T>::m_t <8:3 8:5>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void A<typename T>::foo() -> T A<typename T>::m_t <8:3 8:5>"));
 }
 
 TEST_CASE("cxx parser finds return type use in function")
@@ -2347,8 +2426,9 @@ TEST_CASE("cxx parser finds return type use in function")
 		"	return 3.14159265359;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"double PI() -> double <1:1 1:6>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"double PI() -> double <1:1 1:6>"));
 }
 
 TEST_CASE("cxx parser finds parameter type uses in function")
@@ -2358,8 +2438,9 @@ TEST_CASE("cxx parser finds parameter type uses in function")
 		"{\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void ceil(float) -> float <1:11 1:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"void ceil(float) -> float <1:11 1:15>"));
 }
 
 TEST_CASE("cxx parser finds use of decayed parameter type in function")
@@ -2372,10 +2453,10 @@ TEST_CASE("cxx parser finds use of decayed parameter type in function")
 		"	VectorBase(T values[N]);\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:16> <5:13 5:13>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:32> <5:22 5:22>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:16> <5:13 5:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:32> <5:22 5:22>"));
 }
 
 TEST_CASE("cxx parser usage of injected type in method declaration")
@@ -2387,14 +2468,18 @@ TEST_CASE("cxx parser usage of injected type in method declaration")
 		"	Foo& operator=(const Foo&) = delete;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses,
-		L"Foo<typename T> & Foo<typename T>::operator=(const Foo<typename T> &) -> Foo<typename T> "
-		L"<4:2 4:4>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses,
-		L"Foo<typename T> & Foo<typename T>::operator=(const Foo<typename T> &) -> Foo<typename T> "
-		L"<4:23 4:25>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses,
+			L"Foo<typename T> & Foo<typename T>::operator=(const Foo<typename T> &) -> "
+			L"Foo<typename T> "
+			L"<4:2 4:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses,
+			L"Foo<typename T> & Foo<typename T>::operator=(const Foo<typename T> &) -> "
+			L"Foo<typename T> "
+			L"<4:23 4:25>"));
 }
 
 TEST_CASE("cxx parser finds use of qualified type in function")
@@ -2404,8 +2489,9 @@ TEST_CASE("cxx parser finds use of qualified type in function")
 		"{\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void test(const int) -> int <1:17 1:19>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"void test(const int) -> int <1:17 1:19>"));
 }
 
 TEST_CASE("cxx parser finds parameter type uses in constructor")
@@ -2416,8 +2502,9 @@ TEST_CASE("cxx parser finds parameter type uses in constructor")
 		"	A(int a);\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void A::A(int) -> int <3:4 3:6>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"void A::A(int) -> int <3:4 3:6>"));
 }
 
 TEST_CASE("cxx parser finds type uses in function body")
@@ -2444,8 +2531,8 @@ TEST_CASE("cxx parser finds type uses in method body")
 		"	}\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int A::main() -> int <5:3 5:5>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->typeUses, L"int A::main() -> int <5:3 5:5>"));
 }
 
 TEST_CASE("cxx parser finds type uses in loops and conditions")
@@ -2536,12 +2623,13 @@ TEST_CASE("cxx parser finds usage of template parameter of template member varia
 		"template <typename T>\n"
 		"const bool IsBaseType<T>::value;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
-	REQUIRE(utility::containsElement<std::wstring>(	   // TODO: fix FAIL because usage in name
-													   // qualifier is not recorded
-		client->localSymbols,
-		L"input.cc<5:20> <5:20 5:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <1:20 1:20>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(	   // TODO: fix FAIL because usage in name
+												   // qualifier is not recorded
+			client->localSymbols,
+			L"input.cc<5:20> <5:20 5:20>"));
 }
 
 TEST_CASE("cxx parser finds usage of template parameters with different depth of template function")
@@ -2560,8 +2648,8 @@ TEST_CASE("cxx parser finds usage of template parameters with different depth of
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <7:3 7:3>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:21> <5:11 5:11>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:21> <5:11 5:11>"));
 }
 
 TEST_CASE(
@@ -2585,10 +2673,11 @@ TEST_CASE(
 		"	};\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<1:20> <13:3 13:3>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<10:21> <13:9 13:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <13:3 13:3>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->localSymbols, L"input.cc<10:21> <13:9 13:9>"));
 }
 
 TEST_CASE(
@@ -2606,8 +2695,8 @@ TEST_CASE(
 		"	{}\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:36> <7:11 7:11>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:36> <7:11 7:11>"));
 }
 
 TEST_CASE(
@@ -2626,8 +2715,8 @@ TEST_CASE(
 		"	{}\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:36> <8:11 8:11>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:36> <8:11 8:11>"));
 }
 
 TEST_CASE("cxx parser finds typedef in other class that depends on own template parameter")
@@ -2647,14 +2736,18 @@ TEST_CASE("cxx parser finds typedef in other class that depends on own template 
 		"};\n"
 		"B<int>::type f = 0;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"A<int>::type -> int <5:10 5:10>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<typename U>::type -> A<typename T>::type <11:25 11:28>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<int>::type -> A<int>::type <11:25 11:28>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<int>::type f -> B<int>::type <13:9 13:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"A<int>::type -> int <5:10 5:10>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<typename U>::type -> A<typename T>::type <11:25 11:28>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<int>::type -> A<int>::type <11:25 11:28>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<int>::type f -> B<int>::type <13:9 13:12>"));
 }
 
 TEST_CASE("cxx parser finds usage of template parameter in qualifier of other symbol")
@@ -2670,8 +2763,8 @@ TEST_CASE("cxx parser finds usage of template parameter in qualifier of other sy
 		"	using f = typename find_if_impl<S>::template f<R::template f, Ts...>;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:20> <8:49 8:49>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:20> <8:49 8:49>"));
 }
 
 TEST_CASE("cxx parser finds use of dependent template specialization type")
@@ -2692,10 +2785,12 @@ TEST_CASE("cxx parser finds use of dependent template specialization type")
 		"};\n"
 		"B<bool>::type f = 0.0f;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<typename U>::type -> A<typename T>::type<float> <12:10 12:17>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<bool>::type f -> B<bool>::type <14:10 14:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<typename U>::type -> A<typename T>::type<float> <12:10 12:17>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<bool>::type f -> B<bool>::type <14:10 14:13>"));
 }
 
 TEST_CASE(
@@ -2711,11 +2806,13 @@ TEST_CASE(
 		"\n"
 		"void foo() { long sum = adder(1, 2, 3, 8, 7); }\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->functions, L"int adder<int, <...>>(int, ...) <5:1 <5:1 <5:3 5:7> 5:30> 5:65>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls,
-		L"int adder<int, <...>>(int, ...) -> int adder<int, <...>>(int, ...) <5:49 5:53>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->functions, L"int adder<int, <...>>(int, ...) <5:1 <5:1 <5:3 5:7> 5:30> 5:65>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls,
+			L"int adder<int, <...>>(int, ...) -> int adder<int, <...>>(int, ...) <5:49 5:53>"));
 }
 
 TEST_CASE("cxx parser finds type template argument of explicit template instantiation")
@@ -2775,12 +2872,14 @@ TEST_CASE(
 		utility::containsElement<std::wstring>(client->typeUses, L"A<<...>> -> float <7:11 7:15>"));
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->typeUses, L"int main() -> int <7:6 7:8>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int main() -> float <7:11 7:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int main() -> float <7:11 7:15>"));
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->typeUses, L"int main() -> int <7:6 7:8>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int main() -> float <7:11 7:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int main() -> float <7:11 7:15>"));
 }
 
 TEST_CASE(
@@ -2955,10 +3054,12 @@ TEST_CASE("cxx parser finds template template argument of explicit template inst
 		"	B<A> ba;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<A> -> A<typename T> <9:4 9:4>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int main() -> A<typename T> <9:4 9:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<A> -> A<typename T> <9:4 9:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int main() -> A<typename T> <9:4 9:4>"));
 }
 
 TEST_CASE(
@@ -2979,14 +3080,18 @@ TEST_CASE(
 		"	B<A, A>();\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<<...>> -> A<typename T> <11:4 11:4>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<<...>> -> A<typename T> <11:7 11:7>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int main() -> A<typename T> <11:4 11:4>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int main() -> A<typename T> <11:7 11:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<<...>> -> A<typename T> <11:4 11:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<<...>> -> A<typename T> <11:7 11:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int main() -> A<typename T> <11:4 11:4>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int main() -> A<typename T> <11:7 11:7>"));
 }
 
 TEST_CASE(
@@ -3022,8 +3127,10 @@ TEST_CASE(
 		"	A<int> a;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations, L"int A<int>::foo() -> T A<typename T>::foo() <5:4 5:6>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations,
+			L"int A<int>::foo() -> T A<typename T>::foo() <5:4 5:6>"));
 }
 
 TEST_CASE(
@@ -3042,9 +3149,10 @@ TEST_CASE(
 		"	A<int> a;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations,
-		L"static int A<int>::foo -> static T A<typename T>::foo <5:11 5:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations,
+			L"static int A<int>::foo -> static T A<typename T>::foo <5:11 5:13>"));
 }
 
 TEST_CASE(
@@ -3062,8 +3170,9 @@ TEST_CASE(
 		"	A<int> a;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations, L"int A<int>::foo -> T A<typename T>::foo <5:4 5:6>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations, L"int A<int>::foo -> T A<typename T>::foo <5:4 5:6>"));
 }
 
 TEST_CASE(
@@ -3085,9 +3194,10 @@ TEST_CASE(
 		"	A<int>::B b;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations,
-		L"int A<int>::B::foo -> T A<typename T>::B::foo <7:5 7:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations,
+			L"int A<int>::B::foo -> T A<typename T>::B::foo <7:5 7:7>"));
 }
 
 TEST_CASE(
@@ -3106,8 +3216,9 @@ TEST_CASE(
 		"	A<int> a;\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations, L"A<int>::B -> A<typename T>::B <5:8 5:8>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations, L"A<int>::B -> A<typename T>::B <5:8 5:8>"));
 }
 
 TEST_CASE("cxx parser finds type template argument of explicit template specialization")
@@ -3212,8 +3323,9 @@ TEST_CASE("cxx parser finds template template argument of explicit template spec
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<A> -> A<typename T> <8:9 8:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<A> -> A<typename T> <8:9 8:9>"));
 }
 
 TEST_CASE(
@@ -3231,8 +3343,9 @@ TEST_CASE(
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:20> <6:9 6:9>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"A<typename T, int> -> int <6:12 6:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"A<typename T, int> -> int <6:12 6:14>"));
 }
 
 TEST_CASE(
@@ -3249,8 +3362,8 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<5:15> <6:12 6:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:15> <6:12 6:12>"));
 }
 
 TEST_CASE(
@@ -3267,8 +3380,8 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<5:16> <6:15 6:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:16> <6:15 6:15>"));
 }
 
 TEST_CASE(
@@ -3287,12 +3400,13 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"A<&g_p, q> -> P g_p <8:10 8:12>"	// TODO: this is completely wrong?
-																// should be a normal usage
-		));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<7:14> <8:15 8:15>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"A<&g_p, q> -> P g_p <8:10 8:12>"	// TODO: this is completely wrong?
+																	// should be a normal usage
+			));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:14> <8:15 8:15>"));
 }
 
 TEST_CASE(
@@ -3313,8 +3427,8 @@ TEST_CASE(
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->typeUses, L"A<g_p, q> -> P g_p <8:9 8:11>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<7:14> <8:14 8:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:14> <8:14 8:14>"));
 }
 
 TEST_CASE(
@@ -3333,10 +3447,11 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<A, template<typename> typename U> -> A<typename T> <8:9 8:9>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<7:36> <8:12 8:12>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<A, template<typename> typename U> -> A<typename T> <8:9 8:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:36> <8:12 8:12>"));
 }
 
 TEST_CASE(
@@ -3353,8 +3468,8 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<5:27> <6:16 6:17>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:27> <6:16 6:17>"));
 }
 
 TEST_CASE(
@@ -3371,10 +3486,10 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<5:36> <6:12 6:13>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<5:48> <6:16 6:17>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:36> <6:12 6:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<5:48> <6:16 6:17>"));
 }
 
 TEST_CASE("cxx parser finds implicit template class specialization")
@@ -3388,8 +3503,9 @@ TEST_CASE("cxx parser finds implicit template class specialization")
 		"\n"
 		"A<int> a;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations, L"A<int> -> A<typename T> <2:7 2:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations, L"A<int> -> A<typename T> <2:7 2:7>"));
 }
 
 TEST_CASE("cxx parser finds class inheritance from implicit template class specialization")
@@ -3422,8 +3538,9 @@ TEST_CASE("record base class of implicit template class specialization")
 		"\n"
 		"Vec2f v; \n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->inheritances, L"Vector2<float> -> VectorBase<float, 2> <5:24 5:33>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->inheritances, L"Vector2<float> -> VectorBase<float, 2> <5:24 5:33>"));
 }
 
 TEST_CASE("cxx parser finds template class specialization with template argument")
@@ -3440,8 +3557,8 @@ TEST_CASE("cxx parser finds template class specialization with template argument
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<7:20> <8:19 8:19>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:20> <8:19 8:19>"));
 	REQUIRE(client->inheritances.size() == 1);
 	REQUIRE(client->classes.size() == 2);
 	REQUIRE(client->fields.size() == 1);
@@ -3457,8 +3574,9 @@ TEST_CASE(
 		"template<class Foo1, class Foo2>\n"
 		"class vector<Foo2, Foo1, int> { };\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->classes, L"vector<class Foo2, class Foo1, int> <3:1 <4:7 4:12> 4:33>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->classes, L"vector<class Foo2, class Foo1, int> <3:1 <4:7 4:12> 4:33>"));
 }
 
 TEST_CASE(
@@ -3473,8 +3591,9 @@ TEST_CASE(
 		"template<class Foo1>\n"
 		"class vector<Foo1, A<Foo1>> { };\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->classes, L"vector<class Foo1, A<typename T>> <5:1 <6:7 6:12> 6:31>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->classes, L"vector<class Foo1, A<typename T>> <5:1 <6:7 6:12> 6:31>"));
 }
 
 TEST_CASE(
@@ -3490,8 +3609,9 @@ TEST_CASE(
 		"	class vector<T0, T1> { };\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->classes, L"foo<typename T0>::vector<arg0_0, class T1> <5:2 <6:8 6:13> 6:25>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->classes, L"foo<typename T0>::vector<arg0_0, class T1> <5:2 <6:8 6:13> 6:25>"));
 }
 
 TEST_CASE("cxx parser finds template class constructor usage of field")
@@ -3504,8 +3624,9 @@ TEST_CASE("cxx parser finds template class constructor usage of field")
 		"	T foo;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->usages, L"void A<typename T>::A<T>() -> T A<typename T>::foo <4:7 4:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->usages, L"void A<typename T>::A<T>() -> T A<typename T>::foo <4:7 4:9>"));
 }
 
 TEST_CASE("cxx parser finds correct method return type of template class in declaration")
@@ -3520,8 +3641,9 @@ TEST_CASE("cxx parser finds correct method return type of template class in decl
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<1:20> <4:2 4:2>"));
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"private T A<typename T>::foo() <4:2 <4:4 4:6> 4:8>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"private T A<typename T>::foo() <4:2 <4:4 4:6> 4:8>"));
 }
 
 TEST_CASE("cxx parser finds type template default argument type of template class")
@@ -3532,8 +3654,9 @@ TEST_CASE("cxx parser finds type template default argument type of template clas
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"A<typename T> -> int <1:24 1:26>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"A<typename T> -> int <1:24 1:26>"));
 }
 
 TEST_CASE(
@@ -3560,8 +3683,9 @@ TEST_CASE("cxx parser finds template template default argument type of template 
 		"class B\n"
 		"{};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"B<template<typename> typename T> -> A<typename T> <4:40 4:40>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"B<template<typename> typename T> -> A<typename T> <4:40 4:40>"));
 }
 
 TEST_CASE("cxx parser finds implicit instantiation of template function")
@@ -3578,8 +3702,10 @@ TEST_CASE("cxx parser finds implicit instantiation of template function")
 		"	return test(1);\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations, L"int test<int>(int) -> T test<typename T>(T) <2:3 2:6>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations,
+			L"int test<int>(int) -> T test<typename T>(T) <2:3 2:6>"));
 }
 
 TEST_CASE("cxx parser finds explicit specialization of template function")
@@ -3597,8 +3723,10 @@ TEST_CASE("cxx parser finds explicit specialization of template function")
 		"	return a + a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->templateSpecializations, L"int test<int>(int) -> T test<typename T>(T) <8:5 8:8>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->templateSpecializations,
+			L"int test<int>(int) -> T test<typename T>(T) <8:5 8:8>"));
 }
 
 TEST_CASE(
@@ -3616,8 +3744,9 @@ TEST_CASE(
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void test<int>() -> int <7:11 7:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"void test<int>() -> int <7:11 7:13>"));
 }
 
 TEST_CASE("cxx parser finds explicit type template argument of function call in function")
@@ -3632,8 +3761,9 @@ TEST_CASE("cxx parser finds explicit type template argument of function call in 
 		"	return 1;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void test<int>() -> int <6:7 6:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"void test<int>() -> int <6:7 6:9>"));
 }
 
 TEST_CASE(
@@ -3665,8 +3795,9 @@ TEST_CASE("cxx parser finds explicit template template argument of function call
 		"	return 1;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void test<A>() -> A<typename T> <7:7 7:7>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"void test<A>() -> A<typename T> <7:7 7:7>"));
 }
 
 TEST_CASE("cxx parser finds no implicit type template argument of function call in function")
@@ -3695,8 +3826,9 @@ TEST_CASE("cxx parser finds explicit type template argument of function call in 
 		"	int foo = test<int>();\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"int test<int>() -> int <6:17 6:19>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"int test<int>() -> int <6:17 6:19>"));
 }
 
 TEST_CASE("cxx parser finds no implicit type template argument of function call in var decl")
@@ -3727,8 +3859,9 @@ TEST_CASE("cxx parser finds type template default argument type of template func
 		"	return 1;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses, L"void test<typename T>() -> int <1:24 1:26>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"void test<typename T>() -> int <1:24 1:26>"));
 }
 
 TEST_CASE(
@@ -3756,9 +3889,10 @@ TEST_CASE("cxx parser finds template template default argument type of template 
 		"{\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->typeUses,
-		L"void test<template<typename> typename T>() -> A<typename T> <4:40 4:40>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->typeUses,
+			L"void test<template<typename> typename T>() -> A<typename T> <4:40 4:40>"));
 }
 
 TEST_CASE("cxx parser finds lambda calling a function")
@@ -3773,8 +3907,9 @@ TEST_CASE("cxx parser finds lambda calling a function")
 		"	}();\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"void lambdaCaller::lambda at 4:2() const -> void func() <6:3 6:6>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"void lambdaCaller::lambda at 4:2() const -> void func() <6:3 6:6>"));
 }
 
 TEST_CASE("cxx parser finds local variable in lambda capture")
@@ -3848,8 +3983,9 @@ TEST_CASE("cxx parser finds correct location of explicit constructor defined in 
 		"	n::App a = n::App(2);\n"
 		"}\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int main() -> void n::App::App(int) <11:16 11:18>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int main() -> void n::App::App(int) <11:16 11:18>"));
 }
 
 TEST_CASE(
@@ -3862,8 +3998,9 @@ TEST_CASE(
 		"	DEF_INT_FIELD(m_value)\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->fields, L"private int A::m_value <3:16 3:22>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->fields, L"private int A::m_value <3:16 3:22>"));
 }
 
 TEST_CASE(
@@ -3876,8 +4013,9 @@ TEST_CASE(
 		"	DEF_INT_FIELD(value)\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->fields, L"private int A::m_value <3:2 3:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->fields, L"private int A::m_value <3:2 3:14>"));
 }
 
 
@@ -3892,8 +4030,9 @@ TEST_CASE(
 		"	DEF_INT_FIELD(m_value, foo())\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int A::m_value -> int foo() <4:25 4:27>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int A::m_value -> int foo() <4:25 4:27>"));
 }
 
 
@@ -3906,8 +4045,9 @@ TEST_CASE("cxx parser finds macro usage location for function call in code of ma
 		"	DEF_INT_FIELD(m_value)\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"int A::m_value -> int foo() <4:2 4:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"int A::m_value -> int foo() <4:2 4:14>"));
 }
 
 
@@ -3935,8 +4075,9 @@ TEST_CASE("cxx parser finds implicit constructor call in initialization")
 		"	A m_a;\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->calls, L"void B::B() -> void A::A() <6:2 6:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->calls, L"void B::B() -> void A::A() <6:2 6:2>"));
 }
 
 TEST_CASE("cxx parser parses multiple files")
@@ -4037,10 +4178,10 @@ TEST_CASE("cxx parser finds braces of method decl")
 		"	App(int i) {}\n"
 		"};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:13> <4:13 4:13>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<4:13> <4:14 4:14>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:13> <4:13 4:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<4:13> <4:14 4:14>"));
 }
 
 TEST_CASE("cxx parser finds braces of init list")
@@ -4049,10 +4190,10 @@ TEST_CASE("cxx parser finds braces of init list")
 		"int a = 0;\n"
 		"int b[] = {a};\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<2:11> <2:11 2:11>"));
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->localSymbols, L"input.cc<2:11> <2:13 2:13>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<2:11> <2:11 2:11>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<2:11> <2:13 2:13>"));
 }
 
 TEST_CASE("cxx parser finds braces of lambda")
@@ -4159,24 +4300,27 @@ TEST_CASE("cxx parser finds correct signature location of constructor with initi
 		"}\n");
 	;
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->methods, L"private void A::A(const int &) <3:2 <3:2 <3:2 3:2> 3:18> 5:2>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->methods, L"private void A::A(const int &) <3:2 <3:2 <3:2 3:2> 3:18> 5:2>"));
 }
 
 TEST_CASE("cxx parser catches error")
 {
 	std::shared_ptr<TestStorage> client = parseCode("int a = b;\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->errors, L"use of undeclared identifier \'b\' <1:9 1:9>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->errors, L"use of undeclared identifier \'b\' <1:9 1:9>"));
 }
 
 TEST_CASE("cxx parser catches error in force include")
 {
 	std::shared_ptr<TestStorage> client = parseCode("void foo() {} \n", {L"-include nothing"});
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->errors, L"' nothing' file not found <1:1 1:1>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->errors, L"' nothing' file not found <1:1 1:1>"));
 }
 
 TEST_CASE("cxx parser finds correct error location after line directive")
@@ -4185,8 +4329,9 @@ TEST_CASE("cxx parser finds correct error location after line directive")
 		"#line 55 \"foo.hpp\"\n"
 		"void foo()\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->errors, L"expected function body after function declarator <2:11 2:11>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->errors, L"expected function body after function declarator <2:11 2:11>"));
 }
 
 TEST_CASE("cxx parser catches error in macro expansion")
@@ -4195,8 +4340,9 @@ TEST_CASE("cxx parser catches error in macro expansion")
 		"#define MACRO_WITH_NONEXISTENT_PATH \"this_path_does_not_exist.txt\"\n"
 		"#include MACRO_WITH_NONEXISTENT_PATH\n");
 
-	REQUIRE(utility::containsElement<std::wstring>(
-		client->errors, L"'this_path_does_not_exist.txt' file not found <2:10 2:10>"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			client->errors, L"'this_path_does_not_exist.txt' file not found <2:10 2:10>"));
 }
 
 TEST_CASE("cxx parser finds location of line comment")

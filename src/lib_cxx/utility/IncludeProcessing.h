@@ -1,11 +1,11 @@
 #ifndef INCLUDE_PROCESSING_H
 #define INCLUDE_PROCESSING_H
 
+#include <functional>
 #include <memory>
 #include <set>
 #include <unordered_set>
 #include <vector>
-#include <functional>
 
 class FilePath;
 class IncludeDirective;

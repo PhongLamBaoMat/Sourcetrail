@@ -62,7 +62,8 @@ QtCodeFileList::QtCodeFileList(QtCodeNavigator* navigator)
 	{
 		// set style on scrollbar because it always has bright background by default
 		m_lastSnippetScrollBar->setStyleSheet(
-			utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css"))
+			utility::getStyleSheet(
+				ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css"))
 				.c_str());
 		m_styleSize = m_lastSnippetScrollBar->styleSheet().size();
 	}
@@ -533,10 +534,14 @@ void QtCodeFileList::updateFirstSnippetTitleBar(QtCodeFile* file, int fileTitleB
 				&QtCodeFileTitleBar::maximize,
 				file,
 				&QtCodeFile::clickedMaximizeButton);
-			connect(m_firstSnippetTitleBar, &QtHoverButton::hoveredIn, [this, file]() {
-				m_navigator->setFocusedFile(file);
-				m_navigator->setFocus();
-			});
+			connect(
+				m_firstSnippetTitleBar,
+				&QtHoverButton::hoveredIn,
+				[this, file]()
+				{
+					m_navigator->setFocusedFile(file);
+					m_navigator->setFocus();
+				});
 
 			m_firstSnippetTitleBar->setGeometry(
 				file->pos().x() + mirroredTitleBar->pos().x(),

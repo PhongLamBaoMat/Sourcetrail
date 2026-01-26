@@ -41,8 +41,8 @@ case clang::TypeLoc::Class:                                                     
 #include <clang/AST/TypeLoc.h>
 		case clang::TypeLoc::TypeLocClass::Qualified:
 			return "Qualified";
-        default:
-            return "";
+		default:
+			return "";
 		}
 	}
 

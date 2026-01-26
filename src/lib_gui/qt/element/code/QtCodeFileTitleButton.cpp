@@ -250,7 +250,8 @@ void QtCodeFileTitleButton::updateIcon()
 	else if (!m_isComplete)
 	{
 		setIconPath(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/images/file_incomplete.png"));
+			ResourcePaths::getGuiDirectoryPath().concatenate(
+				L"graph_view/images/file_incomplete.png"));
 	}
 	else
 	{
@@ -264,12 +265,12 @@ void QtCodeFileTitleButton::updateHatching()
 	{
 		FilePath hatchingFilePath = ResourcePaths::getGuiDirectoryPath().concatenate(
 			L"code_view/images/pattern_" +
-			utility::decodeFromUtf8(
-				ColorScheme::getInstance()->getColor("code/file/title/hatching")) +
+			utility::decodeFromUtf8(ColorScheme::getInstance()->getColor("code/file/title/hatching")) +
 			L".png");
 
-		setStyleSheet(QString::fromStdWString(
-			L"#title_button { background-image: url(" + hatchingFilePath.wstr() + L"); }"));
+		setStyleSheet(
+			QString::fromStdWString(
+				L"#title_button { background-image: url(" + hatchingFilePath.wstr() + L"); }"));
 	}
 	else
 	{

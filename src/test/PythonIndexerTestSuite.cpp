@@ -122,8 +122,9 @@ TEST_CASE("python post processing regards class name in call context when adding
 		"		pass\n");
 
 	REQUIRE(storage->calls.size() == 1);
-	REQUIRE(utility::containsElement<std::wstring>(
-		storage->calls, L"test.A1.__init__ -> test.A.__init__"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			storage->calls, L"test.A1.__init__ -> test.A.__init__"));
 
 	REQUIRE(!utility::containsElement<std::wstring>(
 		storage->calls, L"test.A1.__init__ -> test.A1.__init__"));
@@ -147,8 +148,9 @@ TEST_CASE("python post processing regards super() in call context when adding am
 		"		pass\n");
 
 	REQUIRE(storage->calls.size() == 2);
-	REQUIRE(utility::containsElement<std::wstring>(
-		storage->calls, L"test.A1.__init__ -> test.A.__init__"));
+	REQUIRE(
+		utility::containsElement<std::wstring>(
+			storage->calls, L"test.A1.__init__ -> test.A.__init__"));
 
 	REQUIRE(!utility::containsElement<std::wstring>(
 		storage->calls, L"test.A1.__init__ -> test.A1.__init__"));

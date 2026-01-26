@@ -84,14 +84,15 @@ void QtWindowBase::setSizeGripStyle(bool isBlack)
 
 	const std::wstring path = isBlack ? L"size_grip_black.png" : L"size_grip_white.png";
 
-	m_sizeGrip->setStyleSheet(QString::fromStdWString(
-		L"QSizeGrip {"
-		"	max-height: 16px;"
-		"	max-width: 16px;"
-		"	border-image: url(" +
-		ResourcePaths::getGuiDirectoryPath().wstr() + L"window/" + path +
-		L");"
-		"}"));
+	m_sizeGrip->setStyleSheet(
+		QString::fromStdWString(
+			L"QSizeGrip {"
+			"	max-height: 16px;"
+			"	max-width: 16px;"
+			"	border-image: url(" +
+			ResourcePaths::getGuiDirectoryPath().wstr() + L"window/" + path +
+			L");"
+			"}"));
 }
 
 bool QtWindowBase::isSubWindow() const

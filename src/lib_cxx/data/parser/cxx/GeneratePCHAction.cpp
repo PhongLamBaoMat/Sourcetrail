@@ -37,16 +37,17 @@ std::unique_ptr<clang::ASTConsumer> GeneratePCHAction::CreateASTConsumer(
 	const auto& FrontendOpts = CI.getFrontendOpts();
 	auto Buffer = std::make_shared<clang::PCHBuffer>();
 	std::vector<std::unique_ptr<clang::ASTConsumer>> Consumers;
-	Consumers.push_back(std::make_unique<clang::PCHGenerator>(
-		CI.getPreprocessor(),
-		CI.getModuleCache(),
-		OutputFile,
-		Sysroot,
-		Buffer,
-		FrontendOpts.ModuleFileExtensions,
-		true,	 // always allow errors in the PCH
-		FrontendOpts.IncludeTimestamps,
-		+CI.getLangOpts().CacheGeneratedPCH));
+	Consumers.push_back(
+		std::make_unique<clang::PCHGenerator>(
+			CI.getPreprocessor(),
+			CI.getModuleCache(),
+			OutputFile,
+			Sysroot,
+			Buffer,
+			FrontendOpts.ModuleFileExtensions,
+			true,	 // always allow errors in the PCH
+			FrontendOpts.IncludeTimestamps,
+			+CI.getLangOpts().CacheGeneratedPCH));
 	Consumers.push_back(CI.getPCHContainerWriter().CreatePCHContainerGenerator(
 		CI, InFile.str(), OutputFile, std::move(OS), Buffer));
 
@@ -56,7 +57,8 @@ std::unique_ptr<clang::ASTConsumer> GeneratePCHAction::CreateASTConsumer(
 bool GeneratePCHAction::BeginSourceFileAction(clang::CompilerInstance& compiler)
 {
 	clang::Preprocessor& preprocessor = compiler.getPreprocessor();
-	preprocessor.addPPCallbacks(std::make_unique<PreprocessorCallbacks>(
-		compiler.getSourceManager(), m_client, m_canonicalFilePathCache));
+	preprocessor.addPPCallbacks(
+		std::make_unique<PreprocessorCallbacks>(
+			compiler.getSourceManager(), m_client, m_canonicalFilePathCache));
 	return true;
 }

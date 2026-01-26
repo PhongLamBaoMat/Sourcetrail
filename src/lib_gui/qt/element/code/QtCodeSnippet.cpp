@@ -286,10 +286,14 @@ QtHoverButton* QtCodeSnippet::createScopeLine(QBoxLayout* layout)
 	line->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	lineLayout->addWidget(line);
 
-	connect(line, &QtHoverButton::hoveredIn, [this, line]() {
-		m_navigator->setFocusedScopeLine(m_codeArea, line, 0);
-		m_navigator->setFocus();
-	});
+	connect(
+		line,
+		&QtHoverButton::hoveredIn,
+		[this, line]()
+		{
+			m_navigator->setFocusedScopeLine(m_codeArea, line, 0);
+			m_navigator->setFocus();
+		});
 
 	return line;
 }

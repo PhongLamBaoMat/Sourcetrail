@@ -12,7 +12,6 @@ namespace FILE_BAR_TESTS
 // END ------------------------------------------------------------------------
 
 
-
 // TEST: file changed indicator
 // START ----------------------------------------------------------------------
 
@@ -27,32 +26,28 @@ namespace FILE_BAR_TESTS
 // END ------------------------------------------------------------------------
 
 
-
 // TEST: non-indexed file
 // START ----------------------------------------------------------------------
 
-#include "file_bar_files/non_indexed.h" // <- ACTION 1: activate file
+#include "file_bar_files/non_indexed.h"	   // <- ACTION 1: activate file
 
 // END ------------------------------------------------------------------------
-
 
 
 // TEST: incomplete file
 // START ----------------------------------------------------------------------
 
-#include "file_bar_files/incomplete.h" // <- ACTION: activate file
+#include "file_bar_files/incomplete.h"	  // <- ACTION: activate file
 
 // END ------------------------------------------------------------------------
-
 
 
 // TEST: non-indexed & incomplete file
 // START ----------------------------------------------------------------------
 
-#include "file_bar_files/non_indexed_and_incomplete.h" // <- ACTION: activate file
+#include "file_bar_files/non_indexed_and_incomplete.h"	  // <- ACTION: activate file
 
 // END ------------------------------------------------------------------------
-
 
 
 // TEST: edit project in overview
@@ -68,4 +63,4 @@ namespace FILE_BAR_TESTS
 
 // END ------------------------------------------------------------------------
 
-}
+}	 // namespace FILE_BAR_TESTS

@@ -178,18 +178,20 @@ void QtScreenSearchBox::searchQueryChanged()
 
 void QtScreenSearchBox::findMatches()
 {
-	m_controllerProxy->executeAsTask([this](ScreenSearchController* controller) {
-		std::set<std::string> responderNames;
-		for (const auto& p: m_checkBoxes)
+	m_controllerProxy->executeAsTask(
+		[this](ScreenSearchController* controller)
 		{
-			if (p.second->isChecked())
+			std::set<std::string> responderNames;
+			for (const auto& p: m_checkBoxes)
 			{
-				responderNames.insert(p.first);
+				if (p.second->isChecked())
+				{
+					responderNames.insert(p.first);
+				}
 			}
-		}
 
-		controller->search(m_searchBox->text().toLower().toStdWString(), responderNames);
-	});
+			controller->search(m_searchBox->text().toLower().toStdWString(), responderNames);
+		});
 }
 
 void QtScreenSearchBox::returnPressed()

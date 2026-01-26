@@ -115,7 +115,8 @@ TEST_CASE("creating plain copy of all locations in line range")
 	SourceLocation* x = collection.getSourceLocationById(ida);
 
 	x->getSourceLocationFile()->forEachSourceLocation(
-		[&copy, fromLine, toLine](SourceLocation* location) {
+		[&copy, fromLine, toLine](SourceLocation* location)
+		{
 			if (location->getLineNumber() >= fromLine && location->getLineNumber() <= toLine)
 			{
 				copy.addSourceLocationCopy(location);

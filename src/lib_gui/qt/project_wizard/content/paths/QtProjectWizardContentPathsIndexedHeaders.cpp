@@ -111,23 +111,26 @@ QtProjectWizardContentPathsIndexedHeaders::QtProjectWizardContentPathsIndexedHea
 	m_showFilesString = QLatin1String("");
 
 	setTitleString(QStringLiteral("Header Files & Directories to Index"));
-	setHelpString(QString::fromStdString(
-		"The provided " + m_projectKindName +
-		" already specifies which source files are part of your project. But Sourcetrail still "
-		"needs to know which header files to index as part of your project and which to skip. "
-		"Choosing to skip indexing "
-		"your system headers or external frameworks will significantly improve the overall "
-		"indexing performance.<br />"
-		"<br />"
-		"Use this list to define which header files should be indexed by Sourcetrail. Provide a "
-		"directory to recursively "
-		"add all contained files.<br />"
-		"<br />"
-		"You can make use of environment variables with ${ENV_VAR}.<br />"
-		"<br />"
-		"<b>Hint</b>: Just enter the root path of your project if you want Sourcetrail to index "
-		"all contained headers it "
-		"encounters.<br />"));
+	setHelpString(
+		QString::fromStdString(
+			"The provided " + m_projectKindName +
+			" already specifies which source files are part of your project. But Sourcetrail still "
+			"needs to know which header files to index as part of your project and which to skip. "
+			"Choosing to skip indexing "
+			"your system headers or external frameworks will significantly improve the overall "
+			"indexing performance.<br />"
+			"<br />"
+			"Use this list to define which header files should be indexed by Sourcetrail. Provide "
+			"a "
+			"directory to recursively "
+			"add all contained files.<br />"
+			"<br />"
+			"You can make use of environment variables with ${ENV_VAR}.<br />"
+			"<br />"
+			"<b>Hint</b>: Just enter the root path of your project if you want Sourcetrail to "
+			"index "
+			"all contained headers it "
+			"encounters.<br />"));
 }
 
 void QtProjectWizardContentPathsIndexedHeaders::populate(QGridLayout* layout, int& row)
@@ -168,9 +171,10 @@ bool QtProjectWizardContentPathsIndexedHeaders::check()
 		QMessageBox msgBox(m_window);
 		msgBox.setText(
 			QStringLiteral("You didn't specify any Header Files & Directories to Index."));
-		msgBox.setInformativeText(QString::fromStdString(
-			"Sourcetrail will only index the source files listed in the " + m_projectKindName +
-			" file and none of the included header files."));
+		msgBox.setInformativeText(
+			QString::fromStdString(
+				"Sourcetrail will only index the source files listed in the " + m_projectKindName +
+				" file and none of the included header files."));
 		QPushButton* yesButton = msgBox.addButton(
 			QStringLiteral("Continue"), QMessageBox::ButtonRole::YesRole);
 		msgBox.addButton(QStringLiteral("Cancel"), QMessageBox::ButtonRole::NoRole);
@@ -231,9 +235,8 @@ void QtProjectWizardContentPathsIndexedHeaders::buttonClicked()
 				->setPathsList(
 					utility::convert<FilePath, FilePath>(
 						getIndexedPathsDerivedFromCodeblocksProject(codeblocksSettings),
-						[&](const FilePath& path) {
-							return utility::getAsRelativeIfShorter(path, projectPath);
-						}),
+						[&](const FilePath& path)
+						{ return utility::getAsRelativeIfShorter(path, projectPath); }),
 					codeblocksSettings->getIndexedHeaderPaths(),
 					m_settings->getProjectDirectoryPath());
 		}
@@ -277,9 +280,8 @@ void QtProjectWizardContentPathsIndexedHeaders::buttonClicked()
 				->setPathsList(
 					utility::convert<FilePath, FilePath>(
 						getIndexedPathsDerivedFromCDB(cdbSettings),
-						[&](const FilePath& path) {
-							return utility::getAsRelativeIfShorter(path, projectPath);
-						}),
+						[&](const FilePath& path)
+						{ return utility::getAsRelativeIfShorter(path, projectPath); }),
 					cdbSettings->getIndexedHeaderPaths(),
 					m_settings->getProjectDirectoryPath());
 		}

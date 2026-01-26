@@ -68,9 +68,10 @@ void QtTabbedView::setStyleSheet()
 		QtViewWidgetWrapper::getWidgetOfView(this),
 		ColorScheme::getInstance()->getColor("tab/background"));
 
-	m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-													   L"tabbed_view/tabbed_view.css"))
-								.c_str());
+	m_widget->setStyleSheet(
+		utility::getStyleSheet(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"tabbed_view/tabbed_view.css"))
+			.c_str());
 }
 
 bool QtTabbedView::eventFilter(QObject* obj, QEvent* event)

@@ -37,9 +37,8 @@ std::vector<FilePath> utility::partitionFilePathsBySize(std::vector<FilePath> fi
 					sourceFileSizesToCommands.size() * i / partitionCount,
 				sourceFileSizesToCommands.begin() +
 					sourceFileSizesToCommands.size() * (i + 1) / partitionCount,
-				[](const PairType& p, const PairType& q) {
-					return p.second.wstr() < q.second.wstr();
-				});
+				[](const PairType& p, const PairType& q)
+				{ return p.second.wstr() < q.second.wstr(); });
 		}
 	}
 
@@ -130,7 +129,7 @@ FilePath utility::getAsRelativeIfShorter(const FilePath& absolutePath, const Fil
 std::vector<FilePath> utility::getAsRelativeIfShorter(
 	const std::vector<FilePath>& absolutePaths, const FilePath& baseDirectory)
 {
-	return utility::convert<FilePath, FilePath>(absolutePaths, [&](const FilePath& path) {
-		return getAsRelativeIfShorter(path, baseDirectory);
-	});
+	return utility::convert<FilePath, FilePath>(
+		absolutePaths,
+		[&](const FilePath& path) { return getAsRelativeIfShorter(path, baseDirectory); });
 }

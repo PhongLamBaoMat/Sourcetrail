@@ -133,9 +133,8 @@ void Tracer::printTraces()
 	std::multiset<
 		AccumulatedTraceEvent,
 		std::function<bool(const AccumulatedTraceEvent&, const AccumulatedTraceEvent&)>>
-		sortedEvents([](const AccumulatedTraceEvent& a, const AccumulatedTraceEvent& b) {
-			return a.time > b.time;
-		});
+		sortedEvents([](const AccumulatedTraceEvent& a, const AccumulatedTraceEvent& b)
+					 { return a.time > b.time; });
 
 	for (const std::pair<std::string, AccumulatedTraceEvent>& p: accumulatedEvents)
 	{
@@ -240,9 +239,8 @@ void AccumulatingTracer::printTraces()
 	std::multiset<
 		AccumulatedTraceEvent,
 		std::function<bool(const AccumulatedTraceEvent&, const AccumulatedTraceEvent&)>>
-		sortedEvents([](const AccumulatedTraceEvent& a, const AccumulatedTraceEvent& b) {
-			return a.time > b.time;
-		});
+		sortedEvents([](const AccumulatedTraceEvent& a, const AccumulatedTraceEvent& b)
+					 { return a.time > b.time; });
 
 	for (const std::pair<std::string, AccumulatedTraceEvent>& p: m_accumulatedEvents)
 	{

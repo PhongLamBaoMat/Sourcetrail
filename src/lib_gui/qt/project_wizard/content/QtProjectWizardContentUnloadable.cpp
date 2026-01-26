@@ -21,9 +21,11 @@ void QtProjectWizardContentUnloadable::populate(QGridLayout* layout, int& row)
 
 	layoutHorz->addSpacing(60);
 
-	QLabel* infoLabel = new QLabel(QString::fromStdString(
-		"<p>The type \"" + m_settings->getTypeString() +
-		"\" of the selected Source Group is not supported by this version of Sourcetrail.</p>"));
+	QLabel* infoLabel = new QLabel(
+		QString::fromStdString(
+			"<p>The type \"" + m_settings->getTypeString() +
+			"\" of the selected Source Group is not supported by this version of "
+			"Sourcetrail.</p>"));
 	infoLabel->setObjectName(QStringLiteral("info"));
 	infoLabel->setWordWrap(true);
 	layoutHorz->addWidget(infoLabel);

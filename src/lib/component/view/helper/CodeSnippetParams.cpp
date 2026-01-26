@@ -17,11 +17,11 @@ CodeSnippetParams CodeSnippetParams::merge(const CodeSnippetParams& a, const Cod
 		aFile->isComplete(),
 		aFile->isIndexed());
 
-	aFile->forEachSourceLocation(
-		[&locationFile](SourceLocation* loc) { locationFile->addSourceLocationCopy(loc); });
+	aFile->forEachSourceLocation([&locationFile](SourceLocation* loc)
+								 { locationFile->addSourceLocationCopy(loc); });
 
-	bFile->forEachSourceLocation(
-		[&locationFile](SourceLocation* loc) { locationFile->addSourceLocationCopy(loc); });
+	bFile->forEachSourceLocation([&locationFile](SourceLocation* loc)
+								 { locationFile->addSourceLocationCopy(loc); });
 
 	std::string code = first->code;
 

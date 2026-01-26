@@ -19,31 +19,36 @@ void QtTooltipView::createWidgetWrapper()
 
 void QtTooltipView::refreshView()
 {
-	m_onQtThread([=, this]() {
-		m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-														   L"tooltip_view/tooltip_view.css"))
-									.c_str());
-	});
+	m_onQtThread(
+		[=, this]()
+		{
+			m_widget->setStyleSheet(
+				utility::getStyleSheet(
+					ResourcePaths::getGuiDirectoryPath().concatenate(L"tooltip_view/tooltip_view.css"))
+					.c_str());
+		});
 }
 
 void QtTooltipView::showTooltip(const TooltipInfo& info, const View* parent)
 {
-	m_onQtThread([=, this]() {
-		if (m_widget->isHovered())
+	m_onQtThread(
+		[=, this]()
 		{
-			return;
-		}
+			if (m_widget->isHovered())
+			{
+				return;
+			}
 
-		m_widget->hide();
-		m_widget->setTooltipInfo(info);
+			m_widget->hide();
+			m_widget->setTooltipInfo(info);
 
-		if (parent)
-		{
-			m_widget->setParentView(QtViewWidgetWrapper::getWidgetOfView(parent)->parentWidget());
-		}
+			if (parent)
+			{
+				m_widget->setParentView(QtViewWidgetWrapper::getWidgetOfView(parent)->parentWidget());
+			}
 
-		m_widget->show();
-	});
+			m_widget->show();
+		});
 }
 
 void QtTooltipView::hideTooltip(bool force)

@@ -78,15 +78,16 @@ std::vector<std::shared_ptr<IndexerCommand>> SourceGroupPythonEmpty::getIndexerC
 	{
 		if (info.filesToIndex.find(sourceFilePath) != info.filesToIndex.end())
 		{
-			indexerCommands.push_back(std::make_shared<IndexerCommandCustom>(
-				INDEXER_COMMAND_PYTHON,
-				ResourcePaths::getPythonIndexerFilePath().wstr(),
-				args,
-				m_settings->getProjectSettings()->getProjectFilePath(),
-				m_settings->getProjectSettings()->getTempDBFilePath(),
-				std::to_wstring(SqliteIndexStorage::getStorageVersion()),
-				sourceFilePath,
-				true));
+			indexerCommands.push_back(
+				std::make_shared<IndexerCommandCustom>(
+					INDEXER_COMMAND_PYTHON,
+					ResourcePaths::getPythonIndexerFilePath().wstr(),
+					args,
+					m_settings->getProjectSettings()->getProjectFilePath(),
+					m_settings->getProjectSettings()->getTempDBFilePath(),
+					std::to_wstring(SqliteIndexStorage::getStorageVersion()),
+					sourceFilePath,
+					true));
 		}
 	}
 

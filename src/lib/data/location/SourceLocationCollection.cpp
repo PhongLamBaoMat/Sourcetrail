@@ -99,9 +99,8 @@ SourceLocation* SourceLocationCollection::addSourceLocationCopy(const SourceLoca
 
 void SourceLocationCollection::addSourceLocationCopies(const SourceLocationCollection* other)
 {
-	other->forEachSourceLocationFile([this](std::shared_ptr<SourceLocationFile> otherFile) {
-		addSourceLocationCopies(otherFile.get());
-	});
+	other->forEachSourceLocationFile([this](std::shared_ptr<SourceLocationFile> otherFile)
+									 { addSourceLocationCopies(otherFile.get()); });
 }
 
 void SourceLocationCollection::addSourceLocationCopies(const SourceLocationFile* otherFile)
@@ -113,8 +112,8 @@ void SourceLocationCollection::addSourceLocationCopies(const SourceLocationFile*
 		otherFile->isComplete(),
 		otherFile->isIndexed());
 
-	otherFile->forEachSourceLocation(
-		[file](SourceLocation* otherLocation) { file->addSourceLocationCopy(otherLocation); });
+	otherFile->forEachSourceLocation([file](SourceLocation* otherLocation)
+									 { file->addSourceLocationCopy(otherLocation); });
 }
 
 void SourceLocationCollection::addSourceLocationFile(std::shared_ptr<SourceLocationFile> file)
@@ -157,7 +156,7 @@ SourceLocationFile* SourceLocationCollection::createSourceLocationFile(
 std::wostream& operator<<(std::wostream& ostream, const SourceLocationCollection& base)
 {
 	ostream << L"Locations:\n";
-	base.forEachSourceLocationFile(
-		[&ostream](std::shared_ptr<SourceLocationFile> f) { ostream << *(f.get()); });
+	base.forEachSourceLocationFile([&ostream](std::shared_ptr<SourceLocationFile> f)
+								   { ostream << *(f.get()); });
 	return ostream;
 }

@@ -315,12 +315,14 @@ void QtGraphNode::coFocusIn()
 
 	m_isCoFocused = true;
 
-	forEachEdge([](QtGraphEdge* edge) {
-		if (edge->isTrailEdge())
+	forEachEdge(
+		[](QtGraphEdge* edge)
 		{
-			edge->coFocusIn();
-		}
-	});
+			if (edge->isTrailEdge())
+			{
+				edge->coFocusIn();
+			}
+		});
 
 	updateStyle();
 }
@@ -334,12 +336,14 @@ void QtGraphNode::coFocusOut()
 
 	m_isCoFocused = false;
 
-	forEachEdge([](QtGraphEdge* edge) {
-		if (edge->isTrailEdge())
+	forEachEdge(
+		[](QtGraphEdge* edge)
 		{
-			edge->coFocusOut();
-		}
-	});
+			if (edge->isTrailEdge())
+			{
+				edge->coFocusOut();
+			}
+		});
 
 	updateStyle();
 }
@@ -577,10 +581,12 @@ void QtGraphNode::forEachEdge(std::function<void(QtGraphEdge*)> func)
 
 void QtGraphNode::notifyEdgesAfterMove()
 {
-	forEachEdge([](QtGraphEdge* edge) {
-		edge->clearPath();
-		edge->updateLine();
-	});
+	forEachEdge(
+		[](QtGraphEdge* edge)
+		{
+			edge->clearPath();
+			edge->updateLine();
+		});
 
 	for (QtGraphNode* node: m_subNodes)
 	{
@@ -643,8 +649,11 @@ void QtGraphNode::setStyle(const GraphViewStyle::NodeStyle& style)
 
 	if (style.hasHatching)
 	{
-		QtDeviceScaledPixmap pattern(QString::fromStdWString(
-			ResourcePaths::getGuiDirectoryPath().concatenate(L"graph_view/images/pattern.png").wstr()));
+		QtDeviceScaledPixmap pattern(
+			QString::fromStdWString(
+				ResourcePaths::getGuiDirectoryPath()
+					.concatenate(L"graph_view/images/pattern.png")
+					.wstr()));
 		pattern.scaleToHeight(12);
 		QPixmap pixmap = utility::colorizePixmap(pattern.pixmap(), style.color.hatching.c_str());
 
@@ -692,8 +701,11 @@ void QtGraphNode::setStyle(const GraphViewStyle::NodeStyle& style)
 			static_cast<qreal>(style.iconOffset.x + style.iconSize + style.textOffset.x),
 			static_cast<qreal>(style.textOffset.y));
 
-		const float charWidth =
-			QFontMetrics(font).boundingRect(QStringLiteral("QtGraphNode::QtGraphNode::QtGraphNode")).width() / 37.0f;
+		const float charWidth = QFontMetrics(font)
+									.boundingRect(
+										QStringLiteral("QtGraphNode::QtGraphNode::QtGraphNode"))
+									.width() /
+			37.0f;
 		const float charHeight = static_cast<float>(QFontMetrics(font).height());
 		m_matchRect->setRect(
 			static_cast<qreal>(

@@ -84,9 +84,10 @@ QtCodeFileTitleBar::QtCodeFileTitleBar(QWidget* parent, bool isHovering, bool is
 	m_showErrorsButton->hide();
 	titleLayout->addWidget(m_showErrorsButton);
 
-	connect(m_showErrorsButton, &QPushButton::clicked, [this]() {
-		MessageErrorsForFile(m_titleButton->getFilePath()).dispatch();
-	});
+	connect(
+		m_showErrorsButton,
+		&QPushButton::clicked,
+		[this]() { MessageErrorsForFile(m_titleButton->getFilePath()).dispatch(); });
 
 	QColor inactiveColor(0x5E, 0x5D, 0x5D);
 

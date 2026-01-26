@@ -285,24 +285,26 @@ SettingsMigrator ProjectSettings::getMigrations() const
 	SettingsMigrator migrator;
 	migrator.addMigration(
 		1,
-		std::make_shared<SettingsMigrationLambda>([](const SettingsMigration* migration,
-													 Settings* settings) {
-			const std::string language = migration->getValueFromSettings<std::string>(
-				settings, "language_settings/language", "");
-			const std::string standard = migration->getValueFromSettings<std::string>(
-				settings, "language_settings/standard", "");
-
-			if (language == "C" && !utility::isPrefix<std::string>("c", standard))
+		std::make_shared<SettingsMigrationLambda>(
+			[](const SettingsMigration* migration, Settings* settings)
 			{
-				migration->setValueInSettings(settings, "language_settings/standard", "c" + standard);
-			}
+				const std::string language = migration->getValueFromSettings<std::string>(
+					settings, "language_settings/language", "");
+				const std::string standard = migration->getValueFromSettings<std::string>(
+					settings, "language_settings/standard", "");
 
-			if (language == "C++" && !utility::isPrefix<std::string>("c++", standard))
-			{
-				migration->setValueInSettings(
-					settings, "language_settings/standard", "c++" + standard);
-			}
-		}));
+				if (language == "C" && !utility::isPrefix<std::string>("c", standard))
+				{
+					migration->setValueInSettings(
+						settings, "language_settings/standard", "c" + standard);
+				}
+
+				if (language == "C++" && !utility::isPrefix<std::string>("c++", standard))
+				{
+					migration->setValueInSettings(
+						settings, "language_settings/standard", "c++" + standard);
+				}
+			}));
 
 	{
 		const std::string sourceGroupKey = "source_groups/source_group_" + utility::getUuidString();
@@ -372,7 +374,8 @@ SettingsMigrator ProjectSettings::getMigrations() const
 		migrator.addMigration(
 			3,
 			std::make_shared<SettingsMigrationLambda>(
-				[=](const SettingsMigration* migration, Settings* settings) {
+				[=](const SettingsMigration* migration, Settings* settings)
+				{
 					const std::string language = migration->getValueFromSettings<std::string>(
 						settings, "language_settings/language", "");
 

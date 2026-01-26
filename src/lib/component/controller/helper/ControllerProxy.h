@@ -40,8 +40,8 @@ public:
 		{
 			Task::dispatch(
 				m_schedulerId,
-				std::make_shared<TaskLambda>(
-					[func = std::bind(callback, controller, args...)]() { func(); }));
+				std::make_shared<TaskLambda>([func = std::bind(callback, controller, args...)]()
+											 { func(); }));
 		}
 	}
 

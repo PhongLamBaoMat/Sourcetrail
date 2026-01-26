@@ -20,11 +20,13 @@ QtBookmarkBrowser::~QtBookmarkBrowser() {}
 
 void QtBookmarkBrowser::setupBookmarkBrowser()
 {
-	setStyleSheet(
-		(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css")) +
-		 utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"bookmark_view/"
-																		L"bookmark_view.css")))
-			.c_str());
+	setStyleSheet((utility::getStyleSheet(
+					   ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css")) +
+				   utility::getStyleSheet(
+					   ResourcePaths::getGuiDirectoryPath().concatenate(
+						   L"bookmark_view/"
+						   L"bookmark_view.css")))
+					  .c_str());
 
 	m_headerBackground = new QWidget(m_window);
 	m_headerBackground->setObjectName(QStringLiteral("header_background"));

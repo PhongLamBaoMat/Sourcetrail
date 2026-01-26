@@ -11,8 +11,11 @@ QtProgressBar::QtProgressBar(QWidget* parent)
 	: QWidget(parent)
 	, m_percent(0)
 	, m_count(0)
-	, m_pixmap(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/progress_bar_element.png").wstr()))
+	, m_pixmap(
+		  QString::fromStdWString(
+			  ResourcePaths::getGuiDirectoryPath()
+				  .concatenate(L"indexing_dialog/progress_bar_element.png")
+				  .wstr()))
 {
 	m_timer = new QTimer(this);
 	connect(m_timer, &QTimer::timeout, this, &QtProgressBar::animate);

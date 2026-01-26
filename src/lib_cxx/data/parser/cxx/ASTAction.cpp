@@ -30,8 +30,9 @@ std::unique_ptr<clang::ASTConsumer> ASTAction::CreateASTConsumer(
 bool ASTAction::BeginSourceFileAction(clang::CompilerInstance& compiler)
 {
 	clang::Preprocessor& preprocessor = compiler.getPreprocessor();
-	preprocessor.addPPCallbacks(std::make_unique<PreprocessorCallbacks>(
-		compiler.getSourceManager(), m_client, m_canonicalFilePathCache));
+	preprocessor.addPPCallbacks(
+		std::make_unique<PreprocessorCallbacks>(
+			compiler.getSourceManager(), m_client, m_canonicalFilePathCache));
 	preprocessor.addCommentHandler(&m_commentHandler);
 	return true;
 }

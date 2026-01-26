@@ -8,11 +8,15 @@
 
 QtProjectWizardContentPathCodeblocksProject::QtProjectWizardContentPathCodeblocksProject(
 	std::shared_ptr<SourceGroupSettingsCxxCodeblocks> settings, QtProjectWizardWindow* window)
-	: QtProjectWizardContentPath(window), m_settings(settings), m_filePaths([&]() {
-		return utility::getAsRelativeIfShorter(
-			utility::toVector(SourceGroupCxxCodeblocks(m_settings).getAllSourceFilePaths()),
-			m_settings->getProjectDirectoryPath());
-	})
+	: QtProjectWizardContentPath(window)
+	, m_settings(settings)
+	, m_filePaths(
+		  [&]()
+		  {
+			  return utility::getAsRelativeIfShorter(
+				  utility::toVector(SourceGroupCxxCodeblocks(m_settings).getAllSourceFilePaths()),
+				  m_settings->getProjectDirectoryPath());
+		  })
 {
 	setTitleString(QStringLiteral("Code::Blocks Project (.cbp)"));
 	setHelpString(

@@ -89,7 +89,8 @@ void IDECommunicationController::handleSetActiveTokenMessage(
 
 			std::vector<Id> selectedLocationIds;
 			sourceLocationFile->forEachStartSourceLocation(
-				[&selectedLocationIds, &cursorColumn](SourceLocation* startLocation) {
+				[&selectedLocationIds, &cursorColumn](SourceLocation* startLocation)
+				{
 					const SourceLocation* endLocation = startLocation->getEndLocation();
 
 					if ((startLocation->getType() == LOCATION_TOKEN ||

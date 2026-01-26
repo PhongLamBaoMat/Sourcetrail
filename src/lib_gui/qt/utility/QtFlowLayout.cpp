@@ -110,7 +110,7 @@ QSize QtFlowLayout::minimumSize() const
 		size = size.expandedTo(item->minimumSize());
 	}
 
-    int left, top, right, bottom;
+	int left, top, right, bottom;
 	getContentsMargins(&left, &top, &right, &bottom);
 
 	size += QSize(left + right, top + bottom);

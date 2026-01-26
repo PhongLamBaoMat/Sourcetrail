@@ -31,8 +31,8 @@
 #include "compatibilityQt.h"
 #include "utility.h"
 #include "utilityApp.h"
-#include "utilityString.h"
 #include "utilityQt.h"
+#include "utilityString.h"
 
 MouseWheelOverScrollbarFilter::MouseWheelOverScrollbarFilter() {}
 
@@ -146,7 +146,8 @@ void QtCodeArea::lineNumberAreaPaintEvent(QPaintEvent* event)
 	QPainter painter(m_lineNumberArea);
 
 	utility::setWidgetBackgroundColor(
-		m_lineNumberArea, ColorScheme::getInstance()->getColor("code/snippet/line_number/background"));
+		m_lineNumberArea,
+		ColorScheme::getInstance()->getColor("code/snippet/line_number/background"));
 
 	QTextBlock block = firstVisibleBlock();
 	int blockNumber = block.blockNumber();
@@ -872,8 +873,8 @@ void QtCodeArea::mouseMoveEvent(QMouseEvent* event)
 		QScrollBar* scrollbar = horizontalScrollBar();
 		int visibleContentWidth = width() - lineNumberAreaWidth();
 		float deltaPosRatio = float(deltaX) / (visibleContentWidth);
-		scrollbar->setValue(static_cast<int>(
-			scrollbar->value() - std::round(deltaPosRatio * scrollbar->pageStep())));
+		scrollbar->setValue(
+			static_cast<int>(scrollbar->value() - std::round(deltaPosRatio * scrollbar->pageStep())));
 	}
 	else if (m_isDragging)
 	{

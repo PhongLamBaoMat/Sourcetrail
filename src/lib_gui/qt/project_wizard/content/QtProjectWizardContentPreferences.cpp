@@ -278,8 +278,9 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 	// Sourcetrail port
 	m_sourcetrailPort = addLineEdit(
 		QStringLiteral("Sourcetrail Port"),
-		QStringLiteral("<p>Port number that Sourcetrail uses to listen for incoming messages from "
-					   "plugins.</p>"),
+		QStringLiteral(
+			"<p>Port number that Sourcetrail uses to listen for incoming messages from "
+			"plugins.</p>"),
 		layout,
 		row);
 
@@ -392,10 +393,11 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 		addHelpButton(
 			QStringLiteral("JRE System Library"),
-			QStringLiteral("<p>Only required for indexing Java projects.</p>"
-						   "<p>Add the jar files of your JRE System Library. These jars can be "
-						   "found inside your "
-						   "JRE install directory.</p>"),
+			QStringLiteral(
+				"<p>Only required for indexing Java projects.</p>"
+				"<p>Add the jar files of your JRE System Library. These jars can be "
+				"found inside your "
+				"JRE install directory.</p>"),
 			layout,
 			row);
 
@@ -424,10 +426,11 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 
 		addHelpButton(
 			QStringLiteral("Maven Path"),
-			QStringLiteral("<p>Only required for indexing projects using Maven.</p>"
-						   "<p>Provide the location of your installed Maven executable. You can "
-						   "also use the auto "
-						   "detection below.</p>"),
+			QStringLiteral(
+				"<p>Only required for indexing projects using Maven.</p>"
+				"<p>Provide the location of your installed Maven executable. You can "
+				"also use the auto "
+				"detection below.</p>"),
 			layout,
 			row);
 		row++;
@@ -444,16 +447,17 @@ void QtProjectWizardContentPreferences::populate(QGridLayout* layout, int& row)
 	m_pythonPostProcessing = addCheckBox(
 		QStringLiteral("Post Processing"),
 		QStringLiteral("Add ambiguous edges for unsolved references (recommended)"),
-		QStringLiteral("<p>Enable a post processing step to solve unsolved references after the "
-					   "indexing is done. "
-					   "</p>"
-					   "<p>These references will be marked \"ambiguous\" to indicate that some of "
-					   "these edges may "
-					   "never "
-					   "be encountered during runtime of the indexed code because the post "
-					   "processing only relies "
-					   "on "
-					   "symbol names and types.</p>"),
+		QStringLiteral(
+			"<p>Enable a post processing step to solve unsolved references after the "
+			"indexing is done. "
+			"</p>"
+			"<p>These references will be marked \"ambiguous\" to indicate that some of "
+			"these edges may "
+			"never "
+			"be encountered during runtime of the indexed code because the post "
+			"processing only relies "
+			"on "
+			"symbol names and types.</p>"),
 		layout,
 		row);
 

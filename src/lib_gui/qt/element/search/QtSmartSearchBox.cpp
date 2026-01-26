@@ -194,9 +194,10 @@ bool QtSmartSearchBox::event(QEvent* event)
 				}
 				else if (m_highlightedMatch.hasChildren && m_highlightedMatch.tokenNames.size())
 				{
-					setEditText(QString::fromStdWString(
-						m_highlightedMatch.getFullName() +
-						m_highlightedMatch.tokenNames[0].getDelimiter()));
+					setEditText(
+						QString::fromStdWString(
+							m_highlightedMatch.getFullName() +
+							m_highlightedMatch.tokenNames[0].getDelimiter()));
 					requestAutoCompletions();
 				}
 				else

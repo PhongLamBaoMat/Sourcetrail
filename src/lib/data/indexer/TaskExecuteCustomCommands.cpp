@@ -57,148 +57,154 @@ void TaskExecuteCustomCommands::runPythonPostProcessing(PersistentStorage& stora
 
 	std::vector<DataToInsert> dataToInsert;
 	std::vector<StorageOccurrence> occurrencesToDelete;
-	locationCollection->forEachSourceLocationFile([&nodeNameToStorageNodes,
-												   &storage,
-												   &dataToInsert,
-												   &occurrencesToDelete](
-													  std::shared_ptr<SourceLocationFile> locationFile) {
-		const FilePath filePath = locationFile->getFilePath();
-		if (filePath.empty())
+	locationCollection->forEachSourceLocationFile(
+		[&nodeNameToStorageNodes, &storage, &dataToInsert, &occurrencesToDelete](
+			std::shared_ptr<SourceLocationFile> locationFile)
 		{
-			return;
-		}
-		if (!filePath.exists())
-		{
-			LOG_WARNING(L"Skipping post processing for non-existing file: " + filePath.wstr());
-			return;
-		}
+			const FilePath filePath = locationFile->getFilePath();
+			if (filePath.empty())
+			{
+				return;
+			}
+			if (!filePath.exists())
+			{
+				LOG_WARNING(L"Skipping post processing for non-existing file: " + filePath.wstr());
+				return;
+			}
 
-		std::shared_ptr<TextAccess> textAccess = storage.getFileContent(filePath, false);
-		if (textAccess)
-		{
-			std::map<std::wstring, std::vector<std::wstring>> childToParentNodesMap;
+			std::shared_ptr<TextAccess> textAccess = storage.getFileContent(filePath, false);
+			if (textAccess)
+			{
+				std::map<std::wstring, std::vector<std::wstring>> childToParentNodesMap;
 
-			locationFile->forEachStartSourceLocation([textAccess,
-													  &childToParentNodesMap,
-													  &nodeNameToStorageNodes,
-													  &storage,
-													  &dataToInsert,
-													  &occurrencesToDelete](
-														 const SourceLocation* startLoc) {
-				if (!startLoc)
-				{
-					return;
-				}
-				const SourceLocation* endLoc = startLoc->getOtherLocation();
-				if (!endLoc)
-				{
-					return;
-				}
-
-				const std::string tokenLine = textAccess->getLine(
-					static_cast<unsigned int>(startLoc->getLineNumber()));
-				const std::wstring token = utility::decodeFromUtf8(tokenLine.substr(
-					startLoc->getColumnNumber() - 1,
-					endLoc->getColumnNumber() - startLoc->getColumnNumber() + 1));
-
-				std::string prefixString = tokenLine.substr(0, startLoc->getColumnNumber() - 1);
-
-				std::wstring definitionContextName = L"";
-				{
-					std::regex regex("\\s([^\\.()\\s]+)\\.$");
-					std::smatch matches;
-					std::regex_search(prefixString, matches, regex);
-					if (!matches.empty())
+				locationFile->forEachStartSourceLocation(
+					[textAccess,
+					 &childToParentNodesMap,
+					 &nodeNameToStorageNodes,
+					 &storage,
+					 &dataToInsert,
+					 &occurrencesToDelete](const SourceLocation* startLoc)
 					{
-						definitionContextName = utility::decodeFromUtf8(matches.str(1));
-					}
-				}
-				{
-					std::regex regex("\\s(super\\(\\))\\.$");
-					std::smatch matches;
-					std::regex_search(prefixString, matches, regex);
-					if (!matches.empty())
-					{
-						for (const Id elementId: startLoc->getTokenIds())
+						if (!startLoc)
 						{
-							const StorageEdge edge = storage.getEdgeById(elementId);
-							if (edge.id != 0)
-							{
-								NameHierarchy nameHierarchy = storage.getNameHierarchyForNodeId(
-									edge.sourceNodeId);
-								if (nameHierarchy.size() > 1)
-								{
-									std::wstring name = nameHierarchy
-															.getRange(0, nameHierarchy.size() - 1)
-															.back()
-															.getName();
+							return;
+						}
+						const SourceLocation* endLoc = startLoc->getOtherLocation();
+						if (!endLoc)
+						{
+							return;
+						}
 
-									if (!childToParentNodesMap[name].empty())
-									{
-										definitionContextName = childToParentNodesMap[name].front();
-									}
-								}
+						const std::string tokenLine = textAccess->getLine(
+							static_cast<unsigned int>(startLoc->getLineNumber()));
+						const std::wstring token = utility::decodeFromUtf8(tokenLine.substr(
+							startLoc->getColumnNumber() - 1,
+							endLoc->getColumnNumber() - startLoc->getColumnNumber() + 1));
+
+						std::string prefixString = tokenLine.substr(
+							0, startLoc->getColumnNumber() - 1);
+
+						std::wstring definitionContextName = L"";
+						{
+							std::regex regex("\\s([^\\.()\\s]+)\\.$");
+							std::smatch matches;
+							std::regex_search(prefixString, matches, regex);
+							if (!matches.empty())
+							{
+								definitionContextName = utility::decodeFromUtf8(matches.str(1));
 							}
 						}
-					}
-				}
-				{
-					std::vector<StorageNode> targetNodes;
-					if (!definitionContextName.empty())
-					{
-						for (const StorageNode& node: nodeNameToStorageNodes[token])
 						{
-							NameHierarchy nameHierarchy = NameHierarchy::deserialize(
-								node.serializedName);
-							if (nameHierarchy.size() > 1 &&
-								nameHierarchy.getRange(0, nameHierarchy.size() - 1).back().getName() ==
-									definitionContextName)
+							std::regex regex("\\s(super\\(\\))\\.$");
+							std::smatch matches;
+							std::regex_search(prefixString, matches, regex);
+							if (!matches.empty())
 							{
-								targetNodes.push_back(node);
-							}
-						}
-					}
-					if (targetNodes.empty())
-					{
-						targetNodes = nodeNameToStorageNodes[token];
-					}
-
-					for (const StorageNode& targetNode: targetNodes)
-					{
-						for (const Id elementId: startLoc->getTokenIds())
-						{
-							const StorageEdge edge = storage.getEdgeById(elementId);
-							if (edge.id != 0)	 // for node elements this condition will fail
-							{
-								if (Edge::intToType(edge.type) == Edge::EDGE_INHERITANCE)
+								for (const Id elementId: startLoc->getTokenIds())
 								{
-									if (intToNodeKind(targetNode.type) == NODE_CLASS)
+									const StorageEdge edge = storage.getEdgeById(elementId);
+									if (edge.id != 0)
 									{
-										const NameHierarchy chileName =
+										NameHierarchy nameHierarchy =
 											storage.getNameHierarchyForNodeId(edge.sourceNodeId);
-										const NameHierarchy parentName = NameHierarchy::deserialize(
-											targetNode.serializedName);
-										childToParentNodesMap[chileName.back().getName()].push_back(
-											parentName.back().getName());
-									}
-									else
-									{
-										continue;
+										if (nameHierarchy.size() > 1)
+										{
+											std::wstring name =
+												nameHierarchy.getRange(0, nameHierarchy.size() - 1)
+													.back()
+													.getName();
+
+											if (!childToParentNodesMap[name].empty())
+											{
+												definitionContextName =
+													childToParentNodesMap[name].front();
+											}
+										}
 									}
 								}
-
-								dataToInsert.push_back(
-									{StorageEdgeData(edge.type, edge.sourceNodeId, targetNode.id),
-									 startLoc->getLocationId()});
-								occurrencesToDelete.push_back(
-									StorageOccurrence(edge.id, startLoc->getLocationId()));
 							}
 						}
-					}
-				}
-			});
-		}
-	});
+						{
+							std::vector<StorageNode> targetNodes;
+							if (!definitionContextName.empty())
+							{
+								for (const StorageNode& node: nodeNameToStorageNodes[token])
+								{
+									NameHierarchy nameHierarchy = NameHierarchy::deserialize(
+										node.serializedName);
+									if (nameHierarchy.size() > 1 &&
+										nameHierarchy.getRange(0, nameHierarchy.size() - 1)
+												.back()
+												.getName() == definitionContextName)
+									{
+										targetNodes.push_back(node);
+									}
+								}
+							}
+							if (targetNodes.empty())
+							{
+								targetNodes = nodeNameToStorageNodes[token];
+							}
+
+							for (const StorageNode& targetNode: targetNodes)
+							{
+								for (const Id elementId: startLoc->getTokenIds())
+								{
+									const StorageEdge edge = storage.getEdgeById(elementId);
+									if (edge.id != 0)	 // for node elements this condition will fail
+									{
+										if (Edge::intToType(edge.type) == Edge::EDGE_INHERITANCE)
+										{
+											if (intToNodeKind(targetNode.type) == NODE_CLASS)
+											{
+												const NameHierarchy chileName =
+													storage.getNameHierarchyForNodeId(
+														edge.sourceNodeId);
+												const NameHierarchy parentName =
+													NameHierarchy::deserialize(
+														targetNode.serializedName);
+												childToParentNodesMap[chileName.back().getName()]
+													.push_back(parentName.back().getName());
+											}
+											else
+											{
+												continue;
+											}
+										}
+
+										dataToInsert.push_back(
+											{StorageEdgeData(
+												 edge.type, edge.sourceNodeId, targetNode.id),
+											 startLoc->getLocationId()});
+										occurrencesToDelete.push_back(
+											StorageOccurrence(edge.id, startLoc->getLocationId()));
+									}
+								}
+							}
+						}
+					});
+			}
+		});
 
 	storage.setMode(SqliteIndexStorage::STORAGE_MODE_WRITE);
 
@@ -311,11 +317,12 @@ Task::TaskState TaskExecuteCustomCommands::doUpdate(std::shared_ptr<Blackboard> 
 	std::vector<std::shared_ptr<std::thread>> indexerThreads;
 	for (size_t i = 1 /*this method is counting as the first thread*/; i < m_indexerThreadCount; i++)
 	{
-		indexerThreads.push_back(std::make_shared<std::thread>(
-			&TaskExecuteCustomCommands::executeParallelIndexerCommands,
-			this,
-			static_cast<int>(i),
-			blackboard));
+		indexerThreads.push_back(
+			std::make_shared<std::thread>(
+				&TaskExecuteCustomCommands::executeParallelIndexerCommands,
+				this,
+				static_cast<int>(i),
+				blackboard));
 	}
 
 	while (!m_interrupted && !m_serialCommands.empty())

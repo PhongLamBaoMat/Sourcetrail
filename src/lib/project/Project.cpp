@@ -559,11 +559,12 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 	if (info.mode != REFRESH_ALL_FILES &&
 		(info.filesToClear.size() || info.nonIndexedFilesToClear.size()))
 	{
-		taskSequential->addTask(std::make_shared<TaskCleanStorage>(
-			tempStorage,
-			dialogView,
-			utility::toVector(utility::concat(info.filesToClear, info.nonIndexedFilesToClear)),
-			info.mode == REFRESH_UPDATED_AND_INCOMPLETE_FILES));
+		taskSequential->addTask(
+			std::make_shared<TaskCleanStorage>(
+				tempStorage,
+				dialogView,
+				utility::toVector(utility::concat(info.filesToClear, info.nonIndexedFilesToClear)),
+				info.mode == REFRESH_UPDATED_AND_INCOMPLETE_FILES));
 	}
 
 	tempStorage->setProjectSettingsText(
@@ -600,8 +601,8 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 	size_t sourceFileCount = indexerCommandProvider->size() + customIndexerCommandProvider->size();
 
 	taskSequential->addTask(std::make_shared<TaskSetValue<bool>>("shallow_indexing", info.shallow));
-	taskSequential->addTask(std::make_shared<TaskSetValue<int>>(
-		"source_file_count", static_cast<int>(sourceFileCount)));
+	taskSequential->addTask(
+		std::make_shared<TaskSetValue<int>>("source_file_count", static_cast<int>(sourceFileCount)));
 	taskSequential->addTask(std::make_shared<TaskSetValue<int>>("indexed_source_file_count", 0));
 	taskSequential->addTask(std::make_shared<TaskSetValue<bool>>("interrupted_indexing", false));
 	taskSequential->addTask(std::make_shared<TaskSetValue<float>>("index_time", 0.0f));
@@ -651,61 +652,80 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 		taskParserWrapper->setTask(taskParallelIndexing);
 
 		// add task for refilling the indexer command queue
-		taskParallelIndexing->addTask(std::make_shared<TaskFillIndexerCommandsQueue>(
-			m_appUUID, std::move(indexerCommandProvider), 20));
+		taskParallelIndexing->addTask(
+			std::make_shared<TaskFillIndexerCommandsQueue>(
+				m_appUUID, std::move(indexerCommandProvider), 20));
 
 		// add task for indexing
 		bool multiProcess = ApplicationSettings::getInstance()->getMultiProcessIndexingEnabled() &&
 			hasCxxSourceGroup();
-		taskParallelIndexing->addChildTasks(std::make_shared<TaskGroupSequence>()->addChildTasks(
-			// block until there are indexer commands to process
-			std::make_shared<TaskDecoratorRepeat>(
-				TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
-				->addChildTask(std::make_shared<TaskReturnSuccessIf<bool>>(
-					"indexer_command_queue_started", TaskReturnSuccessIf<bool>::CONDITION_EQUALS, false)),
-			std::make_shared<TaskBuildIndex>(
-				adjustedIndexerThreadCount, storageProvider, dialogView, m_appUUID, multiProcess)));
+		taskParallelIndexing->addChildTasks(
+			std::make_shared<TaskGroupSequence>()->addChildTasks(
+				// block until there are indexer commands to process
+				std::make_shared<TaskDecoratorRepeat>(
+					TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
+					->addChildTask(
+						std::make_shared<TaskReturnSuccessIf<bool>>(
+							"indexer_command_queue_started",
+							TaskReturnSuccessIf<bool>::CONDITION_EQUALS,
+							false)),
+				std::make_shared<TaskBuildIndex>(
+					adjustedIndexerThreadCount, storageProvider, dialogView, m_appUUID, multiProcess)));
 
 		// add task for merging the intermediate storages
-		taskParallelIndexing->addTask(std::make_shared<TaskGroupSequence>()->addChildTasks(
-			// block until there are indexers running
-			std::make_shared<TaskDecoratorRepeat>(
-				TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
-				->addChildTask(std::make_shared<TaskReturnSuccessIf<bool>>(
-					"indexer_threads_started", TaskReturnSuccessIf<bool>::CONDITION_EQUALS, false)),
-			// merge until all indexers stopped and nothing left to merge
-			std::make_shared<TaskDecoratorRepeat>(
-				TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 250)
-				->addChildTask(std::make_shared<TaskGroupSelector>()->addChildTasks(
-					std::make_shared<TaskMergeStorages>(storageProvider),
-					std::make_shared<TaskReturnSuccessIf<bool>>(
-						"indexer_threads_stopped",
-						TaskReturnSuccessIf<bool>::CONDITION_EQUALS,
-						false)))));
+		taskParallelIndexing->addTask(
+			std::make_shared<TaskGroupSequence>()->addChildTasks(
+				// block until there are indexers running
+				std::make_shared<TaskDecoratorRepeat>(
+					TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
+					->addChildTask(
+						std::make_shared<TaskReturnSuccessIf<bool>>(
+							"indexer_threads_started",
+							TaskReturnSuccessIf<bool>::CONDITION_EQUALS,
+							false)),
+				// merge until all indexers stopped and nothing left to merge
+				std::make_shared<TaskDecoratorRepeat>(
+					TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 250)
+					->addChildTask(
+						std::make_shared<TaskGroupSelector>()->addChildTasks(
+							std::make_shared<TaskMergeStorages>(storageProvider),
+							std::make_shared<TaskReturnSuccessIf<bool>>(
+								"indexer_threads_stopped",
+								TaskReturnSuccessIf<bool>::CONDITION_EQUALS,
+								false)))));
 
 		// add task for injecting the intermediate storages into the persistent storage
-		taskParallelIndexing->addTask(std::make_shared<TaskGroupSequence>()->addChildTasks(
-			// block until there are indexers running
-			std::make_shared<TaskDecoratorRepeat>(
-				TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
-				->addChildTask(std::make_shared<TaskReturnSuccessIf<bool>>(
-					"indexer_threads_started", TaskReturnSuccessIf<bool>::CONDITION_EQUALS, false)),
-			std::make_shared<TaskDecoratorRepeat>(
-				TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
-				->addChildTask(std::make_shared<TaskGroupSelector>()->addChildTasks(
-					std::make_shared<TaskInjectStorage>(storageProvider, tempStorage),
-					// continuing when indexers still running, even if there are no storages right now.
-					std::make_shared<TaskReturnSuccessIf<bool>>(
-						"indexer_threads_stopped",
-						TaskReturnSuccessIf<bool>::CONDITION_EQUALS,
-						false)))));
+		taskParallelIndexing->addTask(
+			std::make_shared<TaskGroupSequence>()->addChildTasks(
+				// block until there are indexers running
+				std::make_shared<TaskDecoratorRepeat>(
+					TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
+					->addChildTask(
+						std::make_shared<TaskReturnSuccessIf<bool>>(
+							"indexer_threads_started",
+							TaskReturnSuccessIf<bool>::CONDITION_EQUALS,
+							false)),
+				std::make_shared<TaskDecoratorRepeat>(
+					TaskDecoratorRepeat::CONDITION_WHILE_SUCCESS, Task::STATE_SUCCESS, 25)
+					->addChildTask(
+						std::make_shared<TaskGroupSelector>()->addChildTasks(
+							std::make_shared<TaskInjectStorage>(storageProvider, tempStorage),
+							// continuing when indexers still running, even if there are no storages
+							// right now.
+							std::make_shared<TaskReturnSuccessIf<bool>>(
+								"indexer_threads_stopped",
+								TaskReturnSuccessIf<bool>::CONDITION_EQUALS,
+								false)))));
 
 		// add task that notifies the user of what's going on
 		taskSequential->addTask(	// we don't need to hide this dialog again, because it's
 									// overridden by other dialogs later on.
-			std::make_shared<TaskLambda>([dialogView]() {
-				dialogView->showUnknownProgressDialog(L"Finish Indexing", L"Saving\nRemaining Data");
-			}));
+			std::make_shared<TaskLambda>(
+				[dialogView]()
+				{
+					dialogView->showUnknownProgressDialog(
+						L"Finish Indexing", L"Saving\nRemaining Data");
+				}));
 
 		// add task that injects the remaining intermediate storages into the persistent storage
 		taskSequential->addTask(
@@ -723,48 +743,67 @@ void Project::buildIndex(RefreshInfo info, std::shared_ptr<DialogView> dialogVie
 		const int adjustedIndexerThreadCount = std::min<int>(
 			indexerThreadCount, static_cast<int>(customIndexerCommandProvider->size()));
 
-		taskSequential->addTask(std::make_shared<TaskExecuteCustomCommands>(
-			std::move(customIndexerCommandProvider),
-			tempStorage,
-			dialogView,
-			adjustedIndexerThreadCount,
-			getProjectSettingsFilePath().getParentDirectory()));
+		taskSequential->addTask(
+			std::make_shared<TaskExecuteCustomCommands>(
+				std::move(customIndexerCommandProvider),
+				tempStorage,
+				dialogView,
+				adjustedIndexerThreadCount,
+				getProjectSettingsFilePath().getParentDirectory()));
 	}
 
 	taskSequential->addTask(std::make_shared<TaskFinishParsing>(tempStorage, dialogView));
 
-	taskSequential->addTask(std::make_shared<TaskGroupSelector>()->addChildTasks(
-		std::make_shared<TaskGroupSequence>()->addChildTasks(
-			std::make_shared<TaskFindKeyOnBlackboard>("keep_database"),
-			std::make_shared<TaskLambda>([dialogView, this]() {
-				Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([dialogView, this]() {
-								   swapToTempStorage(dialogView);
-							   }));
-			})),
-		std::make_shared<TaskGroupSequence>()->addChildTasks(
-			std::make_shared<TaskFindKeyOnBlackboard>("discard_database"),
-			std::make_shared<TaskLambda>([this]() {
-				Task::dispatch(
-					TabId::app(), std::make_shared<TaskLambda>([this]() { discardTempStorage(); }));
-			}))));
+	taskSequential->addTask(
+		std::make_shared<TaskGroupSelector>()->addChildTasks(
+			std::make_shared<TaskGroupSequence>()->addChildTasks(
+				std::make_shared<TaskFindKeyOnBlackboard>("keep_database"),
+				std::make_shared<TaskLambda>(
+					[dialogView, this]()
+					{
+						Task::dispatch(
+							TabId::app(),
+							std::make_shared<TaskLambda>([dialogView, this]()
+														 { swapToTempStorage(dialogView); }));
+					})),
+			std::make_shared<TaskGroupSequence>()->addChildTasks(
+				std::make_shared<TaskFindKeyOnBlackboard>("discard_database"),
+				std::make_shared<TaskLambda>(
+					[this]()
+					{
+						Task::dispatch(
+							TabId::app(),
+							std::make_shared<TaskLambda>([this]() { discardTempStorage(); }));
+					}))));
 
-	taskSequential->addTask(std::make_shared<TaskLambda>([dialogView, this]() {
-		m_refreshStage = RefreshStageType::NONE;
-		MessageIndexingFinished().dispatch();
-	}));
+	taskSequential->addTask(
+		std::make_shared<TaskLambda>(
+			[dialogView, this]()
+			{
+				m_refreshStage = RefreshStageType::NONE;
+				MessageIndexingFinished().dispatch();
+			}));
 
-	taskSequential->addTask(std::make_shared<TaskGroupSelector>()->addChildTasks(
-		std::make_shared<TaskGroupSequence>()->addChildTasks(
-			std::make_shared<TaskFindKeyOnBlackboard>("refresh_database"),
-			std::make_shared<TaskLambda>([dialogView, this]() {
-				Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([dialogView, this]() {
-								   MessageIndexingShowDialog().dispatch();
-								   MessageRefresh().refreshAll().dispatch();
-							   }));
-			})),
-		std::make_shared<TaskGroupSequence>()->addChildTasks(std::make_shared<TaskLambda>([this]() {
-			Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([this]() {}));
-		}))));
+	taskSequential->addTask(
+		std::make_shared<TaskGroupSelector>()->addChildTasks(
+			std::make_shared<TaskGroupSequence>()->addChildTasks(
+				std::make_shared<TaskFindKeyOnBlackboard>("refresh_database"),
+				std::make_shared<TaskLambda>(
+					[dialogView, this]()
+					{
+						Task::dispatch(
+							TabId::app(),
+							std::make_shared<TaskLambda>(
+								[dialogView, this]()
+								{
+									MessageIndexingShowDialog().dispatch();
+									MessageRefresh().refreshAll().dispatch();
+								}));
+					})),
+			std::make_shared<TaskGroupSequence>()->addChildTasks(
+				std::make_shared<TaskLambda>(
+					[this]()
+					{ Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([this]() {})); }))));
 
 	taskSequential->setIsBackgroundTask(true);
 	Task::dispatch(TabId::app(), taskSequential);

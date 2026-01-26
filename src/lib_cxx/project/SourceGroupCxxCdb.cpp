@@ -125,13 +125,14 @@ std::shared_ptr<IndexerCommandProvider> SourceGroupCxxCdb::getIndexerCommandProv
 				utility::append(cdbFlags, includePchFlags);
 			}
 
-			provider->addCommand(std::make_shared<IndexerCommandCxx>(
-				sourcePath,
-				utility::concat(indexedHeaderPaths, {sourcePath}),
-				excludeFilters,
-				std::set<FilePathFilter>(),
-				FilePath(utility::decodeFromUtf8(command.Directory)),
-				utility::concat(cdbFlags, compilerFlags)));
+			provider->addCommand(
+				std::make_shared<IndexerCommandCxx>(
+					sourcePath,
+					utility::concat(indexedHeaderPaths, {sourcePath}),
+					excludeFilters,
+					std::set<FilePathFilter>(),
+					FilePath(utility::decodeFromUtf8(command.Directory)),
+					utility::concat(cdbFlags, compilerFlags)));
 		}
 	}
 
@@ -169,9 +170,9 @@ std::shared_ptr<Task> SourceGroupCxxCdb::getPreIndexTask(
 					FilePath(utility::decodeFromUtf8(command.Filename)).makeCanonical();
 				if (!sourcePath.isAbsolute())
 				{
-					sourcePath = FilePath(utility::decodeFromUtf8(
-											  command.Directory + '/' + command.Filename))
-									 .makeCanonical();
+					sourcePath =
+						FilePath(utility::decodeFromUtf8(command.Directory + '/' + command.Filename))
+							.makeCanonical();
 					if (!sourcePath.isAbsolute())
 					{
 						sourcePath =
@@ -236,15 +237,17 @@ std::vector<std::wstring> SourceGroupCxxCdb::getBaseCompilerFlags() const
 
 	utility::append(
 		compilerFlags,
-		IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(utility::concat(
-			m_settings->getHeaderSearchPathsExpandedAndAbsolute(),
-			appSettings->getHeaderSearchPathsExpanded())));
+		IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(
+			utility::concat(
+				m_settings->getHeaderSearchPathsExpandedAndAbsolute(),
+				appSettings->getHeaderSearchPathsExpanded())));
 
 	utility::append(
 		compilerFlags,
-		IndexerCommandCxx::getCompilerFlagsForFrameworkSearchPaths(utility::concat(
-			m_settings->getFrameworkSearchPathsExpandedAndAbsolute(),
-			appSettings->getFrameworkSearchPathsExpanded())));
+		IndexerCommandCxx::getCompilerFlagsForFrameworkSearchPaths(
+			utility::concat(
+				m_settings->getFrameworkSearchPathsExpandedAndAbsolute(),
+				appSettings->getFrameworkSearchPathsExpanded())));
 
 	return compilerFlags;
 }

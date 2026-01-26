@@ -47,8 +47,9 @@ std::vector<FilePath> IndexerCommandCxx::getSourceFilesFromCDB(
 					fileString);
 				if (!commands.empty())
 				{
-					path = FilePath(utility::decodeFromUtf8(
-										commands.front().Directory + '/' + commands.front().Filename))
+					path = FilePath(
+							   utility::decodeFromUtf8(
+								   commands.front().Directory + '/' + commands.front().Filename))
 							   .makeCanonical();
 				}
 			}

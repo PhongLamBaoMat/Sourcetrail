@@ -178,8 +178,8 @@ std::set<FilePath> Project::getAllCxxHeaderSearchPathsCanonical() const
 		}
 	}
 
-	OrderedCache<FilePath, FilePath> canonicalDirectoryPathCache(
-		[](const FilePath& path) { return path.getCanonical(); });
+	OrderedCache<FilePath, FilePath> canonicalDirectoryPathCache([](const FilePath& path)
+																 { return path.getCanonical(); });
 
 	std::set<FilePath> paths;
 	for (std::shared_ptr<const Target> target: m_targets)
@@ -225,32 +225,35 @@ std::vector<std::shared_ptr<IndexerCommandCxx>> Project::getIndexerCommands(
 		sourceGroupSettings->getFrameworkSearchPathsExpandedAndAbsolute(),
 		appSettings->getFrameworkSearchPathsExpanded());
 
-	OrderedCache<std::wstring, std::vector<std::wstring>> optionsCache([&](const std::wstring& targetName) {
-		std::vector<std::wstring> compilerFlags;
-		for (std::shared_ptr<Target> target: m_targets)
+	OrderedCache<std::wstring, std::vector<std::wstring>> optionsCache(
+		[&](const std::wstring& targetName)
 		{
-			if (target && target->getTitle() == targetName)
+			std::vector<std::wstring> compilerFlags;
+			for (std::shared_ptr<Target> target: m_targets)
 			{
-				if (std::shared_ptr<const Compiler> compiler = target->getCompiler())
+				if (target && target->getTitle() == targetName)
 				{
-					compilerFlags = utility::concat(
-						IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(
-							utility::convert<std::wstring, FilePath>(compiler->getDirectories())),
-						compiler->getOptions());
-					break;
+					if (std::shared_ptr<const Compiler> compiler = target->getCompiler())
+					{
+						compilerFlags = utility::concat(
+							IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(
+								utility::convert<std::wstring, FilePath>(compiler->getDirectories())),
+							compiler->getOptions());
+						break;
+					}
 				}
 			}
-		}
 
-		utility::append(
-			compilerFlags,
-			IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(systemHeaderSearchPaths));
-		utility::append(
-			compilerFlags,
-			IndexerCommandCxx::getCompilerFlagsForFrameworkSearchPaths(frameworkSearchPaths));
-		utility::append(compilerFlags, sourceGroupSettings->getCompilerFlags());
-		return compilerFlags;
-	});
+			utility::append(
+				compilerFlags,
+				IndexerCommandCxx::getCompilerFlagsForSystemHeaderSearchPaths(
+					systemHeaderSearchPaths));
+			utility::append(
+				compilerFlags,
+				IndexerCommandCxx::getCompilerFlagsForFrameworkSearchPaths(frameworkSearchPaths));
+			utility::append(compilerFlags, sourceGroupSettings->getCompilerFlags());
+			return compilerFlags;
+		});
 
 	std::vector<std::shared_ptr<IndexerCommandCxx>> indexerCommands;
 	std::vector<std::shared_ptr<IndexerCommandCxx>> nonTargetIndexerCommands;
@@ -283,33 +286,37 @@ std::vector<std::shared_ptr<IndexerCommandCxx>> Project::getIndexerCommands(
 
 		if (!unit->getTargetNames().size())
 		{
-			nonTargetIndexerCommands.push_back(std::make_shared<IndexerCommandCxx>(
-				filePath,
-				utility::concat(indexedHeaderPaths, {filePath}),
-				excludeFilters,
-				std::set<FilePathFilter>(),
-				sourceGroupSettings->getCodeblocksProjectPathExpandedAndAbsolute().getParentDirectory(),
-				utility::concat(
-					optionsCache.getValue(L""),
-					std::vector<std::wstring>(
-						{IndexerCommandCxx::getCompilerFlagLanguageStandard(languageStandard),
-						 filePath.wstr()}))));
+			nonTargetIndexerCommands.push_back(
+				std::make_shared<IndexerCommandCxx>(
+					filePath,
+					utility::concat(indexedHeaderPaths, {filePath}),
+					excludeFilters,
+					std::set<FilePathFilter>(),
+					sourceGroupSettings->getCodeblocksProjectPathExpandedAndAbsolute()
+						.getParentDirectory(),
+					utility::concat(
+						optionsCache.getValue(L""),
+						std::vector<std::wstring>(
+							{IndexerCommandCxx::getCompilerFlagLanguageStandard(languageStandard),
+							 filePath.wstr()}))));
 			continue;
 		}
 
 		for (const std::wstring& targetName: unit->getTargetNames())
 		{
-			indexerCommands.push_back(std::make_shared<IndexerCommandCxx>(
-				filePath,
-				utility::concat(indexedHeaderPaths, {filePath}),
-				excludeFilters,
-				std::set<FilePathFilter>(),
-				sourceGroupSettings->getCodeblocksProjectPathExpandedAndAbsolute().getParentDirectory(),
-				utility::concat(
-					optionsCache.getValue(targetName),
-					std::vector<std::wstring>(
-						{IndexerCommandCxx::getCompilerFlagLanguageStandard(languageStandard),
-						 filePath.wstr()}))));
+			indexerCommands.push_back(
+				std::make_shared<IndexerCommandCxx>(
+					filePath,
+					utility::concat(indexedHeaderPaths, {filePath}),
+					excludeFilters,
+					std::set<FilePathFilter>(),
+					sourceGroupSettings->getCodeblocksProjectPathExpandedAndAbsolute()
+						.getParentDirectory(),
+					utility::concat(
+						optionsCache.getValue(targetName),
+						std::vector<std::wstring>(
+							{IndexerCommandCxx::getCompilerFlagLanguageStandard(languageStandard),
+							 filePath.wstr()}))));
 		}
 	}
 

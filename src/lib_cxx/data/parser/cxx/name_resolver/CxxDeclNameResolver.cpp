@@ -273,8 +273,9 @@ std::unique_ptr<CxxDeclName> CxxDeclNameResolver::getDeclName(const clang::Named
 						}
 					}
 				}
-				parameterTypeNames.push_back(CxxTypeName::makeUnsolvedIfNull(
-					typenNameResolver.getName(functionDecl->parameters()[i]->getType())));
+				parameterTypeNames.push_back(
+					CxxTypeName::makeUnsolvedIfNull(
+						typenNameResolver.getName(functionDecl->parameters()[i]->getType())));
 			}
 
 			if (!clang::isa<clang::CXXMethodDecl>(declaration) && isStatic)

@@ -16,16 +16,14 @@ namespace ERROR_TESTS
 // END ------------------------------------------------------------------------
 
 
-
 // TEST: hover error
 // START ----------------------------------------------------------------------
 
-int x = y(); // <- ACTION: hover error locations
+int x = y();	// <- ACTION: hover error locations
 
 // RESULT: tooltip with error message is shown: use of undeclared identifier 'y'
 
 // END ------------------------------------------------------------------------
-
 
 
 // TEST: error activation
@@ -36,12 +34,10 @@ class Sample
 public:
 	bool foo() const
 	{
-		something(); // <- ACTION: click on error
+		something();	// <- ACTION: click on error
 	}
 
-	voi something()
-	{
-	}
+	voi something() {}
 };
 
 // RESULT:
@@ -49,7 +45,6 @@ public:
 // - Reference navigation on top is updated with 2/3 references
 
 // END ------------------------------------------------------------------------
-
 
 
 // TEST: error iteration
@@ -61,4 +56,4 @@ public:
 
 // END ------------------------------------------------------------------------
 
-}
+}	 // namespace ERROR_TESTS

@@ -44,8 +44,9 @@ QWidget* QtIndexingDialog::createErrorWidget(QBoxLayout* layout)
 	errorCount->setObjectName(QStringLiteral("errorCount"));
 	errorCount->setAttribute(Qt::WA_LayoutUsesWidgetRect);	  // fixes layouting on Mac
 
-	errorCount->setIcon(QPixmap(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/error.png").wstr())));
+	errorCount->setIcon(QPixmap(
+		QString::fromStdWString(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/error.png").wstr())));
 	errorLayout->addWidget(errorCount);
 
 	QtHelpButton* helpButton = new QtHelpButton(QtHelpButtonInfo(createErrorHelpButtonInfo()));
@@ -59,8 +60,9 @@ QWidget* QtIndexingDialog::createErrorWidget(QBoxLayout* layout)
 
 QLabel* QtIndexingDialog::createFlagLabel(QWidget* parent)
 {
-	QtDeviceScaledPixmap flag(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/flag.png").wstr()));
+	QtDeviceScaledPixmap flag(
+		QString::fromStdWString(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/flag.png").wstr()));
 	flag.scaleToWidth(120);
 
 	QLabel* flagLabel = new QLabel(parent);
@@ -78,16 +80,19 @@ QtIndexingDialog::QtIndexingDialog(bool isSubWindow, QWidget* parent)
 {
 	m_window->setStyleSheet(
 		m_window->styleSheet() +
-		QStringLiteral("#window { "
-					   "background: #2E3C86;"
-					   "border: none;"
-					   "}"));
+		QStringLiteral(
+			"#window { "
+			"background: #2E3C86;"
+			"border: none;"
+			"}"));
 
-	setStyleSheet(
-		(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css")) +
-		 utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"indexing_dialog/"
-																		L"indexing_dialog.css")))
-			.c_str());
+	setStyleSheet((utility::getStyleSheet(
+					   ResourcePaths::getGuiDirectoryPath().concatenate(L"window/window.css")) +
+				   utility::getStyleSheet(
+					   ResourcePaths::getGuiDirectoryPath().concatenate(
+						   L"indexing_dialog/"
+						   L"indexing_dialog.css")))
+					  .c_str());
 
 	m_layout = new QVBoxLayout(this);
 	m_layout->setContentsMargins(20, 20, 20, 0);

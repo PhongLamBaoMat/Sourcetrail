@@ -154,8 +154,9 @@ void CxxAstVisitorComponentContext::endTraverseClassTemplatePartialSpecializatio
 
 void CxxAstVisitorComponentContext::beginTraverseDeclRefExpr(clang::DeclRefExpr* s)
 {
-	m_templateArgumentContext.push_back(std::make_shared<CxxContextDecl>(
-		s->getDecl()));	   // e.g. used for recording usage of template arguments within function calls
+	m_templateArgumentContext.push_back(
+		std::make_shared<CxxContextDecl>(s->getDecl()));	// e.g. used for recording usage of template
+															// arguments within function calls
 }
 
 void CxxAstVisitorComponentContext::endTraverseDeclRefExpr(clang::DeclRefExpr* s)

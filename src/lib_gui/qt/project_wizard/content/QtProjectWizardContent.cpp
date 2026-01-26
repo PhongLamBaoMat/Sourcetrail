@@ -136,10 +136,13 @@ void QtProjectWizardContent::filesButtonClicked()
 	m_window->saveContent();
 	m_window->refreshContent();
 
-	std::thread([&]() {
-		const std::vector<FilePath> filePaths = getFilePaths();
-		m_showFilesFunctor(filePaths);
-	}).detach();
+	std::thread(
+		[&]()
+		{
+			const std::vector<FilePath> filePaths = getFilePaths();
+			m_showFilesFunctor(filePaths);
+		})
+		.detach();
 }
 
 void QtProjectWizardContent::showFilesDialog(const std::vector<FilePath>& filePaths)

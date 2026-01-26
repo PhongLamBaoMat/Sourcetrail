@@ -204,9 +204,8 @@ std::shared_ptr<TextAccess> generateExpectedOutput(
 	std::sort(
 		indexerCommands.begin(),
 		indexerCommands.end(),
-		[](std::shared_ptr<IndexerCommand> a, std::shared_ptr<IndexerCommand> b) {
-			return a->getSourceFilePath().wstr() < b->getSourceFilePath().wstr();
-		});
+		[](std::shared_ptr<IndexerCommand> a, std::shared_ptr<IndexerCommand> b)
+		{ return a->getSourceFilePath().wstr() < b->getSourceFilePath().wstr(); });
 
 	std::wstring outputString;
 	for (std::shared_ptr<IndexerCommand> indexerCommand: indexerCommands)

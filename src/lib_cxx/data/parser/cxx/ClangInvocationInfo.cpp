@@ -1,13 +1,13 @@
 #include "ClangInvocationInfo.h"
 
+#include <clang/Basic/Version.h>
 #include <clang/Driver/Compilation.h>
 #include <clang/Driver/Driver.h>
 #include <clang/Driver/Options.h>
 #include <clang/Frontend/CompilerInvocation.h>
 #include <clang/Frontend/TextDiagnosticPrinter.h>
-#include <clang/Tooling/Tooling.h>
 #include <clang/Tooling/CompilationDatabase.h>
-#include <clang/Basic/Version.h>
+#include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/ArrayRef.h>
 #include <llvm/Option/ArgList.h>
 #include <llvm/Support/TargetSelect.h>
@@ -24,16 +24,18 @@ clang::driver::Driver* newDriver(
 	const char* BinaryName,
 	clang::IntrusiveRefCntPtr<llvm::vfs::FileSystem> VFS)
 {
-	#if CLANG_VERSION_MAJOR > 11
+#if CLANG_VERSION_MAJOR > 11
 	clang::driver::Driver* CompilerDriver = new clang::driver::Driver(
-		BinaryName, llvm::sys::getDefaultTargetTriple(), *Diagnostics,
-		"clang_based_tool", std::move(VFS));
-	#else
-	clang::driver::Driver* CompilerDriver = new clang::driver::Driver(
-		BinaryName, llvm::sys::getDefaultTargetTriple(), *Diagnostics,
+		BinaryName,
+		llvm::sys::getDefaultTargetTriple(),
+		*Diagnostics,
+		"clang_based_tool",
 		std::move(VFS));
+#else
+	clang::driver::Driver* CompilerDriver = new clang::driver::Driver(
+		BinaryName, llvm::sys::getDefaultTargetTriple(), *Diagnostics, std::move(VFS));
 	CompilerDriver->setTitle("clang_based_tool");
-	#endif
+#endif
 	return CompilerDriver;
 }
 }	 // namespace

@@ -289,9 +289,10 @@ std::string SqliteStorage::getMetaValue(const std::string& key) const
 void SqliteStorage::insertOrUpdateMetaValue(const std::string& key, const std::string& value)
 {
 	CppSQLite3Statement stmt = m_database.compileStatement(
-		std::string("INSERT OR REPLACE INTO meta(id, key, value) VALUES("
-					"(SELECT id FROM meta WHERE key = ?), ?, ?"
-					");")
+		std::string(
+			"INSERT OR REPLACE INTO meta(id, key, value) VALUES("
+			"(SELECT id FROM meta WHERE key = ?), ?, ?"
+			");")
 			.c_str());
 
 	stmt.bind(1, key.c_str());

@@ -17,11 +17,15 @@ void QtUndoRedoView::createWidgetWrapper()
 
 void QtUndoRedoView::refreshView()
 {
-	m_onQtThread([=, this]() {
-		m_widget->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-														   L"undoredo_view/undoredo_view.css"))
-									.c_str());
-	});
+	m_onQtThread(
+		[=, this]()
+		{
+			m_widget->setStyleSheet(
+				utility::getStyleSheet(
+					ResourcePaths::getGuiDirectoryPath().concatenate(
+						L"undoredo_view/undoredo_view.css"))
+					.c_str());
+		});
 }
 
 void QtUndoRedoView::setRedoButtonEnabled(bool enabled)

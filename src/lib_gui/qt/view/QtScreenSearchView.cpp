@@ -38,12 +38,15 @@ void QtScreenSearchView::createWidgetWrapper()
 
 void QtScreenSearchView::refreshView()
 {
-	m_onQtThread([=, this]() {
-		m_bar->setStyleSheet(
-			utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-									   L"screen_search_view/screen_search_view.css"))
-				.c_str());
-	});
+	m_onQtThread(
+		[=, this]()
+		{
+			m_bar->setStyleSheet(
+				utility::getStyleSheet(
+					ResourcePaths::getGuiDirectoryPath().concatenate(
+						L"screen_search_view/screen_search_view.css"))
+					.c_str());
+		});
 }
 
 void QtScreenSearchView::setMatchCount(size_t matchCount)

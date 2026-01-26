@@ -59,10 +59,12 @@ void QtMainView::hideView(View* view)
 
 void QtMainView::setViewEnabled(View* view, bool enabled)
 {
-	m_onQtThread([=]() {
-		QWidget* widget = QtViewWidgetWrapper::getWidgetOfView(view);
-		widget->setEnabled(enabled);
-	});
+	m_onQtThread(
+		[=]()
+		{
+			QWidget* widget = QtViewWidgetWrapper::getWidgetOfView(view);
+			widget->setEnabled(enabled);
+		});
 }
 
 View* QtMainView::findFloatingView(const std::string& name) const
@@ -125,15 +127,17 @@ void QtMainView::setTitle(const std::wstring& title)
 
 void QtMainView::activateWindow()
 {
-	m_onQtThread([=, this]() {
-		// It's platform dependent which of these commands does the right thing, for now we just use
-		// them all at once.
-		m_window->activateWindow();
-		m_window->setEnabled(true);
-		m_window->raise();
-		m_window->setFocus(Qt::ActiveWindowFocusReason);
-		m_window->setWindowState(m_window->windowState() & ~Qt::WindowMinimized);
-	});
+	m_onQtThread(
+		[=, this]()
+		{
+			// It's platform dependent which of these commands does the right thing, for now we just
+			// use them all at once.
+			m_window->activateWindow();
+			m_window->setEnabled(true);
+			m_window->raise();
+			m_window->setFocus(Qt::ActiveWindowFocusReason);
+			m_window->setWindowState(m_window->windowState() & ~Qt::WindowMinimized);
+		});
 }
 
 void QtMainView::updateRecentProjectMenu()
@@ -178,9 +182,11 @@ void QtMainView::handleMessage(MessageWindowChanged* message)
 	// Fixes an issue where newly added QtWidgets don't fully respond to focus events on macOS
 	if (utility::getOsType() == OS_MAC)
 	{
-		m_onQtThread([=, this]() {
-			m_window->hide();
-			m_window->show();
-		});
+		m_onQtThread(
+			[=, this]()
+			{
+				m_window->hide();
+				m_window->show();
+			});
 	}
 }

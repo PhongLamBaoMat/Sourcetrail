@@ -29,9 +29,11 @@ TEST_CASE("maven wrapper detects source directories of simple projects")
 			FilePath(L"data/UtilityMavenTestSuite").makeAbsolute(),
 			false);
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/simple_maven_project/src/main/java").makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/simple_maven_project/src/main/java")
+					.makeAbsolute()));
 
 		REQUIRE(!utility::containsElement<FilePath>(
 			result,
@@ -53,13 +55,17 @@ TEST_CASE("maven wrapper detects source and test directories of simple projects"
 			FilePath(L"data/UtilityMavenTestSuite").makeAbsolute(),
 			true);
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/simple_maven_project/src/main/java").makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/simple_maven_project/src/main/java")
+					.makeAbsolute()));
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/simple_maven_project/src/test/java").makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/simple_maven_project/src/test/java")
+					.makeAbsolute()));
 	}
 }
 
@@ -77,15 +83,17 @@ TEST_CASE("maven wrapper detects source directories of nested modules")
 			FilePath(L"data/UtilityMavenTestSuite").makeAbsolute(),
 			false);
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_1/src/main/java")
-				.makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_1/src/main/java")
+					.makeAbsolute()));
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_2/src/main/java")
-				.makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_2/src/main/java")
+					.makeAbsolute()));
 
 		REQUIRE(!utility::containsElement<FilePath>(
 			result,
@@ -113,25 +121,29 @@ TEST_CASE("maven wrapper detects source and test directories of nested modules")
 			FilePath(L"data/UtilityMavenTestSuite").makeAbsolute(),
 			true);
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_1/src/main/java")
-				.makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_1/src/main/java")
+					.makeAbsolute()));
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_2/src/main/java")
-				.makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_2/src/main/java")
+					.makeAbsolute()));
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_1/src/test/java")
-				.makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_1/src/test/java")
+					.makeAbsolute()));
 
-		REQUIRE(utility::containsElement<FilePath>(
-			result,
-			FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_2/src/test/java")
-				.makeAbsolute()));
+		REQUIRE(
+			utility::containsElement<FilePath>(
+				result,
+				FilePath(L"data/UtilityMavenTestSuite/nested_maven_project/module_2/src/test/java")
+					.makeAbsolute()));
 	}
 }
 

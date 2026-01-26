@@ -54,8 +54,9 @@ QtStatusBar::QtStatusBar(): m_text(this), m_ideStatusText(this)
 			QStringLiteral("QPushButton { color: #D00000; margin-right: 0; spacing: none; }"));
 		m_errorButton.setIcon(
 			utility::colorizePixmap(
-				QPixmap(QString::fromStdWString(
-					ResourcePaths::getGuiDirectoryPath().concatenate(L"statusbar_view/dot.png").wstr())),
+				QPixmap(
+					QString::fromStdWString(
+						ResourcePaths::getGuiDirectoryPath().concatenate(L"statusbar_view/dot.png").wstr())),
 				QColor(0xD0, 0, 0))
 				.scaledToHeight(12));
 		m_errorButton.setCursor(Qt::PointingHandCursor);

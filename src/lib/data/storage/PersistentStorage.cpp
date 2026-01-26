@@ -1,7 +1,7 @@
 #include "PersistentStorage.h"
 
-#include <queue>
 #include <map>
+#include <queue>
 
 #include "AccessKind.h"
 #include "ApplicationSettings.h"
@@ -1644,8 +1644,9 @@ std::shared_ptr<SourceLocationCollection> PersistentStorage::getSourceLocationsF
 		std::make_shared<SourceLocationCollection>();
 	for (const std::pair<Id, FilePath>& p: filePaths)
 	{
-		collection->addSourceLocationFile(std::make_shared<SourceLocationFile>(
-			p.second, getFileNodeLanguage(p.first), true, false, false));
+		collection->addSourceLocationFile(
+			std::make_shared<SourceLocationFile>(
+				p.second, getFileNodeLanguage(p.first), true, false, false));
 	}
 
 	if (nonFileIds.size())
@@ -2453,8 +2454,10 @@ TooltipSnippet PersistentStorage::getTooltipSnippetForNode(const StorageNode& no
 		typeNames.insert(std::make_pair(nameHierarchy.getQualifiedName(), node.id));
 		for (const auto& typeNode: m_sqliteIndexStorage.getAllByIds<StorageNode>(typeNodeIds))
 		{
-			typeNames.insert(std::make_pair(
-				NameHierarchy::deserialize(typeNode.serializedName).getQualifiedName(), typeNode.id));
+			typeNames.insert(
+				std::make_pair(
+					NameHierarchy::deserialize(typeNode.serializedName).getQualifiedName(),
+					typeNode.id));
 		}
 
 		std::vector<std::pair<size_t, size_t>> locationRanges;

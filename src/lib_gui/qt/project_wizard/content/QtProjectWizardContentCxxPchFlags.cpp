@@ -26,10 +26,11 @@ void QtProjectWizardContentCxxPchFlags::populate(QGridLayout* layout, int& row)
 
 	const QString optionHelp(
 		m_isCDB ? QStringLiteral("Check <b>") + optionText +
-				QStringLiteral("</b> to use the flags specified "
-							   "in the first compile command of the Compilation Database and all "
-							   "flags specified "
-							   "at 'Additional Compiler Flags'.")
+				QStringLiteral(
+					  "</b> to use the flags specified "
+					  "in the first compile command of the Compilation Database and all "
+					  "flags specified "
+					  "at 'Additional Compiler Flags'.")
 				: QStringLiteral("Check <b>") + optionText +
 				QStringLiteral("</b> to reuse the flags specified at 'Compiler Flags'."));
 

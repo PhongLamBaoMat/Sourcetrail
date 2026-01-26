@@ -103,14 +103,14 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 		connect(
 			options,
 			QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
-			[this, searchBoxToContainer](QAbstractButton* button) {
-				searchBoxToContainer->setEnabled(button == m_optionTo);
-			});
+			[this, searchBoxToContainer](QAbstractButton* button)
+			{ searchBoxToContainer->setEnabled(button == m_optionTo); });
 
 		connect(
 			m_searchBoxFrom,
 			&QtSmartSearchBox::autocomplete,
-			[this](const std::wstring& query, NodeTypeSet acceptedNodeTypes) {
+			[this](const std::wstring& query, NodeTypeSet acceptedNodeTypes)
+			{
 				m_controllerProxy.executeAsTaskWithArgs(
 					&CustomTrailController::autocomplete, query, true);
 			});
@@ -118,7 +118,8 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 		connect(
 			m_searchBoxTo,
 			&QtSmartSearchBox::autocomplete,
-			[this](const std::wstring& query, NodeTypeSet acceptedNodeTypes) {
+			[this](const std::wstring& query, NodeTypeSet acceptedNodeTypes)
+			{
 				m_controllerProxy.executeAsTaskWithArgs(
 					&CustomTrailController::autocomplete, query, false);
 			});
@@ -146,16 +147,20 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 		valueLabel->setMinimumWidth(20);
 		hLayout->addWidget(valueLabel);
 
-		connect(m_slider, &QSlider::valueChanged, [this, valueLabel](int) {
-			if (m_slider->value() == m_slider->maximum())
+		connect(
+			m_slider,
+			&QSlider::valueChanged,
+			[this, valueLabel](int)
 			{
-				valueLabel->setText(QStringLiteral("inf"));
-			}
-			else
-			{
-				valueLabel->setText(QString::number(m_slider->value()));
-			}
-		});
+				if (m_slider->value() == m_slider->maximum())
+				{
+					valueLabel->setText(QStringLiteral("inf"));
+				}
+				else
+				{
+					valueLabel->setText(QString::number(m_slider->value()));
+				}
+			});
 
 		hLayout->addStretch();
 	}
@@ -190,27 +195,28 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 		std::vector<QString> nodeFilters;
 		std::vector<QColor> nodeColors;
 
-		const std::vector<NodeKind> nodeKinds = {// NODE_SYMBOL,
-												 NODE_TYPE,
-												 NODE_BUILTIN_TYPE,
-												 // NODE_MODULE,
-												 // NODE_NAMESPACE,
-												 // NODE_PACKAGE,
-												 NODE_CLASS,
-												 NODE_STRUCT,
-												 NODE_UNION,
-												 NODE_INTERFACE,
-												 NODE_TYPEDEF,
-												 NODE_TYPE_PARAMETER,
-												 NODE_ENUM,
-												 NODE_ENUM_CONSTANT,
-												 NODE_GLOBAL_VARIABLE,
-												 NODE_FIELD,
-												 NODE_FUNCTION,
-												 NODE_METHOD,
-												 NODE_FILE,
-												 NODE_MACRO,
-												 NODE_ANNOTATION};
+		const std::vector<NodeKind> nodeKinds = {
+			// NODE_SYMBOL,
+			NODE_TYPE,
+			NODE_BUILTIN_TYPE,
+			// NODE_MODULE,
+			// NODE_NAMESPACE,
+			// NODE_PACKAGE,
+			NODE_CLASS,
+			NODE_STRUCT,
+			NODE_UNION,
+			NODE_INTERFACE,
+			NODE_TYPEDEF,
+			NODE_TYPE_PARAMETER,
+			NODE_ENUM,
+			NODE_ENUM_CONSTANT,
+			NODE_GLOBAL_VARIABLE,
+			NODE_FIELD,
+			NODE_FUNCTION,
+			NODE_METHOD,
+			NODE_FILE,
+			NODE_MACRO,
+			NODE_ANNOTATION};
 
 		for (NodeKind t: nodeKinds)
 		{
@@ -286,65 +292,70 @@ QtCustomTrailView::QtCustomTrailView(ViewLayout* viewLayout)
 
 		connect(cancelButton, &QPushButton::clicked, [this]() { hide(); });
 
-		connect(searchButton, &QPushButton::clicked, [this]() {
-			if (m_searchBoxFrom->getMatches().size() == 0 ||
-				m_searchBoxFrom->getMatches().front().tokenIds.size() == 0)
+		connect(
+			searchButton,
+			&QPushButton::clicked,
+			[this]()
 			{
-				setError(QStringLiteral("No 'Start Symbol' symbol found."));
-				return;
-			}
-
-			Id startId = m_searchBoxFrom->getMatches().front().tokenIds.front();
-			Id endId = 0;
-
-			if (m_optionReferencing->isChecked())
-			{
-				std::swap(startId, endId);
-			}
-			else if (m_optionTo->isChecked())
-			{
-				if (m_searchBoxTo->getMatches().size() &&
-					m_searchBoxTo->getMatches().front().tokenIds.size())
+				if (m_searchBoxFrom->getMatches().size() == 0 ||
+					m_searchBoxFrom->getMatches().front().tokenIds.size() == 0)
 				{
-					endId = m_searchBoxTo->getMatches().front().tokenIds.front();
-				}
-				else
-				{
-					setError(QStringLiteral("No 'Target Symbol' symbol found."));
+					setError(QStringLiteral("No 'Start Symbol' symbol found."));
 					return;
 				}
-			}
 
-			NodeKindMask nodeTypes = getCheckedNodeTypes();
-			Edge::TypeMask edgeTypes = getCheckedEdgeTypes();
+				Id startId = m_searchBoxFrom->getMatches().front().tokenIds.front();
+				Id endId = 0;
 
-			if (!nodeTypes)
-			{
-				setError(QStringLiteral("No 'Nodes' selected."));
-				return;
-			}
+				if (m_optionReferencing->isChecked())
+				{
+					std::swap(startId, endId);
+				}
+				else if (m_optionTo->isChecked())
+				{
+					if (m_searchBoxTo->getMatches().size() &&
+						m_searchBoxTo->getMatches().front().tokenIds.size())
+					{
+						endId = m_searchBoxTo->getMatches().front().tokenIds.front();
+					}
+					else
+					{
+						setError(QStringLiteral("No 'Target Symbol' symbol found."));
+						return;
+					}
+				}
 
-			if (!edgeTypes)
-			{
-				setError(QStringLiteral("No 'Edges' selected."));
-				return;
-			}
+				NodeKindMask nodeTypes = getCheckedNodeTypes();
+				Edge::TypeMask edgeTypes = getCheckedEdgeTypes();
 
-			MessageActivateTrail message(
-				startId,
-				endId,
-				nodeTypes,
-				edgeTypes,
-				m_nodeNonIndexed->isChecked(),
-				m_slider->value() == m_slider->maximum() ? 0 : m_slider->value(),
-				m_horizontalButton->isChecked());
+				if (!nodeTypes)
+				{
+					setError(QStringLiteral("No 'Nodes' selected."));
+					return;
+				}
 
-			m_controllerProxy.executeAsTaskWithArgs(&CustomTrailController::activateTrail, message);
+				if (!edgeTypes)
+				{
+					setError(QStringLiteral("No 'Edges' selected."));
+					return;
+				}
 
-			setError(QLatin1String(""));
+				MessageActivateTrail message(
+					startId,
+					endId,
+					nodeTypes,
+					edgeTypes,
+					m_nodeNonIndexed->isChecked(),
+					m_slider->value() == m_slider->maximum() ? 0 : m_slider->value(),
+					m_horizontalButton->isChecked());
 
-			hide();
-		});
+				m_controllerProxy.executeAsTaskWithArgs(
+					&CustomTrailController::activateTrail, message);
+
+				setError(QLatin1String(""));
+
+				hide();
+			});
 	}
 }
 
@@ -352,62 +363,70 @@ void QtCustomTrailView::createWidgetWrapper() {}
 
 void QtCustomTrailView::refreshView()
 {
-	m_onQtThread([this]() {
-		updateStyleSheet();
-		m_searchBoxFrom->refreshStyle();
-		m_searchBoxTo->refreshStyle();
-	});
+	m_onQtThread(
+		[this]()
+		{
+			updateStyleSheet();
+			m_searchBoxFrom->refreshStyle();
+			m_searchBoxTo->refreshStyle();
+		});
 }
 
 void QtCustomTrailView::clearView()
 {
-	m_onQtThread([this]() {
-		m_searchBoxFrom->setMatches({});
-		m_searchBoxTo->setMatches({});
-	});
+	m_onQtThread(
+		[this]()
+		{
+			m_searchBoxFrom->setMatches({});
+			m_searchBoxTo->setMatches({});
+		});
 }
 
 void QtCustomTrailView::setAvailableNodeAndEdgeTypes(NodeKindMask nodeTypes, Edge::TypeMask edgeTypes)
 {
-	m_onQtThread([this, nodeTypes, edgeTypes]() {
-		for (QCheckBox* filter: m_nodeFilters)
+	m_onQtThread(
+		[this, nodeTypes, edgeTypes]()
 		{
-			if (filter == m_nodeNonIndexed)
+			for (QCheckBox* filter: m_nodeFilters)
 			{
-				continue;
+				if (filter == m_nodeNonIndexed)
+				{
+					continue;
+				}
+
+				bool enabled = nodeTypes &
+					getNodeKindForReadableNodeKindString(filter->text().toStdWString());
+				filter->setEnabled(enabled);
+				filter->setVisible(enabled);
 			}
 
-			bool enabled = nodeTypes &
-				getNodeKindForReadableNodeKindString(filter->text().toStdWString());
-			filter->setEnabled(enabled);
-			filter->setVisible(enabled);
-		}
-
-		for (QCheckBox* filter: m_edgeFilters)
-		{
-			bool enabled = false;
-			if (filter == m_edgeMember)
+			for (QCheckBox* filter: m_edgeFilters)
 			{
-				enabled = edgeTypes & Edge::EDGE_MEMBER;
-			}
-			else
-			{
-				enabled = edgeTypes &
-					Edge::getTypeForReadableTypeString(filter->text().toStdWString());
-			}
+				bool enabled = false;
+				if (filter == m_edgeMember)
+				{
+					enabled = edgeTypes & Edge::EDGE_MEMBER;
+				}
+				else
+				{
+					enabled = edgeTypes &
+						Edge::getTypeForReadableTypeString(filter->text().toStdWString());
+				}
 
-			filter->setEnabled(enabled);
-			filter->setVisible(enabled);
-		}
-	});
+				filter->setEnabled(enabled);
+				filter->setVisible(enabled);
+			}
+		});
 }
 
 void QtCustomTrailView::showView()
 {
-	m_onQtThread([this]() {
-		show();
-		raise();
-	});
+	m_onQtThread(
+		[this]()
+		{
+			show();
+			raise();
+		});
 }
 
 void QtCustomTrailView::hideView()
@@ -417,16 +436,18 @@ void QtCustomTrailView::hideView()
 
 void QtCustomTrailView::showAutocompletions(const std::vector<SearchMatch>& autocompletions, bool from)
 {
-	m_onQtThread([this, autocompletions, from]() {
-		if (from)
+	m_onQtThread(
+		[this, autocompletions, from]()
 		{
-			m_searchBoxFrom->setAutocompletionList(autocompletions);
-		}
-		else
-		{
-			m_searchBoxTo->setAutocompletionList(autocompletions);
-		}
-	});
+			if (from)
+			{
+				m_searchBoxFrom->setAutocompletionList(autocompletions);
+			}
+			else
+			{
+				m_searchBoxTo->setAutocompletionList(autocompletions);
+			}
+		});
 }
 
 void QtCustomTrailView::keyPressEvent(QKeyEvent* event)
@@ -496,8 +517,11 @@ QVBoxLayout* QtCustomTrailView::addFilters(
 	mainLayout->addLayout(filterALayout);
 	mainLayout->addLayout(filterBLayout);
 
-	QPixmap pixmap(QString::fromStdString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"custom_trail_view/images/circle.png").str()));
+	QPixmap pixmap(
+		QString::fromStdString(
+			ResourcePaths::getGuiDirectoryPath()
+				.concatenate(L"custom_trail_view/images/circle.png")
+				.str()));
 	for (size_t i = 0; i < filters.size(); i++)
 	{
 		QCheckBox* checkBox = new QCheckBox(filters[i]);
@@ -557,22 +581,30 @@ QHBoxLayout* QtCustomTrailView::addCheckButtons(const std::vector<QCheckBox*>& c
 	buttonLayout->addWidget(uncheckButton);
 	buttonLayout->addStretch();
 
-	connect(checkButton, &QPushButton::clicked, [&checkBoxes]() {
-		for (QCheckBox* box: checkBoxes)
+	connect(
+		checkButton,
+		&QPushButton::clicked,
+		[&checkBoxes]()
 		{
-			if (box->isEnabled())
+			for (QCheckBox* box: checkBoxes)
 			{
-				box->setChecked(true);
+				if (box->isEnabled())
+				{
+					box->setChecked(true);
+				}
 			}
-		}
-	});
+		});
 
-	connect(uncheckButton, &QPushButton::clicked, [&checkBoxes]() {
-		for (QCheckBox* box: checkBoxes)
+	connect(
+		uncheckButton,
+		&QPushButton::clicked,
+		[&checkBoxes]()
 		{
-			box->setChecked(false);
-		}
-	});
+			for (QCheckBox* box: checkBoxes)
+			{
+				box->setChecked(false);
+			}
+		});
 
 	return buttonLayout;
 }

@@ -60,9 +60,11 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 
 		{
 			m_prevReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"), true);
+				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"),
+				true);
 			m_nextReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"), true);
+				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"),
+				true);
 
 			m_prevReferenceButton->setObjectName(QStringLiteral("reference_button_previous"));
 			m_nextReferenceButton->setObjectName(QStringLiteral("reference_button_next"));
@@ -91,9 +93,11 @@ QtCodeNavigator::QtCodeNavigator(QWidget* parent)
 
 		{
 			m_prevLocalReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"), true);
+				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_up.png"),
+				true);
 			m_nextLocalReferenceButton = new QtSearchBarButton(
-				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"), true);
+				ResourcePaths::getGuiDirectoryPath().concatenate(L"code_view/images/arrow_down.png"),
+				true);
 
 			m_prevLocalReferenceButton->setObjectName(
 				QStringLiteral("local_reference_button_previous"));
@@ -219,8 +223,9 @@ void QtCodeNavigator::updateReferenceCount(
 	}
 
 	m_refLabel->setMinimumWidth(
-		m_refLabel->fontMetrics().boundingRect(
-			QString(QString::number(referenceCount).size() * 2, 'a') + "/ references").width() +
+		m_refLabel->fontMetrics()
+			.boundingRect(QString(QString::number(referenceCount).size() * 2, 'a') + "/ references")
+			.width() +
 		30);
 
 	m_prevReferenceButton->setEnabled(referenceCount > 1);
@@ -239,8 +244,10 @@ void QtCodeNavigator::updateReferenceCount(
 	}
 
 	m_localRefLabel->setMinimumWidth(
-		m_localRefLabel->fontMetrics().boundingRect(
-			QString(QString::number(localReferenceCount).size() * 2, 'a') + "/ local references").width() +
+		m_localRefLabel->fontMetrics()
+			.boundingRect(
+				QString(QString::number(localReferenceCount).size() * 2, 'a') + "/ local references")
+			.width() +
 		30);
 
 	m_nextLocalReferenceButton->setVisible(localReferenceCount > 1);
@@ -614,7 +621,8 @@ void QtCodeNavigator::scrollTo(const CodeScrollParams& params, bool animated, bo
 	switch (params.type)
 	{
 	case CodeScrollParams::Type::TO_REFERENCE:
-		func = [=, this]() {
+		func = [=, this]()
+		{
 			m_current->scrollTo(
 				params.filePath,
 				0,
@@ -626,12 +634,12 @@ void QtCodeNavigator::scrollTo(const CodeScrollParams& params, bool animated, bo
 		};
 		break;
 	case CodeScrollParams::Type::TO_FILE:
-		func = [=, this]() {
-			m_current->scrollTo(params.filePath, 0, 0, 0, animated, params.target, focusTarget);
-		};
+		func = [=, this]()
+		{ m_current->scrollTo(params.filePath, 0, 0, 0, animated, params.target, focusTarget); };
 		break;
 	case CodeScrollParams::Type::TO_LINE:
-		func = [=, this]() {
+		func = [=, this]()
+		{
 			m_current->scrollTo(
 				params.filePath, params.line, 0, 0, animated, params.target, focusTarget);
 		};
@@ -639,7 +647,8 @@ void QtCodeNavigator::scrollTo(const CodeScrollParams& params, bool animated, bo
 	case CodeScrollParams::Type::TO_VALUE:
 		if ((m_mode == MODE_LIST) == params.inListMode)
 		{
-			func = [=, this]() {
+			func = [=, this]()
+			{
 				QAbstractScrollArea* area = m_current->getScrollArea();
 				if (area)
 				{
@@ -720,7 +729,8 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 		currentFilePath = currentFocus.area->getFilePath();
 	}
 
-	auto moveFocus = [=, this](CodeFocusHandler::Direction direction) {
+	auto moveFocus = [=, this](CodeFocusHandler::Direction direction)
+	{
 		if (!alt && !ctrl)
 		{
 			if (shift)
@@ -741,7 +751,8 @@ void QtCodeNavigator::keyPressEvent(QKeyEvent* event)
 		}
 	};
 
-	auto moveView = [=, this](CodeFocusHandler::Direction direction) {
+	auto moveView = [=, this](CodeFocusHandler::Direction direction)
+	{
 		if (!alt && !shift && ctrl)
 		{
 			QAbstractScrollArea* scrollArea = currentFocus.area;

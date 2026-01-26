@@ -46,7 +46,8 @@ QtListBox::QtListBox(QWidget* parent, const QString& listName): QFrame(parent), 
 	connect(m_list, &QListWidget::doubleClicked, this, &QtListBox::doubleClicked);
 
 	setStyleSheet(
-		utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/listbox.css")).c_str());
+		utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(L"window/listbox.css"))
+			.c_str());
 	layout->addWidget(m_list, 5);
 
 	QWidget* buttonContainer = new QWidget(this);

@@ -49,10 +49,11 @@ void QtRecentProjectButton::handleButtonClick()
 	{
 		QMessageBox msgBox;
 		msgBox.setText(QStringLiteral("Missing Project File"));
-		msgBox.setInformativeText(QString::fromStdWString(
-			L"<p>Couldn't find \"" + m_projectFilePath.wstr() +
-			L"\" on your filesystem.</p><p>Do you want to remove it from recent project "
-			L"list?</p>"));
+		msgBox.setInformativeText(
+			QString::fromStdWString(
+				L"<p>Couldn't find \"" + m_projectFilePath.wstr() +
+				L"\" on your filesystem.</p><p>Do you want to remove it from recent project "
+				L"list?</p>"));
 		msgBox.addButton(QStringLiteral("Remove"), QMessageBox::ButtonRole::YesRole);
 		msgBox.addButton(QStringLiteral("Keep"), QMessageBox::ButtonRole::NoRole);
 		msgBox.setIcon(QMessageBox::Icon::Question);
@@ -79,18 +80,24 @@ void QtRecentProjectButton::handleButtonClick()
 
 QtStartScreen::QtStartScreen(QWidget* parent)
 	: QtWindow(true, parent)
-	, m_cppIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/cpp_icon.png").wstr()))
-	, m_cIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/c_icon.png").wstr()))
-	, m_pythonIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/python_icon.png").wstr()))
-	, m_javaIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/java_icon.png").wstr()))
-	, m_projectIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/empty_icon.png").wstr()))
-	, m_githubIcon(QString::fromStdWString(
-		  ResourcePaths::getGuiDirectoryPath().concatenate(L"startscreen/github_icon.png").wstr()))
+	, m_cppIcon(
+		  QString::fromStdWString(
+			  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/cpp_icon.png").wstr()))
+	, m_cIcon(
+		  QString::fromStdWString(
+			  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/c_icon.png").wstr()))
+	, m_pythonIcon(
+		  QString::fromStdWString(
+			  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/python_icon.png").wstr()))
+	, m_javaIcon(
+		  QString::fromStdWString(
+			  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/java_icon.png").wstr()))
+	, m_projectIcon(
+		  QString::fromStdWString(
+			  ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/empty_icon.png").wstr()))
+	, m_githubIcon(
+		  QString::fromStdWString(
+			  ResourcePaths::getGuiDirectoryPath().concatenate(L"startscreen/github_icon.png").wstr()))
 {
 }
 
@@ -160,16 +167,18 @@ void QtStartScreen::updateButtons()
 		}
 		i++;
 	}
-	setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-											 L"startscreen/startscreen.css"))
-					  .c_str());
+	setStyleSheet(
+		utility::getStyleSheet(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"startscreen/startscreen.css"))
+			.c_str());
 }
 
 void QtStartScreen::setupStartScreen()
 {
-	setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-											 L"startscreen/startscreen.css"))
-					  .c_str());
+	setStyleSheet(
+		utility::getStyleSheet(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"startscreen/startscreen.css"))
+			.c_str());
 	addLogo();
 
 	QHBoxLayout* layout = new QHBoxLayout();

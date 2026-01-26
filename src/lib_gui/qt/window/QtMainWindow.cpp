@@ -121,8 +121,9 @@ QtMainWindow::QtMainWindow()
 	setCentralWidget(nullptr);
 	setDockNestingEnabled(true);
 
-	setWindowIcon(QIcon(QString::fromStdWString(
-		ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/logo_1024_1024.png").wstr())));
+	setWindowIcon(QIcon(
+		QString::fromStdWString(
+			ResourcePaths::getGuiDirectoryPath().concatenate(L"icon/logo_1024_1024.png").wstr())));
 	setWindowFlags(Qt::Widget);
 
 	QApplication* app = dynamic_cast<QApplication*>(QCoreApplication::instance());
@@ -133,9 +134,10 @@ QtMainWindow::QtMainWindow()
 	if (utility::getOsType() != OS_MAC)
 	{
 		// can only be done once, because resetting the style on the QCoreApplication causes crash
-		app->setStyleSheet(utility::getStyleSheet(ResourcePaths::getGuiDirectoryPath().concatenate(
-													  L"main/scrollbar.css"))
-							   .c_str());
+		app->setStyleSheet(
+			utility::getStyleSheet(
+				ResourcePaths::getGuiDirectoryPath().concatenate(L"main/scrollbar.css"))
+				.c_str());
 	}
 
 	setupProjectMenu();

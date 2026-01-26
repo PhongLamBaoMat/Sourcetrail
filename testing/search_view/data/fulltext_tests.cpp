@@ -14,7 +14,6 @@ namespace FULLTEXT_TESTS
 // END ------------------------------------------------------------------------
 
 
-
 // TEST: enter button
 // START ----------------------------------------------------------------------
 
@@ -22,7 +21,6 @@ namespace FULLTEXT_TESTS
 // Result: Code view shows 5 references
 
 // END ------------------------------------------------------------------------
-
 
 
 // TEST: mouse click
@@ -34,7 +32,6 @@ namespace FULLTEXT_TESTS
 // END ------------------------------------------------------------------------
 
 
-
 // TEST: implicit
 // START ----------------------------------------------------------------------
 
@@ -42,7 +39,6 @@ namespace FULLTEXT_TESTS
 // Result: fulltext search is used and shows 2 references
 
 // END ------------------------------------------------------------------------
-
 
 
 // TEST: case sensitive
@@ -53,4 +49,4 @@ namespace FULLTEXT_TESTS
 
 // END ------------------------------------------------------------------------
 
-}
+}	 // namespace FULLTEXT_TESTS

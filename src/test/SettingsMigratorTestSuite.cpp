@@ -310,11 +310,12 @@ TEST_CASE("migrator with lambda")
 	SettingsMigrator migrator;
 	migrator.addMigration(
 		1,
-		std::make_shared<SettingsMigrationLambda>([](const SettingsMigration* migration,
-													 Settings* settings) {
-			migration->setValueInSettings<int>(
-				settings, "value", migration->getValueFromSettings<int>(settings, "value", 0) * 2);
-		}));
+		std::make_shared<SettingsMigrationLambda>(
+			[](const SettingsMigration* migration, Settings* settings)
+			{
+				migration->setValueInSettings<int>(
+					settings, "value", migration->getValueFromSettings<int>(settings, "value", 0) * 2);
+			}));
 	migrator.migrate(&settingsBefore, 1);
 
 	REQUIRE(settingsBefore.getAsText() == settingsAfter.getAsText());
@@ -338,18 +339,20 @@ TEST_CASE("migrator with multiple lambdas")
 	SettingsMigrator migrator;
 	migrator.addMigration(
 		1,
-		std::make_shared<SettingsMigrationLambda>([](const SettingsMigration* migration,
-													 Settings* settings) {
-			migration->setValueInSettings<int>(
-				settings, "value", migration->getValueFromSettings<int>(settings, "value", 0) * 2);
-		}));
+		std::make_shared<SettingsMigrationLambda>(
+			[](const SettingsMigration* migration, Settings* settings)
+			{
+				migration->setValueInSettings<int>(
+					settings, "value", migration->getValueFromSettings<int>(settings, "value", 0) * 2);
+			}));
 	migrator.addMigration(
 		2,
-		std::make_shared<SettingsMigrationLambda>([](const SettingsMigration* migration,
-													 Settings* settings) {
-			migration->setValueInSettings<int>(
-				settings, "value", migration->getValueFromSettings<int>(settings, "value", 0) - 1);
-		}));
+		std::make_shared<SettingsMigrationLambda>(
+			[](const SettingsMigration* migration, Settings* settings)
+			{
+				migration->setValueInSettings<int>(
+					settings, "value", migration->getValueFromSettings<int>(settings, "value", 0) - 1);
+			}));
 	migrator.migrate(&settingsBefore, 2);
 
 	REQUIRE(settingsBefore.getAsText() == settingsAfter.getAsText());
