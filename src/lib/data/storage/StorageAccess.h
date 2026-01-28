@@ -8,6 +8,7 @@
 #include "types.h"
 
 #include "BookmarkCategory.h"
+#include "Edge.h"
 #include "EdgeBookmark.h"
 #include "ErrorCountInfo.h"
 #include "ErrorFilter.h"

@@ -4,7 +4,6 @@
 
 #include "AppPath.h"
 #include "ApplicationSettings.h"
-#include "ConsoleLogger.h"
 #include "FileLogger.h"
 #include "InterprocessIndexer.h"
 #include "LanguagePackageManager.h"

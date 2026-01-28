@@ -3,7 +3,6 @@
 #include <QLabel>
 #include <QPushButton>
 
-#include "MessageErrorsHelpMessage.h"
 #include "QtDeviceScaledPixmap.h"
 #include "QtHelpButton.h"
 #include "ResourcePaths.h"

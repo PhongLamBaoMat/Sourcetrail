@@ -1,12 +1,11 @@
 #ifndef PARSER_CLIENT_IMPL_H
 #define PARSER_CLIENT_IMPL_H
 
-#include <set>
-
 #include "DefinitionKind.h"
+#include "Edge.h"
 #include "IntermediateStorage.h"
 #include "LocationType.h"
-#include "Node.h"
+#include "NodeKind.h"
 #include "ParserClient.h"
 
 class ParserClientImpl: public ParserClient

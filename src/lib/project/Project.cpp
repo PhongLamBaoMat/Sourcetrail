@@ -3,8 +3,6 @@
 #include "ApplicationSettings.h"
 #include "CombinedIndexerCommandProvider.h"
 #include "DialogView.h"
-#include "IndexerCommand.h"
-#include "IndexerCommandCustom.h"
 #include "PersistentStorage.h"
 #include "ProjectSettings.h"
 #include "RefreshInfoGenerator.h"

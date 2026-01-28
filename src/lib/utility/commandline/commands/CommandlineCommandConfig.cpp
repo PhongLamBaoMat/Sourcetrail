@@ -1,8 +1,6 @@
 #include "CommandlineCommandConfig.h"
 
-#include <functional>
 #include <iostream>
-#include <utility>
 
 #include "ApplicationSettings.h"
 #include "CommandLineParser.h"

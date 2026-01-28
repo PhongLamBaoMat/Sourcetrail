@@ -1,8 +1,6 @@
 #ifndef TASK_INJECT_STORAGE_H
 #define TASK_INJECT_STORAGE_H
 
-#include <vector>
-
 #include "MessageIndexingInterrupted.h"
 #include "MessageListener.h"
 #include "Task.h"

@@ -3,10 +3,8 @@
 #include <QFileOpenEvent>
 
 #include "FilePath.h"
-#include "LogManager.h"
 #include "MessageLoadProject.h"
 #include "MessageWindowFocus.h"
-#include "utilityApp.h"
 
 QtApplication::QtApplication(int& argc, char** argv): QApplication(argc, argv)
 {

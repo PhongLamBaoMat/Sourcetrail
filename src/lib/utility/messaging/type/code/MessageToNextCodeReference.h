@@ -1,6 +1,7 @@
 #ifndef MESSAGE_TO_NEXT_CODE_REFERENCE_H
 #define MESSAGE_TO_NEXT_CODE_REFERENCE_H
 
+#include "FilePath.h"
 #include "Message.h"
 #include "TabId.h"
 

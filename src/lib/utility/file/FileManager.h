@@ -1,7 +1,6 @@
 #ifndef FILE_MANAGER_H
 #define FILE_MANAGER_H
 
-#include <map>
 #include <set>
 #include <string>
 #include <vector>

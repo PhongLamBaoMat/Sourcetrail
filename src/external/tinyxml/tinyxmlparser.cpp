@@ -151,11 +151,11 @@ void TiXmlBase::ConvertUTF32ToUTF8(unsigned long input, char* output, int* lengt
 		return isalpha(anyByte);
 	else
 		return 1;	 // What else to do? The unicode set is huge...get the english ones right.
-	//	}
-	//	else
-	//	{
-	//		return isalpha( anyByte );
-	//	}
+					 //	}
+					 //	else
+					 //	{
+					 //		return isalpha( anyByte );
+					 //	}
 }
 
 
@@ -172,11 +172,11 @@ void TiXmlBase::ConvertUTF32ToUTF8(unsigned long input, char* output, int* lengt
 		return isalnum(anyByte);
 	else
 		return 1;	 // What else to do? The unicode set is huge...get the english ones right.
-	//	}
-	//	else
-	//	{
-	//		return isalnum( anyByte );
-	//	}
+					 //	}
+					 //	else
+					 //	{
+					 //		return isalnum( anyByte );
+					 //	}
 }
 
 

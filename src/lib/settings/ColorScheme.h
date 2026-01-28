@@ -2,7 +2,7 @@
 #define COLOR_SCHEME_H
 
 #include "Edge.h"
-#include "Node.h"
+#include "NodeType.h"
 #include "Settings.h"
 
 class ColorScheme: public Settings

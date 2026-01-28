@@ -7,7 +7,6 @@
 #include "RefreshInfo.h"
 #include "SourceGroupSettingsCEmpty.h"
 #include "SourceGroupSettingsCppEmpty.h"
-#include "SourceGroupSettingsWithCStandard.h"
 #include "SourceGroupSettingsWithCppStandard.h"
 #include "SourceGroupSettingsWithCxxPathsAndFlags.h"
 #include "TaskLambda.h"

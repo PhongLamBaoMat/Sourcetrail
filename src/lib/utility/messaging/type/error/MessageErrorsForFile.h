@@ -1,6 +1,7 @@
 #ifndef MESSAGE_ERRORS_FOR_FILE_H
 #define MESSAGE_ERRORS_FOR_FILE_H
 
+#include "FilePath.h"
 #include "Message.h"
 
 class MessageErrorsForFile: public Message<MessageErrorsForFile>

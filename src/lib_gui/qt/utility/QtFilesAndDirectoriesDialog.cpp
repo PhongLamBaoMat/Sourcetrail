@@ -4,9 +4,6 @@
 #include <QListView>
 #include <QPushButton>
 
-#include "FilePath.h"
-#include "utilityApp.h"
-
 QtFilesAndDirectoriesDialog::QtFilesAndDirectoriesDialog(QWidget* parent): QFileDialog(parent)
 {
 	setFileMode(QFileDialog::Directory);

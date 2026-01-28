@@ -29,7 +29,6 @@
 #include "utility.h"
 #include "utilityApp.h"
 #include "utilityPathDetection.h"
-#include "utilityString.h"
 #include "utilityUuid.h"
 
 #include "Application.h"

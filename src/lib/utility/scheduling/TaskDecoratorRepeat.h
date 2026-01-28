@@ -1,8 +1,6 @@
 #ifndef TASK_DECORATOR_REPEAT_H
 #define TASK_DECORATOR_REPEAT_H
 
-#include <vector>
-
 #include "TaskDecorator.h"
 #include "TaskRunner.h"
 

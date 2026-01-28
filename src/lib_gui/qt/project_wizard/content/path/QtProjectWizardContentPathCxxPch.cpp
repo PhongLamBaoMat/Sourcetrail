@@ -5,7 +5,6 @@
 #include "IndexerCommandCxx.h"
 #include "SourceGroupSettingsCxxCdb.h"
 #include "SourceGroupSettingsWithCxxPchOptions.h"
-#include "utility.h"
 #include "utilityFile.h"
 #include "utilitySourceGroupCxx.h"
 

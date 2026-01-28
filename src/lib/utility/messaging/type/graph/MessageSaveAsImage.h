@@ -1,6 +1,8 @@
 #ifndef MESSAGE_SAVE_AS_IMAGE_H
 #define MESSAGE_SAVE_AS_IMAGE_H
 
+#include <QString>
+
 #include "Message.h"
 
 

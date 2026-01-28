@@ -1,10 +1,9 @@
 #ifndef STORAGE_H
 #define STORAGE_H
 
-#include <functional>
 #include <mutex>
 #include <set>
-#include <string>
+#include <vector>
 
 #include "StorageComponentAccess.h"
 #include "StorageEdge.h"

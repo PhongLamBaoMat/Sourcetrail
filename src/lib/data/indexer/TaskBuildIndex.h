@@ -7,7 +7,6 @@
 #include "MessageListener.h"
 #include "Task.h"
 
-#include "InterprocessIndexerCommandManager.h"
 #include "InterprocessIndexingStatusManager.h"
 #include "InterprocessIntermediateStorageManager.h"
 

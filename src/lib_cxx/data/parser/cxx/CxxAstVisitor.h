@@ -11,7 +11,6 @@
 #include "CxxAstVisitorComponentImplicitCode.h"
 #include "CxxAstVisitorComponentIndexer.h"
 #include "CxxAstVisitorComponentTypeRefKind.h"
-#include "CxxContext.h"
 
 class CanonicalFilePathCache;
 class ParserClient;

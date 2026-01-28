@@ -1,8 +1,6 @@
 #ifndef COMMANDLINE_COMMAND_H
 #define COMMANDLINE_COMMAND_H
 
-#include <memory>
-
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;

@@ -1,6 +1,8 @@
 #ifndef QT_CODE_NAVIGATOR_H
 #define QT_CODE_NAVIGATOR_H
 
+#include <set>
+
 #include <QWidget>
 
 #include "CodeFocusHandler.h"

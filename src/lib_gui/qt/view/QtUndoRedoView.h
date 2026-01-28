@@ -1,9 +1,6 @@
 #ifndef QT_UNDO_REDO_VIEW_H
 #define QT_UNDO_REDO_VIEW_H
 
-#include <memory>
-#include <string>
-
 #include "QtThreadedFunctor.h"
 #include "QtUndoRedo.h"
 #include "UndoRedoView.h"

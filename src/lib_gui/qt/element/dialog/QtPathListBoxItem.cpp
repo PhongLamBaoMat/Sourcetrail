@@ -6,7 +6,6 @@
 
 #include "QtFileDialog.h"
 #include "QtIconButton.h"
-#include "QtLineEdit.h"
 #include "QtPathListBox.h"
 #include "ResourcePaths.h"
 

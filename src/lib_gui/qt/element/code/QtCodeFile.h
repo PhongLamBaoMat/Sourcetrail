@@ -1,8 +1,6 @@
 #ifndef QT_CODE_FILE_H
 #define QT_CODE_FILE_H
 
-#include <memory>
-#include <set>
 #include <string>
 #include <vector>
 

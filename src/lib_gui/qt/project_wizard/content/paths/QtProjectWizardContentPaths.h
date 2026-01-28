@@ -1,8 +1,6 @@
 #ifndef QT_PROJECT_WIZARD_CONTENT_PATHS_H
 #define QT_PROJECT_WIZARD_CONTENT_PATHS_H
 
-#include <set>
-
 #include "CombinedPathDetector.h"
 #include "QtPathListBox.h"
 #include "QtProjectWizardContent.h"

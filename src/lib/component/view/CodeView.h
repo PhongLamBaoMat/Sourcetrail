@@ -1,8 +1,6 @@
 #ifndef CODE_VIEW_H
 #define CODE_VIEW_H
 
-#include <memory>
-
 #include "CodeScrollParams.h"
 #include "CodeSnippetParams.h"
 #include "ErrorInfo.h"

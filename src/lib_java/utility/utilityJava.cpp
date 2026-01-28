@@ -8,7 +8,6 @@
 #include "MessageStatus.h"
 #include "ResourcePaths.h"
 #include "ScopedFunctor.h"
-#include "SourceGroupSettingsWithClasspath.h"
 #include "TextAccess.h"
 #include "logging.h"
 #include "utilityString.h"

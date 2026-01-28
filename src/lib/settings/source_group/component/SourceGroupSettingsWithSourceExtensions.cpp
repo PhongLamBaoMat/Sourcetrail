@@ -1,6 +1,6 @@
 #include "SourceGroupSettingsWithSourceExtensions.h"
 
-#include "ProjectSettings.h"
+#include "ConfigManager.h"
 #include "utility.h"
 
 std::vector<std::wstring> SourceGroupSettingsWithSourceExtensions::getSourceExtensions() const

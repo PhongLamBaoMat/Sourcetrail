@@ -1,10 +1,12 @@
 #ifndef INDEXER_COMMAND_CXX_H
 #define INDEXER_COMMAND_CXX_H
 
+#include <set>
 #include <string>
 #include <vector>
 
 #include "IndexerCommand.h"
+#include <FilePathFilter.h>
 
 class FilePath;
 namespace clang

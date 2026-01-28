@@ -2,7 +2,6 @@
 #define TASK_GROUP_H
 
 #include <memory>
-#include <vector>
 
 #include "Task.h"
 

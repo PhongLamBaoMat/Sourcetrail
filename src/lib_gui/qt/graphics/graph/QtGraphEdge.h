@@ -1,8 +1,6 @@
 #ifndef QT_GRAPH_EDGE_H
 #define QT_GRAPH_EDGE_H
 
-#include <memory>
-
 #include <QGraphicsItem>
 
 #include "TokenComponentBundledEdges.h"

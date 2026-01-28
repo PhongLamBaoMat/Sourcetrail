@@ -1,6 +1,8 @@
 #ifndef TASK_GROUP_SELECTOR_H
 #define TASK_GROUP_SELECTOR_H
 
+#include <vector>
+
 #include "TaskGroup.h"
 #include "TaskRunner.h"
 

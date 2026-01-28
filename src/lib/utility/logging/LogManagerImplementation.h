@@ -1,7 +1,6 @@
 #ifndef LOG_MANAGER_IMPLEMENTATION_H
 #define LOG_MANAGER_IMPLEMENTATION_H
 
-#include <algorithm>
 #include <memory>
 #include <mutex>
 #include <vector>

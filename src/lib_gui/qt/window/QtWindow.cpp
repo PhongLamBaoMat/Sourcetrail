@@ -4,7 +4,6 @@
 #include <QPushButton>
 #include <QScrollArea>
 
-#include "ApplicationSettings.h"
 #include "QtDeviceScaledPixmap.h"
 #include "ResourcePaths.h"
 #include "utilityQt.h"

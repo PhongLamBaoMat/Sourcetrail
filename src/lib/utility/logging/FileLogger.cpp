@@ -1,6 +1,5 @@
 #include "FileLogger.h"
 
-#include <cstdio>
 #include <ctime>
 #include <fstream>
 #include <sstream>

@@ -1,6 +1,8 @@
 #ifndef TASK_GROUP_SEQUENCE_H
 #define TASK_GROUP_SEQUENCE_H
 
+#include <vector>
+
 #include "TaskGroup.h"
 #include "TaskRunner.h"
 

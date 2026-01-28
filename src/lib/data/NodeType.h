@@ -2,9 +2,6 @@
 #define NODE_TYPE_H
 
 #include <functional>
-#include <map>
-#include <memory>
-#include <set>
 #include <vector>
 
 #include "FilePath.h"

@@ -1,12 +1,8 @@
 #ifndef TOOLTIP_VIEW_H
 #define TOOLTIP_VIEW_H
 
-#include <vector>
-
-#include "NameHierarchy.h"
 #include "TooltipInfo.h"
 #include "View.h"
-#include "types.h"
 
 class TooltipView: public View
 {

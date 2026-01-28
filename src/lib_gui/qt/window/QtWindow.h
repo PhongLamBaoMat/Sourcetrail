@@ -7,7 +7,6 @@
 #include <QWidget>
 
 #include "QtWindowBase.h"
-#include "QtWindowStack.h"
 
 class QLabel;
 class QPushButton;

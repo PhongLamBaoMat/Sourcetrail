@@ -7,7 +7,6 @@
 #include "OrderedCache.h"
 #include "ResourcePaths.h"
 #include "logging.h"
-#include "utility.h"
 #include "utilitySourceGroupCxx.h"
 #include "utilityString.h"
 #include <clang/Tooling/CompilationDatabase.h>

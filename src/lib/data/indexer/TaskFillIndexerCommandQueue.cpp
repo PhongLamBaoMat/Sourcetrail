@@ -1,7 +1,6 @@
 #include "TaskFillIndexerCommandQueue.h"
 
 #include "Blackboard.h"
-#include "FileSystem.h"
 #include "IndexerCommandProvider.h"
 #include "logging.h"
 #include "utilityFile.h"

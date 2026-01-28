@@ -1,8 +1,6 @@
 #ifndef STORAGE_CACHE_H
 #define STORAGE_CACHE_H
 
-#include <map>
-
 #include "StorageAccessProxy.h"
 
 class StorageCache: public StorageAccessProxy

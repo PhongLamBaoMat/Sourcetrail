@@ -1,6 +1,6 @@
 #include "SourceGroupSettingsWithJavaStandard.h"
 
-#include "ProjectSettings.h"
+#include "ConfigManager.h"
 
 std::wstring SourceGroupSettingsWithJavaStandard::getDefaultJavaStandardStatic()
 {

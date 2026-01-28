@@ -10,8 +10,6 @@
 #include "FilePath.h"
 #include "RefreshInfo.h"
 
-namespace po = boost::program_options;
-
 namespace commandline
 {
 class CommandlineCommand;

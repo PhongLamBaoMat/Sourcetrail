@@ -2,7 +2,6 @@
 #define BOOKMARK_H
 
 #include <string>
-#include <vector>
 
 #include "TimeStamp.h"
 #include "types.h"

@@ -1,11 +1,9 @@
 #include "Application.h"
 
-#include "AppPath.h"
 #include "ApplicationSettings.h"
 #include "ColorScheme.h"
 #include "DialogView.h"
 #include "FileLogger.h"
-#include "FileSystem.h"
 #include "GraphViewStyle.h"
 #include "IDECommunicationController.h"
 #include "LogManager.h"

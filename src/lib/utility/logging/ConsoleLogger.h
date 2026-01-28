@@ -1,8 +1,6 @@
 #ifndef CONSOLE_LOGGER_H
 #define CONSOLE_LOGGER_H
 
-#include <mutex>
-
 #include "LogMessage.h"
 #include "Logger.h"
 

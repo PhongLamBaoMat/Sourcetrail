@@ -3,7 +3,6 @@
 #include "FilePath.h"
 #include "FilePathFilter.h"
 #include "MemoryIndexerCommandProvider.h"
-#include "ProjectSettings.h"
 #include "SourceGroupSettings.h"
 #include "TaskLambda.h"
 

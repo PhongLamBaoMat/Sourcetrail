@@ -1,9 +1,9 @@
 #include "Node.h"
 
+#include <algorithm>
 #include <sstream>
 
 #include "logging.h"
-#include "utilityString.h"
 
 #include "TokenComponentAccess.h"
 #include "TokenComponentConst.h"

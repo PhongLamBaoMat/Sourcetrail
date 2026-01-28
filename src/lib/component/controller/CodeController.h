@@ -2,6 +2,7 @@
 #define CODE_CONTROLLER_H
 
 #include <map>
+#include <set>
 #include <string>
 
 #include "FilePath.h"

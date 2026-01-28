@@ -1014,9 +1014,9 @@ bool TiXmlDocument::LoadFile(FILE* file, TiXmlEncoding encoding)
 	// 10 in decimal) or CR (Carriage return, '\r', 0x0D, 13 in decimal) individually, or CR
 	// followed by LF (CR+LF, 0x0D 0x0A)...
 	//		* LF:    Multics, Unix and Unix-like systems (GNU/Linux, AIX, Xenix, Mac OS X, FreeBSD,
-	//etc.), BeOS, Amiga, RISC OS, and others
+	// etc.), BeOS, Amiga, RISC OS, and others
 	//		* CR+LF: DEC RT-11 and most other early non-Unix, non-IBM OSes, CP/M, MP/M, DOS, OS/2,
-	//Microsoft Windows, Symbian OS
+	// Microsoft Windows, Symbian OS
 	//		* CR:    Commodore 8-bit machines, Apple II family, Mac OS up to version 9 and OS-9
 
 	const char* p = buf;	// the read head

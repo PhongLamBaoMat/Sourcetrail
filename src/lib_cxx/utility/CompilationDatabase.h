@@ -1,7 +1,6 @@
 #ifndef UTILITY_COMPILATION_DATABASE_H
 #define UTILITY_COMPILATION_DATABASE_H
 
-#include <string>
 #include <vector>
 
 #include "FilePath.h"

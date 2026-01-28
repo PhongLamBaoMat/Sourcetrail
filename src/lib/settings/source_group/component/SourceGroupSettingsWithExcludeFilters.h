@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "FilePathFilter.h"
 #include "SourceGroupSettingsComponent.h"
 
 class FilePathFilter;

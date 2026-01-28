@@ -7,7 +7,6 @@
 
 #include "AppPath.h"
 #include "FilePath.h"
-#include "FileSystem.h"
 #include "ResourcePaths.h"
 #include "UserPaths.h"
 #include "utilityQt.h"

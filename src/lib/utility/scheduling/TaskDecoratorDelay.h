@@ -1,8 +1,6 @@
 #ifndef TASK_DECORATOR_DELAY_H
 #define TASK_DECORATOR_DELAY_H
 
-#include <vector>
-
 #include "TaskDecorator.h"
 #include "TaskRunner.h"
 #include "TimeStamp.h"

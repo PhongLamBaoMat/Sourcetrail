@@ -1,7 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <algorithm>
 #include <functional>
 #include <map>
 #include <string>

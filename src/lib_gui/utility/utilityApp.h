@@ -18,6 +18,7 @@ struct ProcessOutput
 };
 
 std::string getDocumentationLink();
+std::wstring searchPath(const std::wstring& exe, bool& ok);
 
 ProcessOutput executeProcess(
 	const std::wstring& command,

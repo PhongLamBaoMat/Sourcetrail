@@ -1,6 +1,7 @@
 #ifndef QT_INDEXING_PROGRESS_DIALOG_H
 #define QT_INDEXING_PROGRESS_DIALOG_H
 
+#include "FilePath.h"
 #include "QtProgressBarDialog.h"
 
 class QLabel;

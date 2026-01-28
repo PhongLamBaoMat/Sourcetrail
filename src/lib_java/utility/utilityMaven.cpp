@@ -3,7 +3,6 @@
 #include <cstdlib>
 
 #include "Application.h"
-#include "ApplicationSettings.h"
 #include "FilePath.h"
 #include "MessageStatus.h"
 #include "TextAccess.h"

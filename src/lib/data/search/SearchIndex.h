@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "Node.h"
+#include "NodeType.h"
 #include "NodeTypeSet.h"
 #include "types.h"
 

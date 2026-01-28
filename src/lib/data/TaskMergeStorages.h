@@ -1,8 +1,6 @@
 #ifndef TASK_MERGE_STORAGES_H
 #define TASK_MERGE_STORAGES_H
 
-#include <vector>
-
 #include "Task.h"
 
 class StorageProvider;

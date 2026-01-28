@@ -1,8 +1,6 @@
 #ifndef QT_GRAPH_NODE_COMPONENT_H
 #define QT_GRAPH_NODE_COMPONENT_H
 
-#include <memory>
-
 #include <QGraphicsItem>
 
 class QtGraphNode;

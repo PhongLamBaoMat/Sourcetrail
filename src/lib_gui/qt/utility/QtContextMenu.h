@@ -4,7 +4,6 @@
 #include <QAction>
 #include <QMenu>
 #include <QObject>
-#include <memory>
 
 #include "FilePath.h"
 

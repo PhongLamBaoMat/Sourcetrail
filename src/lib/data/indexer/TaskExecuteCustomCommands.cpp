@@ -1,5 +1,7 @@
 #include "TaskExecuteCustomCommands.h"
 
+#include <regex>
+
 #include "ApplicationSettings.h"
 #include "Blackboard.h"
 #include "DialogView.h"

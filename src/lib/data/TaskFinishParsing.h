@@ -1,8 +1,6 @@
 #ifndef TASK_FINISH_PARSING_H
 #define TASK_FINISH_PARSING_H
 
-#include <vector>
-
 #include "Task.h"
 
 class DialogView;

@@ -1,7 +1,6 @@
 #ifndef CXX_DECL_NAME_H
 #define CXX_DECL_NAME_H
 
-#include <memory>
 #include <string>
 #include <vector>
 

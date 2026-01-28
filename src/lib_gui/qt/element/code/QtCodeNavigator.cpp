@@ -12,7 +12,6 @@
 #include "ApplicationSettings.h"
 #include "CodeFocusHandler.h"
 #include "MessageCodeReference.h"
-#include "MessageFocusView.h"
 #include "MessageHistoryRedo.h"
 #include "MessageHistoryUndo.h"
 #include "MessageScrollCode.h"
@@ -25,10 +24,8 @@
 #include "ResourcePaths.h"
 #include "SourceLocation.h"
 #include "SourceLocationCollection.h"
-#include "SourceLocationFile.h"
 #include "TabId.h"
 #include "logging.h"
-#include "utility.h"
 #include "utilityQt.h"
 
 QtCodeNavigator::QtCodeNavigator(QWidget* parent)

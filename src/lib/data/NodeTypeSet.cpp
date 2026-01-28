@@ -1,7 +1,6 @@
 #include "NodeTypeSet.h"
 
 #include "NodeType.h"
-#include "utility.h"
 
 NodeTypeSet NodeTypeSet::all()
 {

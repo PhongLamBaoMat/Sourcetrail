@@ -1,6 +1,5 @@
 #include "SourceGroupSettingsWithExcludeFilters.h"
 
-#include "FilePathFilter.h"
 #include "FileSystem.h"
 #include "ProjectSettings.h"
 #include "utility.h"

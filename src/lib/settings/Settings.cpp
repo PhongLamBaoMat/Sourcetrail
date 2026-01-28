@@ -2,7 +2,6 @@
 
 #include "TextAccess.h"
 #include "logging.h"
-#include "utility.h"
 
 Settings::Settings(const Settings& other)
 	: m_config(other.m_config->createCopy()), m_filePath(other.m_filePath)

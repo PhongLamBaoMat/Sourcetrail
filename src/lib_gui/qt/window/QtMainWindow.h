@@ -2,14 +2,13 @@
 #define QT_MAIN_WINDOW_H
 
 #include <memory>
-#include <utility>
 #include <vector>
 
 #include <QMainWindow>
 
+#include "FilePath.h"
 #include "QtWindowStack.h"
 #include "QtWindowsTaskbarButton.h"
-#include "SearchMatch.h"
 
 class Bookmark;
 class MessageBase;

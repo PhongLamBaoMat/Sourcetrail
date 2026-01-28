@@ -4,8 +4,6 @@
 #include <QPushButton>
 
 #include "MessageErrorsHelpMessage.h"
-#include "MessageIndexingShowDialog.h"
-#include "MessageRefresh.h"
 #include "TimeStamp.h"
 
 QtIndexingReportDialog::QtIndexingReportDialog(

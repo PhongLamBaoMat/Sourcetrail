@@ -8,7 +8,6 @@
 #include "JavaEnvironment.h"
 #include "logging.h"
 #include "utilityLibrary.h"
-#include "utilityWindows.h"
 
 void JavaEnvironmentFactory::createInstance(std::string classPath, std::string& errorString)
 {

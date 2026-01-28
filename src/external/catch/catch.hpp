@@ -2421,9 +2421,9 @@ public:
 				INTERNAL_CATCH_REACT(catchAssertionHandler)                                        \
 			} while ((void)0,                                                                      \
 					 false &&                                                                      \
-						 static_cast<bool>(                                                        \
-							 !!(__VA_ARGS__)))	  // the expression here is never evaluated at runtime
-												  // but it forces the compiler to give it a look
+						 static_cast<bool>(!!(                                                     \
+							 __VA_ARGS__)))	   // the expression here is never evaluated at runtime
+											   // but it forces the compiler to give it a look
 	 // The double negation silences MSVC's C4800 warning, the static_cast forces short-circuit
 	 // evaluation if the type has overloaded &&.
 

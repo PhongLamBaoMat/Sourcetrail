@@ -2,7 +2,6 @@
 #define MESSAGE_SEARCH_AUTOCOMPLETE_H
 
 #include "Message.h"
-#include "Node.h"
 #include "NodeTypeSet.h"
 #include "TabId.h"
 

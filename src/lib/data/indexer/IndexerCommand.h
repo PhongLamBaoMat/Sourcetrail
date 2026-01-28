@@ -1,11 +1,9 @@
 #ifndef INDEXER_COMMAND_H
 #define INDEXER_COMMAND_H
 
-#include <set>
 #include <string>
 
 #include "FilePath.h"
-#include "FilePathFilter.h"
 #include "IndexerCommandType.h"
 
 class QJsonObject;

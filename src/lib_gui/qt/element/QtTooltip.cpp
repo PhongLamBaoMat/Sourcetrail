@@ -10,7 +10,6 @@
 
 #include "ApplicationSettings.h"
 #include "QtCodeField.h"
-#include "SourceLocationFile.h"
 #include "TextCodec.h"
 #include "TooltipInfo.h"
 

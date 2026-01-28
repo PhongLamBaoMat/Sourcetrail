@@ -1,7 +1,6 @@
 #ifndef QT_STATUS_BAR_VIEW_H
 #define QT_STATUS_BAR_VIEW_H
 
-#include <memory>
 #include <string>
 
 #include "ErrorCountInfo.h"

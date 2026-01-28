@@ -2,6 +2,7 @@
 #define CXX_AST_VISITOR_COMPONENT_BRACE_RECORDER_H
 
 #include "CxxAstVisitorComponent.h"
+#include "FilePath.h"
 #include "ParseLocation.h"
 
 class ParserClient;

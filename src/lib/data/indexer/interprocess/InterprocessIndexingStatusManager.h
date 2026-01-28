@@ -1,8 +1,6 @@
 #ifndef INTERPROCESS_INDEXING_STATUS_MANAGER_H
 #define INTERPROCESS_INDEXING_STATUS_MANAGER_H
 
-#include <set>
-
 #include "BaseInterprocessDataManager.h"
 #include "FilePath.h"
 

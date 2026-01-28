@@ -36,6 +36,20 @@ std::string utility::getDocumentationLink()
 	return "https://github.com/CoatiSoftware/Sourcetrail/blob/master/DOCUMENTATION.md";
 }
 
+std::wstring utility::searchPath(const std::wstring& exe, bool& ok)
+{
+	auto path = boost::process::environment::find_executable(exe);
+	if (path.empty())
+	{
+		ok = false;
+	}
+	else
+	{
+		ok = true;
+	}
+	return path.wstring();
+}
+
 utility::ProcessOutput utility::executeProcess(
 	const std::wstring& command,
 	const std::vector<std::wstring>& arguments,

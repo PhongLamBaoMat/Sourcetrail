@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "ApplicationSettings.h"
 #include "FileManager.h"
+#include "FilePathFilter.h"
 #include "IncludeDirective.h"
 #include "IncludeProcessing.h"
 #include "QtDialogView.h"

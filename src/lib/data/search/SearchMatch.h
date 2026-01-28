@@ -2,11 +2,11 @@
 #define SEARCH_MATCH_H
 
 #include <ostream>
-#include <set>
 #include <string>
 #include <vector>
 
-#include "Node.h"
+#include "NameHierarchy.h"
+#include "NodeType.h"
 #include "types.h"
 
 class NodeTypeSet;

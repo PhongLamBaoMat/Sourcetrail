@@ -7,7 +7,6 @@
 
 #include "FileInfo.h"
 #include "FilePath.h"
-#include "logging.h"
 
 void StorageAccessProxy::setSubject(std::weak_ptr<StorageAccess> subject)
 {

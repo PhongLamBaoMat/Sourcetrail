@@ -1,9 +1,7 @@
 #ifndef NAME_ELEMENT_H
 #define NAME_ELEMENT_H
 
-#include <memory>
 #include <string>
-#include <vector>
 
 class DataType;
 

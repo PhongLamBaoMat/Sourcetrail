@@ -2,7 +2,6 @@
 #define SQLITE_STORAGE_MIGRATION_H
 
 #include <string>
-#include <vector>
 
 #include "Migration.h"
 #include "SqliteStorage.h"

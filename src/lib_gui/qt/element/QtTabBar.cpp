@@ -3,7 +3,6 @@
 #include <QContextMenuEvent>
 
 #include "QtContextMenu.h"
-#include "QtGraphicsView.h"
 #include "logging.h"
 
 

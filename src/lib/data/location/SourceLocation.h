@@ -2,7 +2,6 @@
 #define SOURCE_LOCATION_H
 
 #include <ostream>
-#include <string>
 #include <vector>
 
 #include "LocationType.h"

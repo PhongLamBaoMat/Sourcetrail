@@ -1,7 +1,6 @@
 #ifndef COMBINED_PATH_DETECTOR_H
 #define COMBINED_PATH_DETECTOR_H
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>

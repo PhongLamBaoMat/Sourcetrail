@@ -1,6 +1,6 @@
 #include "SourceGroupSettingsWithCppStandard.h"
 
-#include "ProjectSettings.h"
+#include "ConfigManager.h"
 
 std::wstring SourceGroupSettingsWithCppStandard::getDefaultCppStandardStatic()
 {

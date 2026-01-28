@@ -2,7 +2,6 @@
 #define INTERMEDIATE_STORAGE_H
 
 #include <map>
-#include <memory>
 #include <set>
 
 #include "Storage.h"

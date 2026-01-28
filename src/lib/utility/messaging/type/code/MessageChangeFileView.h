@@ -2,7 +2,6 @@
 #define MESSAGE_CHANGE_FILE_VIEW_H
 
 #include "CodeScrollParams.h"
-#include "CodeSnippetParams.h"
 #include "FilePath.h"
 #include "Message.h"
 #include "TabId.h"

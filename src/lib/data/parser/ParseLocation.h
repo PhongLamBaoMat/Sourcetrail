@@ -1,9 +1,6 @@
 #ifndef PARSE_LOCATION_H
 #define PARSE_LOCATION_H
 
-#include <string>
-
-#include "FilePath.h"
 #include "types.h"
 
 enum class ParseLocationType

@@ -1,6 +1,7 @@
 #ifndef QT_PATH_LIST_BOX_H
 #define QT_PATH_LIST_BOX_H
 
+#include "FilePath.h"
 #include "QtListBox.h"
 
 class QtPathListBox: public QtListBox

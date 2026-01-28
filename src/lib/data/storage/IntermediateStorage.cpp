@@ -1,7 +1,6 @@
 #include "IntermediateStorage.h"
 
 #include "LocationType.h"
-#include "utility.h"
 
 IntermediateStorage::IntermediateStorage(): m_nextId(1) {}
 

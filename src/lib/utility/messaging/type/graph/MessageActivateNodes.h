@@ -2,6 +2,7 @@
 #define MESSAGE_ACTIVATE_NODES_H
 
 #include "Message.h"
+#include "NameHierarchy.h"
 #include "TabId.h"
 #include "types.h"
 

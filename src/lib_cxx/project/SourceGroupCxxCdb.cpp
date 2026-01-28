@@ -12,7 +12,6 @@
 #include "MessageStatus.h"
 #include "SourceGroupSettingsCxxCdb.h"
 #include "TaskLambda.h"
-#include "logging.h"
 #include "utility.h"
 #include "utilitySourceGroupCxx.h"
 

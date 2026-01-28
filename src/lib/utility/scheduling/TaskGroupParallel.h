@@ -3,6 +3,7 @@
 
 #include <mutex>
 #include <thread>
+#include <vector>
 
 #include "TaskGroup.h"
 #include "TaskRunner.h"

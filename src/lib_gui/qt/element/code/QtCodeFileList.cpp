@@ -6,7 +6,6 @@
 
 #include "FilePath.h"
 #include "ResourcePaths.h"
-#include "utility.h"
 #include "utilityApp.h"
 
 #include "ColorScheme.h"

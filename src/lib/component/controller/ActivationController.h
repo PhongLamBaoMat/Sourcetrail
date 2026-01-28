@@ -1,8 +1,6 @@
 #ifndef ACTIVATION_CONTROLLER_H
 #define ACTIVATION_CONTROLLER_H
 
-#include <memory>
-
 #include "Controller.h"
 
 #include "MessageActivateEdge.h"

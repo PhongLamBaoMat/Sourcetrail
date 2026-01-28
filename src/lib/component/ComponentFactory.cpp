@@ -11,7 +11,6 @@
 #include "ErrorController.h"
 #include "ErrorView.h"
 #include "GraphController.h"
-#include "GraphView.h"
 #include "RefreshController.h"
 #include "RefreshView.h"
 #include "ScreenSearchController.h"

@@ -5,7 +5,6 @@
 #include <QMessageBox>
 #include <boost/filesystem/path.hpp>
 
-#include "FileSystem.h"
 #include "ProjectSettings.h"
 #include "SourceGroupSettingsCustomCommand.h"
 #include "SqliteIndexStorage.h"

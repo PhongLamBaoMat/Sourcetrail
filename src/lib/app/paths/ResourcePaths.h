@@ -1,8 +1,6 @@
 #ifndef RESOURCE_PATHS_H
 #define RESOURCE_PATHS_H
 
-#include <string>
-
 #include "FilePath.h"
 
 class ResourcePaths

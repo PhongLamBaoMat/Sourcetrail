@@ -1,7 +1,6 @@
 #include "ComponentManager.h"
 
 #include "BookmarkButtonsView.h"
-#include "BookmarkView.h"
 #include "CodeView.h"
 #include "CompositeView.h"
 #include "Controller.h"

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "SourceGroup.h"
+#include <FilePathFilter.h>
 
 class SourceGroupSettingsCustomCommand;
 

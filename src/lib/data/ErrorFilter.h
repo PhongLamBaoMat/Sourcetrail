@@ -1,6 +1,8 @@
 #ifndef ERROR_FILTER_H
 #define ERROR_FILTER_H
 
+#include <vector>
+
 #include "ErrorInfo.h"
 
 struct ErrorFilter

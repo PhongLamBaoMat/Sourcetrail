@@ -1,10 +1,7 @@
 #ifndef QT_PROGRESS_BAR_DIALOG_H
 #define QT_PROGRESS_BAR_DIALOG_H
 
-#include <functional>
-
 #include "QtIndexingDialog.h"
-#include "RefreshInfo.h"
 
 class QCheckBox;
 class QLabel;

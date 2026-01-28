@@ -2,7 +2,6 @@
 #define INDEXER_BASE_H
 
 #include <memory>
-#include <string>
 
 #include "IndexerCommandType.h"
 

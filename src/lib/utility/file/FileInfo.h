@@ -1,8 +1,6 @@
 #ifndef FILE_INFO_H
 #define FILE_INFO_H
 
-#include <string>
-
 #include <boost/date_time.hpp>
 
 #include "FilePath.h"

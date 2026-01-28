@@ -1,8 +1,9 @@
 #ifndef ERROR_INFO_H
 #define ERROR_INFO_H
 
-#include "StorageError.h"
+#include <string>
 
+#include "types.h"
 
 struct ErrorInfo
 {

@@ -10,7 +10,6 @@
 #include "QtCodeFile.h"
 #include "QtCodeNavigator.h"
 #include "QtHoverButton.h"
-#include "SourceLocationFile.h"
 
 QtCodeSnippet::QtCodeSnippet(const CodeSnippetParams& params, QtCodeNavigator* navigator, QtCodeFile* file)
 	: QFrame(file)

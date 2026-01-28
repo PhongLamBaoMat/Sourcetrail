@@ -1,9 +1,9 @@
 #ifndef MESSAGE_ACTIVATE_TRAIL_H
 #define MESSAGE_ACTIVATE_TRAIL_H
 
+#include "Edge.h"
 #include "Message.h"
 #include "MessageActivateBase.h"
-#include "NodeType.h"
 #include "TabId.h"
 #include "types.h"
 

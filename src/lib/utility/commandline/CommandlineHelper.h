@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "utility.h"
-#include "utilityString.h"
 
 namespace boost
 {

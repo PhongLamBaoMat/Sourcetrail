@@ -1,13 +1,11 @@
 #include "QtDialogView.h"
 
 #include <chrono>
-#include <sstream>
 #include <thread>
 
 #include <QMessageBox>
 #include <QTimer>
 
-#include "MessageIndexingStatus.h"
 #include "MessageStatus.h"
 #include "Project.h"
 #include "QtIndexingDialog.h"
@@ -21,7 +19,6 @@
 #include "StorageAccess.h"
 #include "TabId.h"
 #include "TaskLambda.h"
-#include "utility.h"
 
 QtDialogView::QtDialogView(QtMainWindow* mainWindow, UseCase useCase, StorageAccess* storageAccess)
 	: DialogView(useCase, storageAccess)

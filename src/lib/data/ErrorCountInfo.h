@@ -1,6 +1,8 @@
 #ifndef ERROR_COUNT_INFO_H
 #define ERROR_COUNT_INFO_H
 
+#include <vector>
+
 #include "ErrorInfo.h"
 
 struct ErrorCountInfo

@@ -1,8 +1,6 @@
 #ifndef QT_CODE_NAVIGABLE_H
 #define QT_CODE_NAVIGABLE_H
 
-#include <set>
-
 #include "CodeFocusHandler.h"
 #include "CodeScrollParams.h"
 #include "CodeSnippetParams.h"

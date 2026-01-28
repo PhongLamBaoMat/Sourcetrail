@@ -5,6 +5,7 @@
 
 #include "AccessKind.h"
 #include "DefinitionKind.h"
+#include "FilePath.h"
 #include "NameHierarchy.h"
 #include "ParseLocation.h"
 #include "ReferenceKind.h"

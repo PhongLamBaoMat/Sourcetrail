@@ -1,7 +1,6 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-#include <memory>
 #include <string>
 
 #include "Token.h"

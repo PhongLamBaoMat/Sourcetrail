@@ -1,8 +1,6 @@
 #ifndef CXX_TEMPLATE_PARAMETER_STRING_RESOLVER_H
 #define CXX_TEMPLATE_PARAMETER_STRING_RESOLVER_H
 
-#include <memory>
-
 #include <clang/AST/DeclTemplate.h>
 
 #include "CxxNameResolver.h"

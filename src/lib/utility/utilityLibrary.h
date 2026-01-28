@@ -3,7 +3,6 @@
 
 #include <QDir>
 #include <functional>
-#include <iostream>
 #include <sstream>
 #include <string>
 
