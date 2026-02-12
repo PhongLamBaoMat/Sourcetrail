@@ -1,1684 +1,1279 @@
 <img src="docs/documentation/logo.png" height="250" alt="Sourcetrail">
 
-Documentation for version 2021.4
+Tài liệu hướng dẫn cho phiên bản 2021.4
 
-# Welcome
+# Lời chào
 
-This document is the official documentation of Sourcetrail and explains everything you need to know about working with the software.
+Đây là tài liệu được dịch lại từ [phiên bản tiếng Anh](DOCUMENTATION.en.md). Tài liệu sẽ giúp bạn hiểu hơn về cách sử dụng Sourcetrail.
 
-## Overview
+## Tổng quan
 
-Sourcetrail is an interactive source explorer that simplifies navigation in existing source code by indexing your code and gathering data about its structure. Sourcetrail then provides a simple interface consisting of three interactive views, each playing a key role in helping you obtain the information you need:
+Sourcetrail là phần mềm hỗ trợ tương tác, đọc hiểu mã nguồn bằng cách phân tích và minh hoạ cấu trúc được khai báo trong mã nguồn. Phần mềm cung cấp một giao diện đơn giản gồm ba thành phần:
 
 <img src="docs/documentation/concept.png" height="400" alt="Sourcetrail Concept">
 
-* **Search:** Use the search field to quickly find and select indexed symbols in your source code. The autocompletion box will instantly provide an overview of all matching results throughout your codebase.
-* **Graph:** The graph displays the structure of your source code. It focuses on the currently selected symbol and directly shows all incoming and outgoing dependencies to other symbols.
-* **Code:** The Code view displays all source locations of the currently selected symbol in a list of code snippets. Clicking on a different source location allows you to change the selection and dig deeper.
+- **Search (tìm kiếm)**: sử dụng thanh tìm kiếm để tìm và chọn các tên có trong mã nguồn.
+- **Graph (đồ thị)**: đồ thị minh hoạ cấu trúc của mã nguồn. Nó tập trung vào minh hoạ mối quan hệ của tên được chọn với những tên tên khác.
+- **Code (mã nguồn)**: mã nguồn hiển thị danh sách các đoạn mã chứa tên được chọn. Nhấn chọn vào vị trí của một đoạn mã sẽ hiển thị bạn đến toàn bộ của tập tin chứa đoán mã đó.
 
-Note: Sourcetrail currently supports the languages C/C++, Java and Python. Much of the UI design is therefore based on these languages and might change as soon as other languages are supported. For more information have a look at [supported languages](#supported-languages).
+Lưu ý: Sourcetrail hiện tải chỉ hỗ trợ phân tích ngôn ngữ C/C++, Java và Python.
 
-## Supported Languages
+## Ngôn ngữ hỗ trợ
 
-### C
-
-C support is powered by [Clang 11.0.0](https://clang.llvm.org/). For issues loading C code, please have a look at [Clang language compatibility](https://clang.llvm.org/compatibility.html) or report a bug in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailBugTracker).
-
-### C++
-
-C++ support is powered by [Clang 11.0.0](https://clang.llvm.org/). For more Information please visit [Clang C++ Status](https://clang.llvm.org/cxx_status.html). For issues loading C++ code, please have a look at [Clang language compatibility](https://clang.llvm.org/compatibility.html) or report a bug in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailBugTracker).
+### C/C++
+C/C++ được hỗ trợ bởi [Clang 21.1.8](https://clang.llvm.org/). Mọi vấn đề liên quan đến việc phân tích mã nguồn C/C++, vui lòng kiểm tra qua [Clang language compatibility](https://clang.llvm.org/compatibility.html) hoặc gửi báo cáo lỗi đến chúng tôi tại [Issues](https://github.com/PhongLamBaoMat/Sourcetrail/issues).
 
 ### Java
-
-Sourcetrail includes support for Java 12 and lower which is powered by [Eclipse JDT](https://github.com/eclipse/eclipse.jdt.core). If you encounter any issues while using Sourcetrail on a Java project, please let us know by providing a minimal example in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailBugTracker).
+Sourcetrail hỗ trợ Java 12 và các phiên bản thấp hơn bởi [Eclipse JDT](https://github.com/eclipse/eclipse.jdt.core). Nếu bạn gặp bất kì lỗi nào, vui lòng gửi báo cáo đến chúng tôi tại [Issues](https://github.com/PhongLamBaoMat/Sourcetrail/issues).
 
 ### Python
+Sourcetrail hỗ trợ cả Python 2 và 3 bởi [CoatiSoftware SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer). Hiện CoatiSoftware đã dừng phát triển nên chúng tôi không thể hỗ trợ thêm.
 
-Sourcetrail includes support for Python 2 and Python 3 which is powered by our open-source [SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer). If you encounter any issues while using Sourcetrail on a Python project, please let us know by providing a minimal example in our [bug tracker](https://github.com/CoatiSoftware/SourcetrailPythonIndexer/issues).
+# Hướng dẫn sử dụng
 
+Phần này sẽ giúp bạn hiểu hơn về khởi tạo dự án và giao diện sử dụng của Sourcetrail. Danh sách gạch đầu dòng sẽ cung cấp cho bạn các bước tiếp theo cần thực hiện:
 
-# Getting Started
+## Khởi động Sourcetrail
 
-This short introduction will briefly guide you through the project setup and the user interface of Sourcetrail. The bullet point lists will provide you with the next steps to take:
+Sau khi [đã tải](https://github.com/PhongLamBaoMat/Sourcetrail/releases) Sourcetrail thành công. Bạn có thể chạy ứng dụng.
 
-## Starting Up Sourcetrail
+> **Công việc**
+> * Chạy Sourcetrail.
 
-Once you've [downloaded](https://github.com/CoatiSoftware/Sourcetrail/releases) Sourcetrail successfully you are ready to run the application. For assistance wth installation, visit the [installation](#installation) section.
+Sau khi chạy Sourcetrail, bạn sẽ thấy [Cửa sổ bắt đầu](#cửa-sổ-bắt-đầu). Từ đây bạn có thể tạo dự án riêng của bạn hoặc chọn dự án đã có sẵn.
 
-> **Tasks:**
-> * Launch Sourcetrail.
-
-After launching Sourcetrail you will see the [Start Window](#start-window). From here you can create your own project or choose a pre-indexed one.
-
-> **Tasks:**
-> * Click **New Project** to create a new project.
-> * or select one from the **Recent Projects** _(ex: TicTacToe)_ and continue with the [UI Intro](#ui-intro)
+> **Công việc**
+> * Chọn **New Project** để tạo một dự án mới.
+> * hoặc chọn một từ **Recent Projects** _(ví dụ: TicTacToe)_ và tiếp tục với [cửa sổ bắt đầu](#cửa-sổ-bắt-đầu)
 
 <img src="docs/documentation/start_window.png" height="600" alt="Start Window">
+    
+## Tạo một dự án mới
 
-## Creating a New Project
+Khi tạo một dự án Sourcetrail mới, bạn sẽ dùng [trình thiết lập dự án](#trình-thiết-lập-dự-án). Quá trình thiết lập được chia thành nhiều bước. Tuỳ thuộc vào cấu trúc dự án và hệ thống xây dựng được sử dụng, sẽ có các loại thiết lập khác nhau. Chọn đúng phương thức thiết lại rất quan trọng và có thể khiến quá trình trở nên dễ dàng hơn.
 
-When creating a new Sourcetrail project you will use the [Project Setup Wizard](#project-setup-wizard). This wizard splits the setup process into several subsequent steps. Depending on your project's structure and the used build system, there are different types for project setup. Choosing the correct setup method is important and can make the setup process a lot easier.
-
-> **Tasks:**
-> * Give your project a **Name** and select a **Location** for your Sourcetrail project to live.
-> * Click **Add Source Group** to add source files to the project.
+> **Công việc**
+> * Điền tên dự án vào **Name** và chọn **Location** cho vị trí lưu dữ án.
+> * Chọn **Add Source Group** to thêm các tập tin mã nguồn vào dự án.
 
 <img src="docs/documentation/project_setup_wizard_start.png" height="500" alt="Project Setup Wizard Start">
 
-### Add Source Group
+## Thêm Nhóm mã nguồn (Source Group)
 
-Sourcetrail projects consist of multiple *Source Groups*. Each Source Group uses a certain language, a set of files, and all configurations to index these files. There are different types of Source Groups for each supported programming language. In addition, creating a single Source Group is sufficient for most projects.
+Các dự án Sourcetrail chứa nhiều *Nhóm mã nguồn*. Mỗi Nhóm mã nguồn sử dụng một ngôn ngữ nhất định, tập hợp các tập tin, các cấu hình để phân tích những tập tin đấy. Mỗi ngôn ngữ lập trình được hỗ trợ lại có nhiều loại Nhóm mã nguồn khác nhau. Ngoài ra, việc tạo một Nhóm mã nguồn duy nhất là đủ cho hầu hết các dự án.
 
-Scroll past the image for detailed instructions on setting this up.
+Hãy cuộn xuống hình ảnh phía dưới để xem hướng dẫn chi tiết về cách thiết lập.
 
-> **Tasks:**
-> * Select your chosen **Source Group** setup type and come back here as soon as the project is created.
+> **Công việc**
+> * Hãy chọn loại thiết lập **Nhóm mã nguồn** mà bạn muốn và quay lại đây ngay sau khi dự án được tạo.
 
 <img src="docs/documentation/project_setup_wizard_source_group_type.png" height="600" alt="Project Setup Wizard Source Group Type">
 
-#### Source Group Setup for C/C++
+#### Thiết lập Nhóm mã nguồn cho C/C++
 
-The Source Group setup types for C & C++ are the same.
+Các kiểu thiết lập Nhóm mã nguồn cho C và C++ đều giống nhau.
 
-**Are you using CMake, Make or Qt Creator?**
+**Bạn đang sử dụng CMake, Make hoặc Qt Creator?**
 
-If you are using [CMake](https://cmake.org/) or [Make](https://www.gnu.org/software/make/) as build environment you can export a [clang JSON Compilation Database](https://clang.llvm.org/docs/JSONCompilationDatabase.html) as `compile_commands.json` file. A Compilation Database holds all information necessary for building the project, such as source files, include paths and compiler flags. Having a Compilation Database makes project setup within Sourcetrail a lot easier. We recommend using this approach if possible.
+Nếu bạn đang sử dụng [CMake](https://cmake.org) hoặc [Make](https://www.gnu.org/software/make/) để xây môi trường, bạn có thể xuất ra tập tin `compile_commands.json` là [clang JSON Compilation Database](https://clang.llvm.org/docs/JSONCompilationDatabase.html). Cơ sở dữ liệu biên dịch chứa tất cả thông tin cần thiết để xây dựng dự án, chẳng hạn như tập tin mã nguồn, bao gồm đường dẫn và cờ trình biên dịch. Việc có Cơ sở dữ liệu tổng hợp giúp việc thiết lập dự án trong Sourcetrail dễ dàng hơn rất nhiều. Chúng tôi khuyên bạn nên sử dụng phương pháp này nếu có thể.
 
-Exporting a Compilation Database:
-* From **CMake** by defining the `CMAKE_EXPORT_COMPILE_COMMANDS` flag. (not supported on for Visual Studio CMake generators)
-* For **Make** projects use [Bear](https://github.com/rizsotto/Bear). Bear generates a `compile_commands.json` file during a simulated build process. Bear has been tested on FreeBSD, GNU/Linux and OS X.
-* From **Qt Creator since version 4.8** by selecting the "Generate Compilation Database" from the "Build" menu.
+Tạo một Cơ sở dữ liệu biên dịch:
+- Thêm cờ `CMAKE_EXPORT_COMPILE_COMMANDS=On` nếu bạn sử dụng **CMake**. (Không hỗ trợ trên Visual Studio)
+- Đối với dự án **Make** sử dụng [Bear](https://github.com/rizsotto/Bear). Bear tạo một tập tin `compile_commands.json` trong quá trình giả lập biên dịch. Bear đã được thử trên FreeBSD, GNU/Linux và OS X.
+- Chọn "Generate Compilation Database" từ menu "Build" nếu bạn sử dụng **Qt Creator since version 4.8**
 
-If you managed to export a `compile_commands.json` file, then please continue at [Create a Source Group from Compilation Database](#create-a-project-from-compilation-database) and come back after you finished creating the project.
+Nếu bạn có thể tạo tập tin `compile_commands.json`, vui lòng tiếp tục đọc [Tạo Nhóm mã nguồn từ Cơ sở dữ liệu biên dịch](#cc-from-compilation-database) và trở về sau khi bạn đã hoàn thành việc tạo dự án.
 
 <img src="docs/documentation/project_setup_wizard_start_cdb.png" height="600" alt="Project Setup Wizard Start CDB">
 
-**Are you using Visual Studio?**
+**Bạn đang sử dụng Visual Studio?**
 
-If you are using Visual Studio you can continue at [Source Group creation from Visual Studio](#create-a-project-from-visual-studio) and export a Compilation Database with our [Visual Studio Plugin](#visual-studio).
+Nếu bạn đang sử dụng Visual Studio, bạn có thể đọc [tạo Nhóm mã nguồn từ Visual Studio](#tạo-nhóm-mã-nguồn-từ-visual-studio)
 
 <img src="docs/documentation/project_setup_wizard_start_vs.png" height="600" alt="Project Setup Wizard Start VS">
 
-**Create Empty**
+**Tạo dự án trống**
 
-If neither of the above options apply to your project, please continue at [create an empty C/C++ Source Group](#create-an-empty-cxx-project) and return here once the project is created.
+Nếu bạn không thử sử dụng các cách ở trên để tạo dự án, bạn có thể đọc [tạo một Nhóm mã nguồn C/C++ trống](#empty-cc-source-group) và trở lại đây nếu dự án đã được tạo.
 
 <img src="docs/documentation/project_setup_wizard_source_group_type.png" height="600" alt="Project Setup Wizard Source Group Type">
 
-#### Source Group Setup for Java
+#### Thiết lập Nhóm mã nguồn cho Java
 
-**Are you using Gradle?**
+**Bạn đang sử dụng Gradle?**
 
-If you are using Gradle you can continue at [Source Group creation from Gradle](#create-a-project-from-gradle-configuration) to automatically setup your Source Group using your Gradle build configuration.
+Nếu bạn đang sử dụng Gradle, bạn có thể đọc [tạo Nhóm mã nguồn từ Gradle](#java-source-group-from-gradle) để tự động thiết lập Nhóm mã nguồn cho dự án của bạn.
 
 <img src="docs/documentation/project_setup_wizard_start_java_gradle.png" height="600" alt="Project Setup Wizard Start Java Gradle">
 
-**Are you using Maven?**
+**Bạn đang sử dụng Maven?**
 
-If you are using Maven please continue at [Source Group creation from Maven](#create-a-project-from-maven-configuration) to automatically setup your Source Group using your Maven build configuration.
+Nếu bạn đang sử dụng Maven, vui lòng đọc [tạo Nhóm mã nguồn từ Maven](#java-source-group-from-maven) và quay lại đây khi dự án đã được tạo.
 
 <img src="docs/documentation/project_setup_wizard_start_java_maven.png" height="600" alt="Project Setup Wizard Start Java Maven">
 
-**Create Empty**
+**Tạo dự án trống**
 
-If you do not have your project configured using Gradle or Maven, please continue at [Create an Empty Java Source Group](#create-an-empty-java-project) and come back here as soon as the project is created.
+Nếu dự án của bạn không sử dụng Gradle hoặc Maven, vui lòng đọc [tạo Nhóm mã nguồn Java trống](#empty-java-source-group) và quay lại đây khi dự án đã được tạo.
 
 <img src="docs/documentation/project_setup_wizard_start_java_empty.png" height="600" alt="Project Setup Wizard Start Java Empty">
 
-#### Source Group Setup for Python
+#### Thiết lập Nhóm mã nguồn cho Python
 
-**Create empty**
+**Tạo dự án trống**
 
-If you want to browse your Python source code with Sourcetrail, please continue at [Create an Empty Python Source Group](#create-an-empty-python-project) and come back here as soon as the project is created.
+Nếu bạn muốn phân tích mã nguồn Python bằng Sourcetrail, vui lòng đọc [tạo Nhóm mã nguồn Python trống](#empty-python-source-group) và trở lại đây khi dự án đã được tạo.
 
-<img src="docs/documentation/project_setup_wizard_start_python_empty.png" height="600" alt="Project Setup Wizard Start Python Empty">
+## Phân tích mã nguồn
 
-## Source Indexing
+Sau khi dự án đã được tạo, Sourcetrail sẽ hỏi bạn liệu bạn có muốn bắt đầu phân tích? Chọn **Start** và chờ cho quá trình phân tích hoàn thành. Việc này có thể hơi tốn thời gian. Hộp thoại phân tích ([Indexing Dialog](#hộp-thoại-phân-tích)) và thanh trạng thái ([Status Bar](#thanh-trạng-thái)) sẽ cung cấp cho bạn thông tin về tiến độ. Nếu không, giao diện người dùng sẽ trống. Sourcetrail phân tích tất cả các tên và các mối quan hệ của chúng trong toàn bộ mã nguồn được cung cấp.
 
-After the project is created, Sourcetrail will ask you whether you want to start indexing. Click **Start** and wait for the indexing to complete. This may take a bit of time. The [Indexing Dialog](#indexing-dialogs) and the [Status Bar](#status-bar) will give you information about the progress. Otherwise the UI will be empty. Sourcetrail indexes all named symbols and their relationships throughout the provided source files.
-
-> **Tasks:**
-> * Click **Start** when asked whether to start indexing.
-> * Wait until the indexing of your source files has finished.
-> * or Click **Stop** or press ESC to stop indexing (Sourcetrail will provide all information gathered so far and the indexing can be continued later by [refreshing](#refresh)).
+> **Công việc**
+> * Chọn **Start** khi được hỏi bắt đầu phân tích.
+> * Chờ cho đến khi phân tích các tập tin mã nguồn kết thúc.
+> * Hoặc chọn **Stop** hoặc ấn ESC để tạm dừng phân tích (Sourcetrail sẽ cung cấp những thông tin đã thu thập được và việc phân tích có thể tiếp tục sau đó bằng làm mới ([refreshing](#làm-mới))).
 
 !["Indexing"](docs/documentation/indexing.png "Indexing")
 
-After indexing is completed, Sourcetrail will show an overview of all indexed symbols in the [graph view](#graph-view) and some statistics in the [code view](#code-view).
+Sau khi phân tích thành công, Sourcetrail sẽ hiện thị tổng quát những tên được phân tích trong cửa sổ đồ thị ([graph view](#cửa-sổ-đồ-thị)) và một số thống kê trong cửa sổ mã nguồn ([code view](#cửa-sổ-mã-nguồn)).
 
-#### Troubleshooting Errors
+#### Khắc phục lỗi
 
-If the indexing yields errors, the status view will be shown with a list of errors. You can click on the errors label on the right side of the status bar or on one of the errors in the table to see their location.
+Nếu quá trình phân tích phát sinh lỗi, màn hình trạng thái sẽ hiển thị danh sách lỗi. Bạn có thể chọn vào nhãn lỗi ở phía bên phải thanh trạng thái hoặc vào một trong các lỗi trong bảng lỗi để xem vị trí của chúng.
 
-> **Tasks:**
-> * Fix your errors and [refresh](#refresh) to re-index the files with errors (Open Issue: As long as there was no change in the specific file, Sourcetrail won't reindex it, use the **Force Refresh** option from the [Edit Menu](#edit)).
-> * or ignore them and continue with an incomplete index.
+> **Công việc**
+> * Sửa những lỗi của bạn và làm mới ([refresh](#làm-mới)) để phân tích lại những tập tin chứa lỗi (Sourcetrail không phân tích lại những tập tin không có thay đổi, chọn **Force Refresh** từ [menu chỉnh sửa](#edit)).
+> * Hoặc bỏ qua chúng và tiếp tịch với những tập tin chưa được phân tích.
 
 !["Error View"](docs/documentation/error_view.png "Error View")
 
-## User Interface
+## Giao diện người dùng
 
-As mentioned earlier, Sourcetrail's user interface is split into three main views. Their arrangement can be adjusted as preferred and can also be detached from the main window and split into different screens (see [Window Widgets](#widget-windows)).
+Như đã đề cập ở trước, giao diện người dùng của Sourcetrail được chia thành ba màn hình chính. Bạn có thể sắp xếp lại chúng như mong muốn hoặc tách rời màn hình từ cửa sổ chính của ứng dụng sang một màn hình cửa sổ khác.
 
-All three views display information about the currently selected symbol:
+Cả ba màn hình hiển thị thông tin về tên được chọn:
 
 !["Main Screen"](docs/documentation/main_screen.png "Main Screen")
 
-### 1. Search Field
+### 1. Thanh tìm kiếm
 
-The [Search Field](#search-bar) allows for easy access to all indexed symbols. Use it to find all classes and functions you wish to investigate. In addition, it also holds the UI buttons for navigating [back & forward](#back-&-forward) as well as [refreshing](#refresh).
+[Thanh tìm kiếm](#thanh-tìm-kiếm) cho phép bạn dễ dàng tìm kiếm những tên đã được phân tích. Sử dụng nó để tìm những lớp (class) và hàm (function) mà bạn muốn xem. Ngoài ra, nó cũng chứa các nút giao diện người dùng để điều hướng [quay lại, tiến lên và lịch sử](#quay-lại-tiến-lên-và-lịch-sử) cũng như làm mới.
 
 <img src="docs/documentation/search_view.png" width="750" alt="Search View">
 
-When entering a search query, the [autocompletion popup](#autocompletion-popup) will provide you with a concise list of all matching symbols. Note that Sourcetrail uses a fuzzy matching algorithm, that allows you to skip characters while entering a query.
+Khi nhập tìm kiếm, [thanh gợi ý](#thanh-gợi-ý) sẽ hiện thị một danh sách ngắn gọn những tên có thể khớp. Lưu ý rằng Sourcetrail sử dụng thuật toán khớp mờ, cho phép bạn bỏ qua các ký tự khi nhập tìm kiếm.
 
 <img src="docs/documentation/search_view_completion.png" width="800" alt="Search View Completion">
 
-### 2. Graph Visualization
+### 2. Đồ thị trực quan
 
-The [graph visualization](#graph-view) displays the currently selected symbol in an active state and all the other symbols it shares a relationship with. The visualization is made up of nodes and edges.
+[Đồ thị trực quan](#màn-hình-đồ-thị) hiển thị tên được chọn ở trạng thái hoạt động và những tên khác có mối liên quan. Hình ảnh đồ thị được tạo thành từ các nốt và cạnh.
 
-* **Nodes:** All named symbols in your source code will be displayed as different [nodes](#nodes), such as `functions`, `classes` or `files`. Nodes with members (like `classes`) can be expanded to show all their contents, the number at the expansion arrow shows how many members are hidden. Clicking a node will activate it and update all the views to the new selection. Dragging a node can be used to change its position.
-* **Edges:** The relationships between the symbols are displayed as different [edges](#edges), such as `type use`, `function call` or `file include`. Sometimes edges get bundled together and are displayed as `bundled edges` that show a number of how many edges are contained. Clicking an edge will highlight its source location in the code view.
+- **Nốt:** tất cả tên ở trong mã nguồn sẽ được như là các [nốt](#nốt), ví dụ: `functions` (hàm), `classes` (lớp) hoặc `files` (tập tin). Các nốt có thành viên (ví dụ `lớp`,...) có thể được mở rộng để hiện thị tất cả nội dung của chúng, số ở mũi tên mở rộng cho biết có bao nhiêu thành viên bị ẩn. Nhấp vào một nốt sẽ kích hoạt nó và cập nhật tất cả các màn mình xem theo lựa chọn mới. Kéo một nốt có thể được sử dụng để thay đổi vị trí của nó.
+- **Cạnh:** mỗi quan hệ giữa các tên được hiện thị như những [cạnh](#cạnh), như là `kiểu sử dụng`, `lời gọi hàm` hoặc `tập tin chứa`. Thỉnh thoảng, các cạnh được nhóm lại với nhau với một con số cho biết số lượng cạnh được chứa trong nhóm. Nhấp vào một cạnh sẽ làm nổi bật vị trí trong mã nguồn của nó ở màn hình mã nguồn.
 
 !["Graph View Graph"](docs/documentation/graph_view_graph.png "Graph View Graph")
 
-#### Colors:
-The different node and edge types are also displayed using different colors. The default color scheme uses this convention:
+#### Màu sắc:
 
-| Color | Node | Edge
+Các loại nốt và cạnh khác nhau cũng được hiển thị bằng các màu khác nhau. Sơ đồ màu mặc định được cấu hình theo bên dưới:
+
+| Màu | Nốt | Cạnh
 | --- | --- | ---
-| gray | types and classes | type use
-| yellow | functions and methods | calls
-| blue | variables and fields | variable access
+| xám | kiểu dữ liệu và lớp | kiểu sử dụng
+| vàng | hàm và phương thức | lời gọi
+| xanh dương | biến và thuộc tính | truy cập biến
 
-#### Hatching:
-Nodes displayed with a striped hatching, are nodes that were used within your indexed source files, but were not defined. Clicking them shows all locations where they are used, without providing their declaration.
+#### Gạch chéo
+
+Các nốt được hiển thị bằng đường gạch chéo là các nốt đã được sử dụng trong các tập tin nguồn được phân tích của bạn, nhưng chưa được định nghĩa. Nhấp vào chúng sẽ hiển thị tất cả các vị trí mà không được cung cấp khai báo.
 
 !["Node Non Indexed"](docs/documentation/node_non_indexed.png "Node Non Indexed")
 
-#### Legend:
+#### Chú thích
 
-For a full list on all existing nodes and edges take a look at the integrated [Graph Legend](#graph-legend) by clicking the `?`-button in the bottom right corner of the [Graph View](#graph-view).
+Để xem danh sách đầy đủ tất cả các nốt và cạnh hiện có, hãy xem [Chú thích đồ thị](#chú-thích-đồ-thị) tích hợp bằng cách nhấp vào nút `?` ở góc dưới bên phải của [màn hình đồ thị](#màn-hình-đồ-thị).
 
-### 3. Code View
+### 3. Màn hình mã nguồn
 
-The [code view](#code-view) displays all locations of the currently active symbol within the indexed source files. It does not allow for editing the source code. Syntax highlighting is used to increase readability. Source locations that are surrounded by a box when hovered can be clicked to activate the respective symbol. Active source locations are highlighted.
+[Màn hình mã nguồn](#màn-hình-mã-nguồn) hiển thị tất cả vị trí hiện tại của tên trong những mã nguồn được phân tích. Bạn không thể chỉnh sửa mã nguồn. Tính năng làm nổi bật cú pháp được sử dụng để tăng khả năng đọc hiểu. Các vị trí mã nguồn được bao quanh bởi một khung, khi di chuột qua có thể nhấp để kích hoạt tên tương ứng. Các vị trí mã nguồn đang hoạt động sẽ được tô sáng.
 
 <img src="docs/documentation/code_view.png" width="800" alt="Code View">
 
-The source locations are displayed as code snippets, containing the line of interest and extra lines added to the top and bottom to give information about its context. Code snippets are then bundled together into files.
+Vị trí mã nguồn được hiển thị dưới dạng các đoạn mã, bao gồm dòng được quan tâm và các dòng bổ sung được thêm vào đầu và cuối để cung cấp thông tin về ngữ cảnh của nó. Các đoạn mã này được hiển thị trong các tập tin.
 
-**Note:** A file can be selected as active symbol by clicking its name in the title bar. By clicking the title bar or the icon on the right hand side of the title bar, the file can switch between 3 different states:
+**Lưu ý:** một tập tin có thể được chọn như một tên bằng cách chọn vào tên của nó ở thanh tiêu đề. Bằng cách ấn vào thanh tiêu đề hoặc biểu tượng ở bên phải thanh tiêu đề, tập tin có để chuyển sang ba chế độ:
 
-* **Minimized:** The file does not show any content
+- **Tối thiểu:** tập tin không hiểu bất kì nội dung nào.
 
 <img src="docs/documentation/snippet_minimized.png" width="800" alt="Snippet Minimized">
 
-* **Snippets:** The file displays the snippets containing active locations separated by lines.
+- **Đoạn:** tập tin hiển thị các đoạn mã chứa những vị trí được chọn được phân tách bằng các dòng.
 
 <img src="docs/documentation/snippet_snippets.png" width="800" alt="Snippet Snippets">
 
-* **Maximized:** The [code view](#code-view) switches to [single file mode](#single-file-mode) and the whole content of the file is visible.
+- **Tối đa:** [Màn hình mã nguồn](#màn-hình-mã-nguồn) chuyển sang [chế độ một tập tin](#chế-độ-một-tập-tin) và toàn bộ nội dung của tập tin sẽ được hiển thị.
 
 <img src="docs/documentation/code_view_single.png" width="800" alt="Code View Single">
 
-For more information, please visit the [Code View Files](#files) section.
+Đọc [tập tin mã nguồn](#tập-tin) để có thêm thông tin.
 
-## Start Exploring!
+## Bắt đầu khám phá!
 
-At this point, you should have an understanding of the basics of Sourcetrail's user interface and can begin exploring your codebase. Sourcetrail will allow you to see your source code from a whole new perspective, by giving you a concise overview of its parts and a faster way of drilling down to its internals, while always maintaining the connection to the implementation details of the actual source code.
+Đến đây, bạn nên hiểu những điều cơ bản về giao diện người dùng của Sourcetrail và có thể bắt đầu khám phá mã nguồn của mình. Sourcetrail sẽ cho phép bạn nhìn mã nguồn từ một góc nhìn hoàn toàn mới, bằng cách cung cấp cho bạn cái nhìn tổng quan ngắn gọn về các thành phần và cách nhanh hơn để đi sâu vào chi tiết bên trong, đồng thời luôn duy trì kết nối với các chi tiết triển khai của mã nguồn thực tế.
 
-Please take look at the much more extensive instruction manual below for detailed information.
+Vui lòng xem hướng dẫn sử dụng chi tiết hơn bên dưới để biết thêm thông tin.
 
-The Sourcetrail team wishes you a good start with our product, lots of saved time, increased productivity and much cleaner code.
+Nhóm Sourcetrail chúc bạn có một khởi đầu tốt với sản phẩm của chúng tôi, tiết kiệm được nhiều thời gian, tăng năng suất và có mã nguồn sạch hơn nhiều.
 
-> **Tasks:**
-> * Start exploring and have fun!
+> **Công việc**
+> * Bắt đầu khám phá và chúc vui vẻ!
 
 
-# Installation
+# Cài đặt
 
 ## Windows
 
-Download and open the zip file and extract its contents into a temporary folder of your choice. Run the `setup.exe` and go through the wizard. You can now launch Sourcetrail from your start menu.
-
-## macOS
-Download and open the Sourcetrail.dmg file and drag Sourcetrail.app into the applications folder. You can now launch Sourcetrail from your Applications.
-
-<img src="docs/documentation/installation_mac.png" width="800" alt="Installation macOS">
+## MacOS
 
 ## Linux
 
-### Tarball
+## Thư mục dữ liệu
 
-Download the `.tar.gz` file and extract it. To start Sourcetrail run the `Sourcetrail.sh` script. Sourcetrail creates a folder `~/.config/sourcetrail` at the first run, this is the folder for Sourcetrail settings.
+Thư mục dữ liệu chứa những tập tin nhất định được dùng bởi Sourcetrail để chạy chương trình. Sau khi thực hiện [hướng dẫn cài đặt](#cài-đặt), thư mục dữ liệu sẽ ở những đường dẫn dưới đây tuỳ vào hệ điều hành.
 
-#### Install
-To install Sourcetrail run the `install.sh` script with `sudo`. It will install Sourcetrail to `/opt/sourcetrail` and create the `/usr/bin/sourcetrail` symlink.
-
-#### Uninstall
-To uninstall Sourcetrail run the `/opt/sourcetrail/uninstall.sh` script with `sudo`.
-
-### AppImage
-
-Download the `.AppImage` file. Give it permission to execute with `chmod a+x` or via the context menu. To start Sourcetrail double click it or execute it from the Terminal. Sourcetrail creates a folder `~/.config/sourcetrail` at the first run, this is the folder for Sourcetrail settings.
-
-For more information on AppImages please visit [appimage.org](https://appimage.org/).
-
-## Data folder
-
-The data folder holds certain files that are used by Sourcetrail to run the program. After following the [installation instructions](#installation) the data folder should be located in the following locations on your platform.
-
-| Platform | Location
+| Hệ điều hành | Đường dẫn
 | --- | ---
-| Windows | `C:/Users/You/AppData/Local/Coati Software/Sourcetrail` _(used for dynamic data and settings)_ `install_directory/Coati Software/Sourcetrail/data` _(used for static app data)_
-| macOS | `~/Library/Application Support/Sourcetrail`
+| Windows | `C:/Users/You/AppData/Local/Coati Software/Sourcetrail` _(dùng cho dữ liệu và cài đặt tự tuỳ biến)_ `install_directory/Coati Software/Sourcetrail/data` _(dùng cho dữ liệu cố định)_
+| MacOS | `~/Library/Application Support/Sourcetrail`
 | Linux | `~/.config/sourcetrail`
 
-## Finding System Header Locations
+## Tìm thư viện hệ thống
 
 ### Windows
 
-These files usually ship with your compiler. For the Visual Studio IDE the system headers can be found at:
-`<path_to_visual_studio>/VC/include/`
-If you don't use the Visual Studio IDE you can also try to find your system headers in a subdirectory of:
-`C:/Program Files (x86)/Windows Kits/`
-
-### macOS
-
-Run this command in your terminal:
-`gcc -x c++ -v -E /dev/null`
-You will find the header search paths your compiler uses in the output between these two lines:
-
-```
-#include <...> search starts here:
-.
-.
-.
-End of search list.
-```
+### MacOS
 
 ### Linux
 
-`gcc -x c++ -v -E /dev/null`
-or
-`clang -x c++ -v -E /dev/null`
-You will find the header search paths your compiler uses in the output between these two lines:
+## Tìm thư viện Java
 
-```
-#include <...> search starts here:
-.
-.
-.
-End of search list.
-```
-
-
-## Finding Java Runtime Library Location
-
-The current version of Sourcetrail requires an installation of the Java 8 runtime environment to index any Java project. Make sure that Sourcetrail and your JRE share the same kind or architecture (a 32 bit Sourcetrail requires a 32 bit JRE). To locate the required library file, please refer to the applicable description below.
+Phiên bản Sourcetrail hiện tại yêu cầu cài đặt môi trường chạy Java 8 để lập chỉ mục bất kỳ dự án Java nào. Hãy đảm bảo rằng Sourcetrail và JRE của bạn có cùng loại hoặc cùng kiến trúc (Sourcetrail 64 bit yêu cầu JRE 64 bit). Để tìm tệp thư viện cần thiết, vui lòng tham khảo mô tả thích hợp bên dưới.
 
 ### Windows
 
-The Java Runtime Library (called `jvm.dll`) can be found inside of your JRE install folder and looks like this:
-`<path_to_jre>/bin/client/jvm.dll`
-
-### macOS
-
-The Java Runtime Library (called `libjli.dylib`) can be found inside of your JDK install folder. Run the following command in your terminal to find the location of your default Java installation:
-`/usr/libexec/java_home`
-
-This should give you a path looking like this:
-`/Library/Java/JavaVirtualMachines/<jdk_version>/Contents/Home`
-
-The `"libjli.dylib"` should be available at:
-`/Library/Java/JavaVirtualMachines/<jdk_version>/Contents/MacOS/libjli.dylib`
-
-Insert the full path to `libjli.dylib` into the **Java Path** setting in the [Preferences Window](#preferences-window).
+### MacOS
 
 ### Linux
 
-The Java Runtime Library (called `libjvm.so`) can be found inside of your JRE install folder and looks like this:
-`<path_to_jre>/lib/<arch>/server/libjvm.so`
 
-# Interface
+# Giao diện
 
-## Main Window
+## Cửa sổ chính
 
-### Subwindows
+### Cửa sổ con
 
-Sourcetrail's three views are organized into subwindows, which can be freely arranged within the Main Window or detached from it. Each subwindow has a title bar displaying its name and 2 buttons for closing the subwindow and for detaching it from the Main Window.
+Ba màn hình của Sourcetrail được sắp xếp thành những cửa sổ con, có thể được bố trí tự do trong cửa sổ chính hoặc tách rời khỏi nó. Mỗi cửa số con có một thanh tiêu đề hiển thị tên của nó và 2 nút ấn để đóng cửa sổ con và tách nó khỏi cửa sổ chính.
 
 !["Main Window"](docs/documentation/main_window.png "Main Window")
 
-**Interactions:**
+**Thao tác**
 
-* Drag the subwindow at the title bar to rearrange it within the Main Window, detach it or attach it again.
-* Press the "x" icon to close the subwindow. They can be reopened from the [View Menu](#view).
-* Press the "□" icon to detach the subwindow from the Main Window.
+- Kéo cửa sổ con trên thanh tiêu đề để sắp xếp lại vị trí trong cửa sổ chính, tách hoặc gắn lại cửa sổ con.
+- Nhấn vào biểu tượng "x" để đóng cửa sổ con. Có thể mở lại cửa sổ con từ [menu xem](#view).
+- Nhấn vào biểu tượng "□" để tách cửa sổ con khỏi cửa sổ chính.
 
-### Tab Bar
+### Thanh thẻ
 
-The Tab Bar is located at the top of the [Main Window](#main-window) and is used to open multiple symbols in parallel.
+Thanh thẻ nằm ở phía trên cùng của [cửa sổ chính](#cửa-sổ-chính) và được sử dụng để mở nhiều tên cùng lúc.
 
 !["Tab Bar"](docs/documentation/tab_bar.png "Tab Bar")
 
-**Interactions:**
+**Thao tác**
 
-* Click on the `+` icon to open a new tab or use the [New Tab Shortcut](#shortcuts).
-* Click on a tab to activate it and show it's content or use the [Next/Previous Tab Shortcuts](#shortcuts).
-* Click on the `x` icon on the right of each tab to close it or use the [Close Tab Shortcut](#shortcuts).
-* Click and drag a tab to change it's position.
+- Nhấp vào biểu tượng `+` để mở thẻ mới hoặc sử dụng [phím tắt thẻ mới](#phím-tắt).
+- Nhấp vào một thẻ để kích hoạt và hiển thị nội dung của thẻ đó hoặc sử dụng [phím tắt chuyển thẻ tiếp theo/trước đó](#phím-tắt).
+- Nhấp vào biểu tượng `x` ở bên phải mỗi thẻ để đóng thẻ đó hoặc sử dụng [phím tắt đóng thẻ](#phím-tắt).
+- Nhấp và kéo một thẻ để thay đổi vị trí của thẻ đó.
 
-### Status Bar
+### Thanh trạng thái
 
-The Status Bar is located on the bottom of the [Main Window](#main-window) and is used to convey information about Sourcetrail's status and currently running processes to the user
+Thanh trạng thái nằm ở phía dưới [cửa sổ chính](#cửa-sổ-chính) và được sử dụng để hiển thị thông tin về trạng thái của Sourcetrail và các tiến trình đang chạy cho người dùng.
 
-It displays:
+Nó hiển thị:
 
-* The most recent status message.
-* The current status of the [Code Editor Plugin](#code-editor-plugins) connection
-* Error Count if the currently loaded project has errors.
-* Indexing progress bar while indexing.
+- Thông báo trạng thái gần nhất.
+- Số lượng lỗi nếu dự án đang phân tích có lỗi.
+- Thanh tiến trình phân tích trong khi đang phân tích.
 
 !["Status Bar"](docs/documentation/status_bar.png "Status Bar")
 
-**Interactions:**
+**Thao tác**
 
-* Click on the status message count to display the (Status Tab](#status-tab).
-* Click on the error count to display the error locations in the [Code View](#code-view).
-* Click on the indexing progress bar to display the [Indexing Dialogs](#indexing-dialogs) if they were hidden.
+- Nhấp vào số lượng thông báo trạng thái để hiển thị thẻ [trạng thái](#thẻ-trạng-thái).
+- Nhấp vào số lượng lỗi để hiển thị vị trí lỗi trong [màn hình mã nguồn](#màn-hình-mã-nguồn).
+- Nhấp vào thanh tiến trình lập chỉ mục để hiển thị [hộp thoại phân tích](#hộp-thoại-phân-tích) mục nếu chúng bị ẩn.
 
-### On-Screen Search Bar
+### Thanh tìm kiếm trên màn hình
 
-The On-Screen Search Bar is used to search visible contents of the [Graph View](#graph-view) and [Code View](#code-view). It gets displayed at the bottom of the [Main Window](#main-window) when using the [Find On-Screen](#shortcuts) action.
+Thanh tìm kiếm trên màn hình được dùng để tìm kiếm những nội dung hiển thị trên [màn hình đồ thị](#màn-hình-đồ-thị) và [màn hình mã nguồn](#màn-hình-mã-nguồn). Nó được hiển thị ở dưới [cửa sổ chính](#cửa-sổ-chính) khi sử dụng thao tác [tìm trên màn hình](#phím-tắt).
 
 !["Onscreen Search Bar"](docs/documentation/onscreen_search_bar.png "Onscreen Search Bar")
 
-**Interactions:**
+**Thao tác**
 
-* Enter a search query to search in contents of the [Graph View](#graph-view) and [Code View](#code-view).
-* Click the arrow buttons next to the search field to iterate the matched locations.
-* Use the checkboxes right of the search field to define which view contents will be matched.
-* Click the `x` icon on the right to close the On-Screen Search Bar or press `ESC`.
+- Nhập vào tìm kiếm để tìm kiếm các nội dung trong [màn hình đồ thị](#màn-hình-đồ-thị) và [màn hình mã nguồn](#màn-hình-mã-nguồn).
+- Nhấp vào các nút mũi tên bên cạnh khung tìm kiếm để chuyển đến các vị trí khớp với kết quả tìm kiếm.
+- Sử dụng các hộp kiểm bên phải khung tìm kiếm để xác định nội dung chế độ xem nào sẽ được tìm kiếm.
+- Nhấp vào biểu tượng `x` ở bên phải để đóng thanh tìm kiếm trên màn hình hoặc nhấn `ESC`.
 
-## Windows
+## Các cửa sổ
 
-### Start Window
+### Cửa sổ bắt đầu
 
-On every start of Sourcetrail you are shown the start window. It allows for creating new projects or opening existing ones.
+Cửa sổ bắt đầu luôn xuất hiện khi bạn mở Sourcetrail. Nó cho phép tạo mới dự án hoặc mở dự án cũ.
 
 <img src="docs/documentation/start_window.png" width="700" alt="Start Window">
+    
+**Tao tác**
 
-**Interactions:**
+- Nhấp vào `New Project` sẽ dẫn bạn đến [trình thiết lập dự án](#trình-thiết-lập-dự-án).
+- Nhấp vào `Open Project` sẽ cho phép bạn mở một dự án Sourcetrail trước đó bằng cách chọn trong hộp thoại tập tin.
+- Nhấp vào một trong các `Recent Projects` sẽ mở dự án đó. Danh sách hiển thị tối đa 7 dự án theo thứ tự gần đây nhất.
+- Ấn `ESC` để đóng cửa sổ.
+- Nhấp `Check for new version` để kết nối đến [https://github.com/PhongLamBaoMat/Sourcetrail/releases](https://github.com/PhongLamBaoMat/Sourcetrail/releases) để xem phiên bản mới nhất.
 
-* Clicking `New Project` will lead you to [Project Setup](#project-setup-wizard).
-* Clicking `Open Project` will let you open an existing Sourcetrail project by choosing from a file dialog.
-* Clicking on one of the `Recent Projects` will open this project. The list shows a maximum of 7 items ordered by recent first.
-* Pressing `ESC` will close the window.
-* Click `Check for new version` to connect to [https://sourcetrail.com](https://sourcetrail.com) and check if a new version is available.
+### Khung danh sách đường dẫn
 
+Khung danh sách đường dẫn là một phần của giao diện người dùng, được sử dụng trong [cửa sổ tuỳ chọn](#cửa-sổ-tuỳ-chọn) và [trình thiết lập dự án](#trình-thiết-lập-dự-án). Nó cho phép nhập đường dẫn của các tập tin và thư mục.
+Nếu bạn muốn sử dụng các biến môi trường, bác có thể nhập một trong cách dưới .
 
-### Path List Box
-
-The Path List Box is a user interface element that is used within the [Preferences Window](#preferences-window) and the [Project Setup Wizard](#project-setup-wizard). It allows for entering a list of file and directory paths.
-If you want to use environment variables you can use either of the following notations.
-`${VARIABLE_NAME}` or `%VARIABLE_NAME%`
+`${VARIABLE_NAME}` hoặc `$%VARIABLE_NAME%`
 
 <img src="docs/documentation/path_list_box.png" width="700" alt="Path List Box">
 
-**Interactions:**
+**Thao tác**
 
-* Click the "+" icon to add a new path line.
-* Click the "-" icon to remove a selected path line.
-* Click a path line to select it.
-* Enter the path by typing on your keyboard
-* Click "..." within the path line to open a file dialog for choosing a file or directory path.
-* Directly add multiple paths into the box by dropping elements from your filesystem.
-* Click the pen icon in the bottom right corner to edit the list as plain text.
+- Nhấp vào biểu tượng `+` để thêm một đường dẫn mới.
+- Nhấp bào biết tượng `-` để xoá đường dẫn đã chọn.
+- Nhấp vào đường dẫn để chọn nó.
+- Nhập đường dẫn bằng cách gõ bàn phím.
+- Nhấp vào `...` bên trong đường dẫn để mở hộp thoại tập tin để chọn một tập tin hoặc thư mục.
+- Thêm trực tiếp nhiều đường dẫn vào khung bằng cách kéo thả các đối tượng từ hệ thống tập tin của bạn.
+- Nhấp vào biển tượng cây bút ở góc dưới bên phải để chỉnh sửa danh sách dưới dạng văn bản.
 
-#### Plain Text Editing
+#### Chỉnh sửa văn bản
 
-By pressing the pen icon in the bottom right corner you can open the plain text edition dialog. It allows you to edit the whole list within a text field. Each line will be one list item.
+Bằng cách ấn vào biểu tượng cây bút ở dưới góc phải, bạn có thể mở khung chỉnh sửa văn bản. Nó cho phép bạn chỉnh sửa toàn bộ danh sách trong một khung văn bản. Mỗi dòng tương ứng một mục trong danh sách.
 
 <img src="docs/documentation/path_list_box_edit.png" width="600" alt="Path List Box Edit">
 
-**Interactions:**
+**Thao tác**
 
-* Add and remove list items through keyboard interaction.
-* Click `Cancel` to cancel plain text editing.
-* Click `Save` to save your changes to the list.
+- Thêm hoặc xoá các mục trong danh sách bằng bàn phím.
+- Nhấp vào `Cancel` để huỷ chỉnh sửa văn bản.
+- Nhấp vào `Save` để lưu các thay đổi của bạn vào danh sách.
 
-### Preferences Window
+### Cửa sổ tuỳ chọn
 
-The Preferences window lets you define settings for all projects. You can open the Preferences from the menu via [Edit/Preferences](#edit).
+Cửa sổ tuỳ chọn cho phép bạn chỉnh sửa các cài đặt cho toàn bộ các dự án. Bạn có thể mởi tuỳ chỉnh từ menu [Edit/Preferences](#edit).
 
 <img src="docs/documentation/preferences_screen.png" width="800" alt="Preferences Screen">
 
-| Setting | Description
+| Cài đặt | Mô tả
 | --- | ---
-| Font Face | Define the font face used throughout the UI
-| Font Size | Set the font size used throughout the UI. It can also be changed with the actions in the [View Menu](#view)
-| Tab Width | Define the space width of tabs in the code view.
-| Text Encoding | Define the Text Encoding used for displaying your source code.
-| Color scheme | Choose which color scheme Sourcetrail should display. The color schemes are located in [data](#datafolder)/color_schemes/
-| Animations | Define if animations are used within the user interface.
-| Built-In Types | Define whether built-in types such as int or bool are shown when referenced in the graph view.
-| Directory in File Title | Enable display of the parent directory of a code file relative to the project file.
-| Auto Scaling to DPI | **(Linux only)** Define if automatic scaling to screen DPI resolution is active. This setting manipulates the environment flag `QT_AUTO_SCREEN_SCALE_FACTOR` of the Qt framework. Choose 'system' to stick to the setting of your current environment.
-| Scale Factor | **(Linux only)** Define a screen scale factor for the user interface of the application. This setting manipulates the environment flag `QT_SCALE_FACTOR` of the Qt framework. Choose 'system' to stick to the setting of your current environment.
-| Scroll Speed | Define a multiplyer for the default scroll speed. Values smaller than 1 slow down scrolling while values greater than 1 increase the scroll speed.
-| Graph Zoom | Switch the default mouse wheel behavior in the graph between scrolling and zooming.
-| Logging | Ticking this box enables logging to console and to a log file. This option is disabled by default to speed up Sourcetrail. If you encounter problems while running Sourcetrail, we recommend to enable this option so you have somewhere to start looking for a cause.
-| Indexer Logging | When enabled Sourcetrail will log detailed information during indexing. This log data can help us fix issues.
-| Automatic Update Check | Check to automatically check whether a new version of Sourcetrail is available once every day.
-| Sourcetrail Port | Port number that Sourcetrail uses to listen for incoming messages from plugins.
-| Plugin Port | Port number that Sourcetrail sends outgoing messages to.
-| Indexer threads | Define how many parallel threads are used during indexing. Setting this value to `default` will cause Sourcetrail to detect the ideal number of threads based on the CPU and use as many threads for indexing.
-| Multi process C/C++ indexing | Enable C/C++ indexer threads to run in a different process. This prevents the application from crashing due to unforeseen exceptions while indexing.
-| Java Path | If you want to use Sourcetrail on Java source code, please specify a path to your Java 8 runtime library. Please keep in mind that a 32 bit Sourcetrail requires a 32 bit version of Java while a 64 bit Sourcetrail requires a 64 bit Java to be working correctly. You can either use the button below for automatic detection or add the path manually. For instructions on how to find your Java runtime path see (Finding Java Runtime Library Location](#finding-java-runtime-library-location).
-| JRE System Library | Add the jar files of your JRE System Library. These jars can be found inside your JRE install directory. You can either use the button below for automatic detection or add the paths manually.
-| Maven Path | Only required for indexing projects using Maven. Provide the location of your installed Maven executable. You can also use the auto detection.
-| Post Processing | Enable a post processing step to solve unsolved references after the indexing is done. These references will be marked "ambiguous" to indicate that some of these edges may never be encountered during runtime of the indexed code because the post processing only relies on symbol names and types.
-| Global Include Paths | Set header search paths that are used for **all** of your projects (e.g. std headers). An option for automatic detection of these paths is available for Clang, GCC and the Visual Studio compiler. For instructions on how to add paths manually see [Path List Box](#path-list-box). For instructions on how to find the system header paths see [Finding System Header Locations](#finding-system-header-locations).
-| Global Framework Search Paths | **(macOS only)** Define the search paths for `.framework` files for all of your projects. An option for automatic detection of these paths is available for Clang and GCC. <br />For instructions on how to add paths see [Path List Box](#path-list-box).
+| Font Face | Lựa chọn phông chữ được hiện thị trong toàn bộ giao diện.
+| Font Size | Đặt kích thước phông chữ của giao diện. Bạn có thể thay đổi kích thước phông chữ bằng các thao tác trong [menu xem](#view).
+| Tab Width | Khai báo khoảng cách của một phím tab ở màn hình mã nguồn.
+| Text Encoding | Khai báo định dạng mã hoá văn bản để hiện thị ở màn hình mã nguồn.
+| Color scheme | Chọn bảng màu mà Sourcetrail nên hiển thị. Các bác màu được nằm trong [thư mục dữ liệu](#thư-mục-dữ-liệu)/color-schemes/
+| Animations | Cho phép các hiệu ứng khi thao tác trên giao diện hay không.
+| Built-In Types | Cho phép các kiểu dự liệu cơ bản như `int` hoặc `bool` có được hiển thị khi được tham chiếu trong màn hình đồ thị hay không.
+| Directory in File Title | Cho phép hiển thị thư mục cha của một tập tin trong dự án.
+| Auto Scaling to DPI | **(Chỉ có ở Linux)** Tự động điều chỉnh tỷ lệ theo độ phân giải DPI của có được bật hay không. Cài đặt này điều chỉnh biến môi trường `QT_AUTO_SCREEN_SCALE_FACTOR` của Qt Framework. Chọn 'system' để giữ nguyên thiết lập hiện tại.
+| Scale Factor | **(Chỉ có ở Linux)** Hệ số tỷ lệ màn hình cho giao diện người dùng của ứng dụng. Cài đặt này điều chỉnh biến môi trường `QT_SCALE_FACTOR` của Qt Framework. Chọn 'system' để giữ nguyên thiết lập hiện tại.
+| Scroll Speed | Hệ số nhân cho tốc độ cuộn chuột. Giá trị nhỏ hơn 1 sẽ cuộn chậm hơn, giá trị lớn hơn 1 cuộn nhanh hơn.
+| Graph Zoom | Chuyển đổi hành vi mặc định của con lăn chuột trong biểu đồ giữa cuộn và phóng to.
+| Logging | Chọn ô này cho phép ghi nhật ký vào bảng điều khiển và vào tập tin nhật ký. Mặc định cài đặt này bị tắt để tăng tốc độ cho Sourcetrail. Nếu bạn gặp lỗi khi sử dụng Sourcetrail, chúng tôi khuyến khích bật cài đặt này để chúng tôi có thể hiểu rõ lỗi hơn.
+| Indexer Logging | Khi được bật, Sourcetrail sẽ ghi lại thông tin chi tiết quá trình phân tích. Dữ liệu nhật ký này có thể giúp chúng tôi khắc phục sự cố.
+| Automatic Update Check | Tự động kiểm tra cập nhật phiên bản mới.
+| Sourcetrail Port | Cổng mà Sourcetrail sử dụng để lắng nghe thông tin từ các tiện ích mở rộng.
+| Plugin Port | Cổng mà Sourcetrail sẽ gửi thông tin đến tiện ích mở rộng.
+| Indexer threads | Xác định luồng song song được sử dụng trong khi phân tích. Đặt giá trị này thành 'default' sẽ khiến Sourcetrail tự động tính số lượng luồng lý tưởng dựa trên CPU và lượng luồng tối đa cho việc phân tích.
+| Multi process C/C++ indexing | Cho phép các luồng của trình phân tích C/C++ chạy trong một tiến trình riêng biệt. Điều này ngăn ứng dụng bị lỗi do các ngoại lệ không lường trước được trong quá trình phân tích.
+| Java Path | Nếu bạn muốn Sourcetrail phân tích mã nguồn Java, vui lòng xác định đường dẫn đến thư viện Java 8. Bạn có thể sử dụng nút bên dưới để tự tìm đường dẫn hoặc thêm đường dẫn bằng tay. Bạn có thể đọc thêm [tìm đường dẫn thư viện Java](#tìm-thư-viện-java) để được hướng dẫn kĩ hơn.
+| JRE System Library | Thêm các tập tin JAR của thư viện hệ thống JRE. Những tập tin này có thể tìm thấy ở thư mục JRE. Bạn có thể chọn nút ở dưới để tự động tìm kiếm hoặc thêm thủ công.
+| Maven Path | Chỉ cần khi phân tích dự án sử dụng Maven, cung cấp đường dẫn đến tập tin thực thi của Maven. Bạn có thể sử dụng tự động tìm kiếm.
+| Post Processing | Bước xử lý hậu kỳ giải quyết các tham chiếu chưa được giải quyết sau khi đã phân tích xong. Những tham chiếu này sẽ được đánh dấu là "ambigous" để chỉ ra rằng một số cạnh này có thể không bao giờ được gặp trong quá trình thực thi phân tích mã nguồn vì quá trình xử lý hậu kỳ chỉ dựa vào tên và kiểu dữ liệu.
+| Global Include Paths | Thiết lập đường dẫn tìm kiếm tiêu đề được sử dụng cho **toàn bộ** dự án của bạn (ví dụ: tiêu đề thư viện chuẩn,...). Tuỳ chọn tự động phát hiện các đường dẫn này có sẵn cho trình biên dịch Clang, GCC và Visual Studio. Đọc [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn) để được hướng dẫn tự thêm đường dẫn. Đọc [tìm tập tin thư viện Java](#tìm-thư-viện-Java) để tìm thư viện Java.
+| Global Framework Search Paths | **(Chỉ có trên MacOS)** Xác định đường dẫn tìm kiếm cho các tệp `.framework` cho tất cả dự án của bạn. Tuỳ chọn tự động phát hiện các đường dẫn này có sẵn cho Clang và GCC. Đọc [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn) để được hướng dẫn tự thêm đường dẫn.
 
-### Project Setup Wizard
-The Project Setup Wizard lets you create a new Sourcetrail project. It allows for defining name and location of your project Sourcetrail and adding several **Source Groups**, that define which source files will be indexed. There are several ways to create Source Groups. It is sufficient to add only one Source Group for most projects.
+### Trình thiết lập dự án
 
-For detailed information continue at [PROJECT SETUP](#project-setup).
+Trình thiết lập dự án cho phép bạn tạo một dự án Sourcetrail mới. Bằng cách điền tên và đường dẫn của dự án và thêm một số **Nhóm mã nguồn** để khai báo những tập tin mã nguồn cần được phân tích. Có nhiều cách để tạo Nhóm mã nguồn, đối với hầu hết các dự án, chỉ cần thêm một Nhóm mã nguồn là đủ.
+
+Thêm thông tin chi tiết tại [THIẾT LẬP DỰ ÁN](#thiết-lập-dự-án).
 
 <img src="docs/documentation/project_setup_wizard_start.png" width="800" alt="Project Setup Wizard Start">
+    
+### Hộp thoại phân tích
 
-### Indexing Dialogs
+Hộp thoại này xuất hiện khi Sourcetrail đang phân tích dự án của bạn. Toàn bộ giao diện người dùng sẽ bị đóng băng nếu như hộp thoại này xuất hiện.
 
-These dialogs will be used while Sourcetrail indexes your project. The whole user interface will be frozen as long as these dialogs are visible.
+#### Hộp thoại bắt đầu phân tích
 
-#### Start Indexing Dialog
+Hộp thoại này hiển thị số lượng tập được phân tích trước khi việc phân tích bắt đầu. Có nhiều chế độ làm mới khác nhau:
 
-This dialog displays the number of files for indexing and clearing before indexing starts. There are different refresh modes:
+- **Các tập tin được cập nhật:** phân tích lại toàn bộ tập tin được chỉnh sửa từ lần phân tích cuối, những tập tin có liên quan đến chúng và tập tin mới.
+- **Các tập tin chưa hoàn thành & đã cập nhật:** phân tích lại toàn bộ tập tin có lỗi trong lần phân tích trước, những tập tin có liên quan đến chúng và tập tin mới.
+- **Toàn bộ tập tin:** xoá lần phân tích trước và phân tích lại từ đầu.
 
+**Phân tích mã nguồn Python**
 
-* **Updated files:** Reindexes all files that were modified since the last indexing, all files depending on those and new files.
-* **Incomplete & updated files:** Reindexes all files that had errors during last indexing, all files depending on those and all updated files.
-* **All files:** Deletes the previous index and reindexes all files.
-
-
-**Shallow Python Indexing**
-
-For Python projects a checkbox **Shallow Python Indexing** is additionally displayed. When checked, references within your code base (calls, usages, etc.) are resolved by name, which is imprecise but much faster than in-depth indexing. Use this option for a quick first indexing pass and start browsing the code base while running a second pass for in-depth indexing.
+Đối với các dự án Python, một hợp đánh dấu **Phân tích mã nguồn Python** được hiển thị thêm. Khi đánh dấu vào, các tham chiếu trong mã nguồn của bạn (các lệnh gọi, cách dùng,... ) được giải quyết theo tên, điều này không thực sự chính xoác hoàn toàn nhưng nó sẽ nhanh hơn phân tích sâu. Dùng tuỳ chọn này để phân tích nhanh và bắt đầu đọc mã nguồn trong khi phân tích sâu đang thực hiện.
 
 <img src="docs/documentation/start_indexing_dialog.png" width="600" alt="Start Indexing Dialog">
 
-**Interactions:**
+**Thao tác**
+- Chuyển chế độ phân tích bằng cách chọn tuỳ chọn khác.
+- Chọn `Cancle` sẽ huỷ phân tích.
+- Chọn `Start` sẽ bắt đầu phân tích mã nguồn.
 
-* Switch indexing mode by clicking a different option.
-* Clicking `Cancel` will abort indexing.
-* Clicking `Start` will start the file clearing and indexing.
+#### Hộp thoại tiến trình
 
-#### Progress Dialog
-
-This dialog shows that Sourcetrail is currently doing processing that can't be interrupted.
+Hộp thoại này hiện thị tiến trình phân tích của Sourcetrail, tiến trình này không thể bị huỷ.
 
 <img src="docs/documentation/progress_dialog.png" width="600" alt="Progress Dialog">
 
-**Interactions:**
+**Thao tác**
+- Chọn `Hide` sẽ ẩn hộp thoại. Bạn có thể hiển thị nó lại bằng cách chọn thanh tiến trình phân tích ở [thanh tiến trình](#thanh-tiến-trình) hoặc [làm mới](#làm-mới).
 
-* Clicking `Hide` will hide the dialog. You can display it again by clicking on the indexing progress bar in the [status bar](#status-bar) or [refreshing](#refresh).
+#### Hộp thoại phân tích
 
-#### Indexing Dialogs
+Hôp thoại hiển thị thông tin về quá trình phân tích của bạn, bằng cách hiển thị số lượng tập tin đã được phân tích, tập tin đang được phân tích, số lượng lỗi và phần trăm hoàn thành phân tích.
 
-This dialog shows the indexing progress of your project, by displaying the number of already indexed files, the last file that was started indexing, the number of errors and a progress estimate in percent.
+**Thao tác**
+- Chọn `Stop` hoặc ấn `ESC` sẽ huỷ phân tích. Sourcetrail vẫn chờ luồng phân tích đang chạy hoàn thành. Bạn có thể tiếp tục phân tích bằng [làm mới](#làm-mới).
+- Chọn `Hide` sẽ ẩn hộp thoại. Bạn có thể hiển thị nó lại bằng cách chọn thanh tiến trình phân tích ở [thanh tiến trình](#thanh-tiến-trình) hoặc [làm mới](#làm-mới).
 
-<img src="docs/documentation/indexing_dialog.png" width="600" alt="Indexing Dialog">
+#### Hộp thoại hoàn thành phân tích
 
-**Interactions:**
-
-* Clicking `Stop` or pressing ESC will interrupt indexing. Sourcetrail will still wait for the already running indexer threads to finish. You can continue indexing later by [refreshing](#refresh).
-* Clicking `Hide` will hide the dialog. You can display it again by clicking on the indexing progress bar in the [status bar](#status-bar) or [refreshing](#refresh).
-
-#### Finished Indexing Dialog
-
-This dialog is shown after indexing finished, giving you information about indexed files, duration and errors.
+Hộp thoại xuất hiện sau khi phân tích kết thúc, hiển thị thông tin và những tập tin được phân tích, tổng thời gian và lỗi.
 
 <img src="docs/documentation/finished_indexing_dialog.png" width="600" alt="Finished Indexing Dialog">
+    
+#### Hộp thoại huỷ phân tích
 
-#### Interrupted Indexing Dialog
-
-This dialog is shown after indexing was stopped, giving you information about indexed files, duration and errors. You can choose to either use the new index or continue using the old one.
+Hộp thoại xuất hiện sau khi phân tích bị dừng, hiển thị thông tin về những tập tin đã được phân tích, tổng thời gian và lỗi. Bạn có thể chọn phân tích mới hoặc tiếp tục phân tích.
 
 <img src="docs/documentation/finished_indexing_dialog.png" width="600" alt="Interrupted Indexing Dialog">
 
-**Interactions:**
-
-* Clicking `Discard` will discard the new index.
-* Clicking `Keep` will switch your project to the new index and discard the old one.
+**Thao tác**
+- Chọn `Discard` để bỏ qua phân tích mới.
+- Chọn `Keep` sẽ chuyển dự án của bạn tới phân tích mới và bỏ qua phân tích hiện tại.
 
 ## Menu
 
 ### Project
 
-* **New Project**
-    * Shortcut: [New Project](#shortcuts)
-    * Opens the [New Project](#project-setup-wizard) Dialog to define a new project and loads it after creation.
-* **Open Project**
-    * Shortcut: [Open Project](#shortcuts)
-    * Opens a file dialog to choose an existing Sourcetrail project file from your system's hard drive.
-* **Recent Projects**
-    * Opens a submenu to choose recent opened Sourcetrail projects.
-* **Edit Project**
-    * Opens the [Edit Project Dialog](#project-setup-wizard) prefilled with your project settings and allows for changing them.
-* **Exit**
-    * Quits Sourcetrail.
+- **New Project**
+  * Phím tắt: [dự án mới](#phím-tắt)
+  * Mở [trình thiết lập dự án](#trình-thiết-lập-dự-án) để tạo dự án mới.
+- **Open Project**
+  * Phím tắt: [mở dự án](#phím-tắt)
+  * Mở hộp thoại chọn tập tin để bạn chọn dự án Sourcetrail có sẵn từ ổ cứng trên máy bạn. 
+- **Recent Projects**
+  * Mở một menu nhỏ để chọn những dự án Sourcetrail gần đây.
+- **Edit Project**
+  * Mở [hộp thoải chỉnh sửa dự án](#trình-thiết-lập-dự-án) của bạn để bạn sửa đổi.
+- **Thoát**
+  * Thoát Sourcetrail.
 
 ### Edit
-
-* **Refresh**
-    * Shortcut: [Refresh](#shorcuts)
-    * Refresh will check all indexed source files for updates and reindex the ones that changed and their depending ones.
-* **Full Refresh**
-    * Shortcut: [Full Refresh](#shorcuts)
-    * Full Refresh will reindex the whole project.
-* **Find Symbol**
-    * Shortcut: [Find Symbol](#shorcuts)
-    * This option will put the focus into the search field, so you can start typing your search query. Alternatively you can click the search field.
-* **Find Text**
-    * Shortcut: [Find Text](#shorcuts)
-    * This option will put the focus into the search field and start a new full text search query
-* **Find On-Screen**
-    * Shortcut: [Find On-Screen](#shorcuts)
-    * Display the [On-Screen Search Bar](#on-screen-search-bar) to search visible contents of the [Graph View](#graph-view) and [Code View](#code-view)
-* **Next Reference**
-    * Shortcut: [Next Reference](#shorcuts)
-    * Use this option to iterate to the next source location of the active symbol in the code view.
-* **Previous Reference**
-    * Shortcut: [Previous Reference](#shorcuts)
-    * Use this option to iterate to the previous source location of the active symbol in the code view.
-* **Next Local Reference**
-    * Shortcut: [Next Local Reference](#shorcuts)
-    * Use this option to iterate to the next source location of the active local symbol or edge in the code view.
-* **Previous Local Reference**
-    * Shortcut: [Previous Local Reference](#shorcuts)
-    * Use this option to iterate to the previous source location of the active local symbol or edge in the code view.
-* **To overview**
-    * Shortcut: [To overview](#shorcuts)
-    * This option will display the overview of the project.
-* **Preferences**
-    * Shortcut: [Preferences](#shorcuts)
-    * Opens the [Preferences Window](#preferences-window).
-
+- **Refresh**
+  * Phím tắt: [làm mới](#phím-tắt)
+  * Làm mới sẽ kiểm tra toàn bộ tập tin mã nguồn được phân tích để cập nhật và phân tích lại những thay đổi.
+- **Full Refresh**
+  * Phím tắt: [làm mới toàn bộ](#phím-tắt)
+  * Làm mới toàn bộ sẽ phân tích lại toàn bộ dự án.
+- **Find Symbol**
+  * Phím tắt: [tìm tên](#phím-tắt)
+  * Tuỳ chọn sẽ tập trung vào thanh tìm kiếm.
+- **Find On-Screen**
+  * Phím trên: [tìm trên màn hình](#phím-tắt)
+  * Hiển thị [thanh tìm kiếm trên màn hình](#thanh-tìm-kiếm-trên-màn-hình) để tìm kiếm nội dung hiển thị trong [màn hình đồ thị](#màn-hành-đồ-thị) và [màn hình mã nguồn](#màn-hình-mã-nguồn).
+- **Next Reference**
+  * Phím tắt: [tham chiếu tiếp](#phím-tắt)
+  * Tuỳ chọn này lướt đến vị trí tiếp theo của tên được chọn trong mã nguồn.
+- **Previous Reference**
+  * Phím tắt: [thao chiếu trước](#phím-tắt)
+  * Tuỳ chọn này lướt đến vị trí trước đó của tên được chọn trong mã nguồn.
+- **Next Local Reference**
+  * Phím tắt: [tham chiếu cục bộ tiếp](#phím-tắt)
+  * Tuỳ chọn này để lặp đến vị trí tiếp theo của tên hoặc cạnh cục bộ được chọn trong mã nguồn.
+- **Previous Local Reference**
+  * Phím tắt: [tham chiếu cục bộ trước](#phím-tắt)
+  * Tuỳ chọn này để lặp đến vị trí trước đó của tên hoặc cạnh cục bộ được chọn trong mã nguồn.
+- **To overview**
+  * Phím tắt: [đến tổng quan](#phím-tắt)
+  * Tuỳ chọn này sẽ hiển thị tổng quát của dự án.
+- **Preferences**
+  * Phím tắt: [tuỳ chọn](#phím-tắt)
+  * Mở [cửa sổ tuỳ chọn](#cửa-sổ-tuỳ-chọn)
+  
 ### View
-
-* **New Tab**
-    * Opens a new tab.
-* **Close Tab**
-    * Closes the current tab.
-* **Select Next Tab**
-    * Switch to the tab to the right of the current tab.
-* **Select Previous Tab**
-    * Switch to the tab to the left of the current tab.
-* **Show Start Window**
-    * Shows the [Start Window](#start-window).
-* **Show Title Bars**
-    * Toggle the visibility of the bars above each [Window Widget](#widget-windows).
-* **Reset window layout**
-    * Resets all the dock widgets to their original layout.
-* **Search Window**
-    * Toggle the visibility of the Search Window. This can also be done by closing the Search Window on clicking the "x" icon in it's title bar. (See [Window Widgets](#widget-windows))
-* **Graph Window**
-    * Toggle the visibility of the Graph Window. This can also be done by closing the Graph Window on clicking the "x" icon in it's title bar. (See [Window Widgets](#widget-windows))
-* **Code Window**
-    * Toggle the visibility of the Code Window. This can also be done by closing the Code Window on clicking the "x" icon in it's title bar. (See [Window Widgets](#widget-windows))
-* **Status Window**
-    * Toggle the visibility of the Status Window. This can also be done by closing the Status Window on clicking the "x" icon in it's title bar. (See [Window Widgets](#widget-windows))
-* **Larger Font**
-    * Shortcut: [Larger Font](#shortcuts)
-    * Increase the font size within the Main Window's user interface.
-* **Smaller Font**
-    * Shortcut: [Smaller Font](#shortcuts)
-    * Decrease the font size within the Main Window's user interface.
-* **Reset font size**
-    * Shortcut: [Reset font size](#shortcuts)
-    * Resets the font size to the original size.
-
+- **New Tab**
+  * Mở một thẻ mới.
+- **Close Tab**
+  * Đóng thẻ hiện tại.
+- **Select Next Tab**
+  * Chuyển đến thẻ tiếp theo bên phải của thẻ hiện tại.
+- **Select Previous Tab**
+  * Chuyển đến thẻ tiếp theo bên trái của thẻ hiện tại.
+- **Show Start Window**
+  * Hiển thị [cửa sổ bắt đầu](#cửa-sổ-bắt-đầu).
+- **Show Title Bars**
+  * Bật/tắt hiển thị của các thanh phía trên.
+- **Reset window layout**
+  * Khôi phục tất cả cửa sổ về vị trí ban đầu.
+- **Search Window**
+  * Bật/tắt hiển thị cửa sổ tìm kiếm. Bạn cũng có thể thực hiện việc này bằng cách đóng cửa sổ tìm kiếm khi ấn vào biểu tượng `x` trên thanh tiêu đề của nó. (Xem [cửa sổ tiện ích](#cửa-sổ-tiện-ích))
+- **Graph Window**
+  * Bật/tắt hiển thị màn hình đồ thị. Bạn cũng có thể thực hiện việc này bằng cách đóng màn hình đồ thị khi ấn vào biểu tượng `x` trên thanh tiêu đề của nó. (Xem [cửa sổ tiện ích](#cửa-sổ-tiện-ích))
+- **Code Window**
+  * Bật/tắt hiển thị màn hình mã nguồn. Bạn cũng có thể thực hiện việc này bằng cách đóng màn hình mã nguồn khi ấn vào biểu tượng `x` trên thanh tiêu đề của nó. (Xem [cửa sổ tiện ích](#cửa-sổ-tiện-ích))
+- **Status Window**
+  * Bật/tắt hiển thị màn hình trạng thái. Bạn cũng có thể thực hiện việc này bằng cách đóng màn hình trạng thái khi ấn vào biểu tượng `x` trên thanh tiêu đề của nó. (Xem [cửa sổ tiện ích](#cửa-sổ-tiện-ích))
+- **Larger Font**
+  * Phím tắt: [phong chữ lớn hơn](#phím-tắt)
+  * Tăng kích thước phong chữ của màn hình chính.
+- **Smaller Font**
+  * Phím tắt: [phong chữ nhỏ hơn](#phím-tắt)
+  * Giảm kích thước phong chữ của màn hình chính.
+- **Reset Font Size**
+  * Phím tắt: [khôi phục phong chữ](#phím-tắt)
+  * Khôi phục kích thước phong chữ về như ban đầu.
+  
 ### History
 
-* **Back**
-    * Shortcut: [Back](#shortcuts)
-    * Undoes the last navigation action.
-* **Forward**
-    * Shortcut: [Forward](#shortcuts)
-    * Redoes an undone navigation action.
-* **Recently Active Symbols**
-    * List the history of active symbols in chronologic order.
+- **Back**
+  * Phím tắt: [trước](#phím-tắt)
+  * Hoàn tác thao tác điều hướng trước đấy.
+- **Forward**
+  * Phím tắt: [tiếp](#phím-tắt)
+  * Thực hiện lại thao tác điều hướng đã bị huỷ bỏ.
+- **Recently Active Symbols**
+  * Liệt kê lịch sử của tên theo tứ tự thời gian.
 
 ### Bookmarks
-
-* **Bookmark Active Symbol**
-    * Shortcut: Bookmark Active Symbol](#shortcuts)
-    * Opens the [Bookmark Creator](#bookmark-creator) dialog create a new bookmark.
-* **Bookmark Manager**
-    * Shortcut: Bookmark Manager](#shortcuts)
-    * Opens the [Bookmark Manager](#bookmark-manager) dialog for viewing all bookmarks.
-* **Recent Bookmarks**
-    * List of recently added bookmarks for quick activation.
-
+- **Bookmark Active Symbol**
+  * Phím tắt: [đánh dấu tên](#phím-tắt)
+  * Mở [trình tạo đánh dấu](#trình-tạo-đánh-dấu) để tạo đánh dấu trang mới.
+- **Bookmark Manager**
+  * Phím tắt: [quản lý đánh dấu trang](#phím-tắt)
+  * Mở hộp thoại [quản lý đánh dấu trang](#quản-lý-đánh-dấu-trang) để xem tất cả các đánh dấu trang.
+- **Recent Bookmarks**
+  * Danh sách các đánh dấu trang được thêm.
+  
 ### Help
+- **About**
+  * Hiển thị thông tin bản quyền của Sourcetrail.
+- **Keyboard Shortcuts**
+  * Hiển thị bảng phím tắt của Sourcetrail.
+- **Documentation**
+  * Mở tài liệu này trên trình duyệt.
+- **Changelog**
+  * Mở [changelog](https://github.com/PhongLamBaoMat/Sourcetrail/blob/main/CHANGELOG.md) của Sourcetrail trên trình duyệt.
+- **Bug Tracker**
+  * Mở quản lý lỗi của Sourcetrail trên trình duyệt.
+- **License**
+  * Mở một cửa sổ chứa giấy phép của Sourcetrail và tất cả giấy phép của bên thứ ba.
+- **Show Data Folder**
+  * Mở trình quản lý tập tin hiển thị [thư mục dữ liệu](#thư-mục-dữ-liệu).
+- **Show Log Folder**
+  * Mở trình quản lý tập tin trong [data](#thư-mục-dữ-liệu)/logs, nơi lưu trữ tất cả các tập tin nhật ký. Bạn có thể bật tính năng ghi nhật ký trong tập tin trong [cửa sổ tuỳ chọn](#cửa-sổ-tuỳ-chọn).
 
-* **About**
-    * Shows copyright information about Sourcetrail.
-* **Keyboard Shortcuts**
-    * Shows table of keyboard shortcuts for Sourcetrail.
-* **Documentation**
-    * Opens this documentation of Sourcetrail in your web browser by URL.
-* **Changelog**
-    * Opens the [changelog](https://github.com/CoatiSoftware/SourcetrailBugTracker#changelog) of Sourcetrail in your web browser by URL.
-* **Bug Tracker**
-    * Opens Sourcetrail's bug tracker in your web browser by URL.
-* **License**
-    * Opens a window containing the Sourcetrail license and all 3rd party licenses.
-* **Show Data Folder**
-    * Opens the file explorer showing the [data folder](#datafolder).
-* **Show Log Folder**
-    * Opens the file explorer in the directory [data](#datafolder)/logs where all log files are saved to. You can enable file logging in the [Preferences Window](#preferences-window).
+### Phím tắt
 
-
-### Shortcuts
-
-#### General
-
-| Shortcut | Windows | macOS | Linux
+#### Chung
+| Phím tắt | Windows | MacOS | Linux
 | --- | --- | --- | ---
-| Switch Focus Between Graph/Code Views | `Tab` | `Tab` | `Tab`
-| Preferences | `Ctrl + ,` | `Cmd + ,` | `Ctrl + ,`
-| New Project | `Ctrl + N` | `Cmd + N` | `Ctrl + N`
-| Open Project | `Ctrl + O` | `Cmd + O` | `Ctrl + O`
-| Close Window | `Alt + F4` | `Cmd + W` | `Ctrl + W`
-| Hide Window |  | `Cmd + H` |
-| Refresh | `F5` | `Cmd + R` | `F5`
-| Full Refresh | `Shift + F5` | `Cmd + Shift + R` | `Shift + F5`
-| Back | `Z` / `Alt + Left` / `Backspace` | `Z` / `Cmd + [` / `Backspace` | `Z` / `Alt + Left` / `Backspace`
-| Forward | `Shift + Z` / `Alt + Right` | `Shift + Z` / `Cmd + ]` | `Shift + Z` / `Alt + Right`
-| Find Symbol | `Ctrl + F` | `Cmd + F` | `Ctrl + F`
-| Find Text | `Ctrl + Shift + F` | `Cmd + Shift + F` | `Ctrl + Shift + F`
-| Find On-Screen | `Ctrl + D` | `Cmd + D` | `Ctrl + D`
-| To overview | `Ctrl + Home` | `Cmd + Home` / `Cmd + Up` | `Ctrl + Home`
-| New Tab | `Ctrl + T` | `Cmd + T` | `Ctrl + T`
-| Close Tab | `Ctrl + W` | `Cmd + W` | `Ctrl + W`
-| Select Next Tab | `Ctrl + Tab` | `Ctrl + Tab` | `Ctrl + Tab`
-| Select Previous Tab | `Ctrl + Shift + Tab` | `Ctrl + Shift + Tab` | `Ctrl + Shift + Tab`
-| Larger Font | `Ctrl + +` | `Cmd + +` | `Ctrl + +`
-| Smaller Font | `Ctrl + -` | `Cmd + -` | `Ctrl + -`
-| Reset Font Size | `Ctrl + 0` | `Cmd + 0` | `Ctrl + 0`
-| Bookmark Active Symbol | `Ctrl + S` | `Cmd + S` | `Ctrl + S`
-| Bookmark Manager | `Ctrl + B` | `Cmd + B` | `Ctrl + B`
+| Chuyển giữa màn hình đồ thị và mã nguồn | `Tab` | `Tab` | `Tab`
+| Tuỳ chọn | `Ctrl + ,` | `Cmd + ,` | `Ctrl + ,`
+| Dự án mới | `Ctrl + N` | `Cmd + N` | `Ctrl + N`
+| Mở dự án | `Ctrl + O` | `Cmd + O` | `Ctrl + O`
+| Đóng cửa sổ | `Alt + F4` | `Cmd + W` | `Ctrl + W`
+| Ẩn cửa sổ |  | `Cmd + H` |
+| Làm mới | `F5` | `Cmd + R` | `F5`
+| Làm mới toàn bộ | `Shift + F5` | `Cmd + Shift + R` | `Shift + F5`
+| Trước | `Z` / `Alt + Left` / `Backspace` | `Z` / `Cmd + [` / `Backspace` | `Z` / `Alt + Left` / `Backspace`
+| Tiếp | `Shift + Z` / `Alt + Right` | `Shift + Z` / `Cmd + ]` | `Shift + Z` / `Alt + Right`
+| Tìm tên | `Ctrl + F` | `Cmd + F` | `Ctrl + F`
+| Tìm văn bản | `Ctrl + Shift + F` | `Cmd + Shift + F` | `Ctrl + Shift + F`
+| Tìm trên màn hình | `Ctrl + D` | `Cmd + D` | `Ctrl + D`
+| Đến tổng quan | `Ctrl + Home` | `Cmd + Home` / `Cmd + Up` | `Ctrl + Home`
+| Thẻ mới | `Ctrl + T` | `Cmd + T` | `Ctrl + T`
+| Đóng thẻ | `Ctrl + W` | `Cmd + W` | `Ctrl + W`
+| Chuyển thẻ tiếp theo | `Ctrl + Tab` | `Ctrl + Tab` | `Ctrl + Tab`
+| Chuyển thẻ trước đó | `Ctrl + Shift + Tab` | `Ctrl + Shift + Tab` | `Ctrl + Shift + Tab`
+| Phong chữ lớn hơn | `Ctrl + +` | `Cmd + +` | `Ctrl + +`
+| Phong chữ nhỏ hơn | `Ctrl + -` | `Cmd + -` | `Ctrl + -`
+| Khôi phục phong chữ | `Ctrl + 0` | `Cmd + 0` | `Ctrl + 0`
+| Đánh dấu tên | `Ctrl + S` | `Cmd + S` | `Ctrl + S`
+| Quản lý đánh dấu trang | `Ctrl + B` | `Cmd + B` | `Ctrl + B`
 
-#### Graph View
+#### Màn hình đồ thị
 
-| Shortcut | Windows | macOS | Linux
+| Phím tắt | Windows | MacOS | Linux
 | --- | --- | --- | ---
-| Move Focus Within Nodes | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
-| Move Focus Within Edges | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
-| Activate Node/Edge | `Enter` / `E` | `Enter` / `E` | `Enter` / `E`
-| Activate Node in New Tab | `Ctrl + Shift + Enter` / `Ctrl + Shift + E` | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
-| Expand/Collapse Node | `Shift + Enter` / `Shift + E` | `Shift + Enter` / `Shift + E` | `Shift + Enter` / `Shift + E`
+| Di chuyển giữa các nốt | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
+| Di chuyển giữa các cạnh  | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
+| Chọn nốt/cạnh | `Enter` / `E` | `Enter` / `E` | `Enter` / `E`
+| Chọn nốt trong thẻ mới | `Ctrl + Shift + Enter` / `Ctrl + Shift + E` | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
+| Mở rộng/thu gọn nốt | `Shift + Enter` / `Shift + E` | `Shift + Enter` / `Shift + E` | `Shift + Enter` / `Shift + E`
 | Pan | `Ctrl + Arrows` | `Cmd + Arrows` | `Ctrl + Arrows`
-| Zoom In | `Ctrl + Shift + Up` / `Ctrl + Mouse Wheel Up` | `Cmd + Shift + Up` / `Cmd + Mouse Wheel Up` | `Ctrl + Shift + Up` / `Ctrl + Mouse Wheel Up`
-| Zoom Out | `Ctrl + Shift + Down` / `Ctrl + Mouse Wheel Down` | `Cmd + Shift + Down` / `Cmd + Mouse Wheel Down` | `Ctrl + Shift + Down` / `Ctrl + Mouse Wheel Down`
-| Reset Zoom | `0` | `0` | `0`
-| Open Custom Trail Dialog | `Ctrl + U` | `Cmd + U` | `Ctrl + U`
+| Phóng to | `Ctrl + Shift + Up` / `Ctrl + Mouse Wheel Up` | `Cmd + Shift + Up` / `Cmd + Mouse Wheel Up` | `Ctrl + Shift + Up` / `Ctrl + Mouse Wheel Up`
+| Thu nhỏ | `Ctrl + Shift + Down` / `Ctrl + Mouse Wheel Down` | `Cmd + Shift + Down` / `Cmd + Mouse Wheel Down` | `Ctrl + Shift + Down` / `Ctrl + Mouse Wheel Down`
+| Khôi phục thu phóng | `0` | `0` | `0`
+| Mở hộp thoại tuỳ chỉnh liên kết | `Ctrl + U` | `Cmd + U` | `Ctrl + U`
 
-#### Code View
+#### Màn hình mã nguồn
 
-| Shortcut | Windows | macOS | Linux
+| Phím tắt | Windows | MacOS | Linux
 | --- | --- | --- | ---
-| Next Reference | `Ctrl + G` | `Cmd + G` | `Ctrl + G`
-| Previous Reference | `Ctrl + Shift + G` | `Cmd + Shift + G` | `Ctrl + Shift + G`
-| Next Local Reference | `Ctrl + T` | `Cmd + T` | `Ctrl + T`
-| Previous Local Reference | `Ctrl + Shift + T` | `Cmd + Shift + T` | `Ctrl + Shift + T`
-| Move Focus Within Code | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
-| Move Focus to Closest Reference | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
-| Activate Location | `Enter` / `E` | `Enter` / `E` | `Enter` / `E`
-| Activate Location in New Tab | `Ctrl + Shift + Enter` / `Ctrl + Shift + E` | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
-| Scroll | `Ctrl + Arrows` | `Cmd + Arrows` | `Ctrl + Arrows`
+| Tham chiếu tiếp | `Ctrl + G` | `Cmd + G` | `Ctrl + G`
+| Tham chiếu trước | `Ctrl + Shift + G` | `Cmd + Shift + G` | `Ctrl + Shift + G`
+| Tham chiếu cục bộ tiếp | `Ctrl + T` | `Cmd + T` | `Ctrl + T`
+| Tham chiếu cục bộ trước | `Ctrl + Shift + T` | `Cmd + Shift + T` | `Ctrl + Shift + T`
+| Di chuyển trong màn hình mã nguồn | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows` | `WASD` / `HJKL` / `Arrows`
+| Di chuyển đến tham chiếu gần nhất | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows` | `Shift + WASD` / `Shift + HJKL` / `Shift + Arrows`
+| Chọn | `Enter` / `E` | `Enter` / `E` | `Enter` / `E`
+| Chọn ở thẻ mới | `Ctrl + Shift + Enter` / `Ctrl + Shift + E` | `Cmd + Shift + Enter` / `Cmd + Shift + E` | `Ctrl + Shift + Enter` / `Ctrl + Shift + E`
+| Cuộn chuột | `Ctrl + Arrows` | `Cmd + Arrows` | `Ctrl + Arrows`
 
-## Graph View
-The graph view visualizes the currently selected symbol and all its relationships to other symbols as an interactive graph visualization. You can also display whole call graphs, inheritance chains or include trees by using the toolbar in the top left. Read more about that at [Custom Trail](#custom-trail).
+## Màn hình đồ thị
+
+Màn hình đồ thị hiển thị trức quan tên đang được chọn và tất cả các mối quan hệ của nó với các biểu tượng khác dưới dạng hình ảnh đồ thị tương tác. Bạn cũng có thể hiển thị toàn bộ đồ thị lời gọi, chuỗi kế thừa hoặc cây bao gồm bằng cách sử dụng thanh công cụ ở bên trái. Tìm hiểu thêm tại [tuỳ chỉnh liên kết](#tuỳ-chỉnh-liên-kết).
 
 <img src="docs/documentation/graph_view.png" width="750" alt="Graph View">
 
-#### Interactions:
+#### Thao tác
 
-**Buttons:**
+**Nút nhấn**
+- Sử dụng thanh điều hướng ở góc trên bên trái để tạo [tuỳ chỉnh liên kết](#tuỳ-chỉnh-liên-kết).
+- Sử dụng các nút nhóm ở trên bên trái để bật [nhóm nút](#nhóm-nút) bằng namespace/gói hoặc tập tin.
+- Ấn `+` và `-` ở góc dưới bên trái để thay đổi mức độ phóng to.
+- Ấn `?` ở góc dưới bên phải để hiển thị [chú thích đồ thị](#chú-thích-đồ-thị).
 
-* Use the trail navigation in the top left to create [Custom Trails](#custom-trail).
-* Use the grouping buttons in the top left to enable [Node Grouping](#node-grouping) by namespace/package or file.
-* Press the `+` and `-` buttons in the lower left corner to change the zoom level.
-* Press the `?` button in the bottom right corner to show the [Graph Legend](#graph-legend).
+**Panning**
+- Dùng chuột kéo vùng nền.
+- Cuộn chuột sang trái/phải và lên/xuống trên bàn di chuột.
+- Sử dụng các phím `W` `A` `S` `D`.
 
-**Panning:**
+**Thu phóng**
+- Giữ phím `Ctrl/Cmd` và cuộn bằng con lắn chuột hoặc bàn di chuột.
+- Nhấn `Shift + W` hoặc `Shift + S`.
+- Nhấm `0` để khôi phục mức thu phóng.
 
-* Drag the background area with the mouse.
-* Scroll left-right and up-down on the mouse pad.
-* Use the keys `W` `A` `S` `D`.
+**Menu ngữ cảnh**
+- **Open in New Tab:** mở một thẻ mới với nốt nằm dưới con trỏ chuột.
+- **Back:** đi ngược theo lịch sử.
+- **Forward:** đi tiếp theo lịch sử.
+- **Show Definition:** hiển thị định nghĩa của nút dưới con trỏ chuột trong [màn hình mã nguồn](#màn-hình-mã-nguồn).
+- **Expand Node:** mở rộng nốt ở dưới con trỏ chuột.
+- **Collapse Node:** thu gọn nốt ở dưới con trỏ chuột.
+- **Hide Node:** ẩn nốt dưới con trỏ chuột.
+- **Hide Edge:** ẩn cạnh dưới con trỏ chuột.
+- **Bookmard Node:** đánh dấu nút dưới con trỏ chuột.
+- **Save As Image:** lưu đồ thị hiện tại thành tập tin hình ảnh. Các định dạng có thể lưu là `PNG`, `JPEG`, `BMP` và `SVG`.
+- **Save To Clipboard:** lưu đồ thị hiện tại như ảnh `PNG` tới bộ nhớ tạm.
+- **Copy Name**: sao chép tên của nốt dưới con trỏ chuột tới bộ nhớ tạm.
+- **Copy Full Path:** sao chép đường dẫn tập tin của nút dưới con trỏ chuột tới bộ nhớ tạm.
+- **Open Containing Folder:** hiển thị tập tin trong trình quản lý tập tin của nốt dưới con trở chuột.
 
+### Nốt
 
-**Zooming:**
+Màu sắc hiển thị tương ứng với bảng màu mặc định.
 
-* Hold `Ctrl/Cmd` and scroll with mouse wheel or mouse pad.
-* Press `Shift + W` or `Shift + S`.
-* Press `0` to reset zoom.
-
-
-**Context Menu:**
-
-* **Open in New Tab:** Opens a new Tab with the node under the mouse cursor as active symbol.
-* **Back:** Go back in history.
-* **Forward:** Go forward in history.
-* **Show Definition:** Show the definition of the node under the mouse cursor in the [Code View](#code-view).
-* **Show Definition in IDE:** Show the definition of the node under the mouse cursor using the connected [Code Editor Plugin](#code-editor-plugin).
-* **Expand Node:** Expand node under mouse cursor.
-* **Collapse Node:** Collapse node under mouse cursor.
-* **Hide Node:** Hide node under mouse cursor.
-* **Hide Edge:** Hide edge under mouse cursor.
-* **Bookmark Node:** Create a bookmark for node under mouse cursor.
-* **Save As Image:** Export current graph as image file. Possible formats are `PNG`, `JPEG`, `BMP` and `SVG`.
-* **Save To Clipboard:** Save current graph as `PNG` image to clipboard.
-* **Copy Name:** Copy name for node under mouse cursor to clipboard.
-* **Copy Full Path:** Copy file path for file node under mouse cursor to clipboard.
-* **Open Containing Folder:** Show the file in your file explorer for file node under mouse cursor.
-
-
-### Nodes
-Colors are corresponding to the default color scheme.
-
-| Node Type | Image
+| Kiểu nốt | Ảnh
 | --- | ---
-| **File**: Non-indexed files are files that are not part of any source group and therefore have not been indexed by Sourcetrail's indexer. Incomplete files produced errors during indexing or where part of an indexer run with errors. | !["Node File"](docs/documentation/node_file.png "Node File")
+| **Tập tin**: Tập tin không được phân tích là các tập tin không nằm trong bất kì nhóm mà nguồn, do đó không được phân tích bởi Sourcetrail. Các tập tin không đầy đủ đã gây ra lỗi trong quá trình phân tích hoặc là một phần của quá trình phân tích lỗi. | !["Node File"](docs/documentation/node_file.png "Node File")
 | **Macro** | !["Node Macro"](docs/documentation/node_macro.png "Node Macro")
-| **Namespace, Package & Module** | !["Node Namespace"](docs/documentation/node_namespace.png "Node Namespace")
-| **Class & Struct**: Display their members nested, and separated by access type: public, protected, private. By default only members with edges are shown. The arrow icon allows to expand and collapse them. The number tells how many nodes are hidden. | !["Node Class"](docs/documentation/node_class.png "Node Class")
-| **Type** | !["Node Type"](docs/documentation/node_type.png "Node Type")
-| **Typedef** | !["Node Typedef"](docs/documentation/node_typedef.png "Node Typedef")
-| **Variable & Field** | !["Node Variable"](docs/documentation/node_variable.png "Node Variable")
-| **Function & Method** | !["Node Function"](docs/documentation/node_function.png "Node Function")
-| **Enum & Enum Constant** | !["Node Enum"](docs/documentation/node_enum.png "Node Enum")
-| **Bundle**: A bundle node combines multiple nodes to reduce the size of the graph visualization. The name describes what kind of nodes are bundled. The number tells how many nodes are bundled. | !["Node Bundle"](docs/documentation/node_bundle.png "Node Bundle")
-| **Group: A group node shows that all contained nodes share something in common e.g. same file or namespace. | !["Node Group"](docs/documentation/node_group.png "Node Group")
+| **Namespace, gói & mô-đun** | !["Node Namespace"](docs/documentation/node_namespace.png "Node Namespace")
+| **Lớp & Cấu trúc**: hiển thị các thành viên lòng nhau và được phân tách theo phạm vi truy cập: `public`, `protected`, `pricate`. Mặc định, chỉ những thành viên có cạnh mới được hiển thị. Biểu tượng mũi tên cho phép mở rộng và thu gọn chúng. Con số cho biết bao nhiêu nút bị ẩn. | !["Node Class"](docs/documentation/node_class.png "Node Class")
+| **Kiểu** | !["Node Type"](docs/documentation/node_type.png "Node Type")
+| **Kiểu dữ liệu** | !["Node Typedef"](docs/documentation/node_typedef.png "Node Typedef")
+| **Biến & trường** | !["Node Variable"](docs/documentation/node_variable.png "Node Variable")
+| **Hàm & phương thức** | !["Node Function"](docs/documentation/node_function.png "Node Function")
+| **Enum & hằng số enum** | !["Node Enum"](docs/documentation/node_enum.png "Node Enum")
+| **Tập**: tập các nốt gộp các nốt để giảm kích thước của màn hình đồ thị. Tên gọi mô tả loại nốt nào được nhóm lại. Con số cho biết có bao nhiêu nốt được nhóm lại.| !["Node Bundle"](docs/documentation/node_bundle.png "Node Bundle")
+| **Nhóm: nốt nhóm cho thấy tất cả các nốt con bên trong đều có điểm chung nào đó, ví dụ như cùng một tập tin hoặc namespace. | !["Node Group"](docs/documentation/node_group.png "Node Group")
 
-**Interactions:**
+**Tương tác**
 
-* Click a node to activate it.
-* Drag a node to change its position.
-* Click the arrow icon in class nodes to expand and collapse it.
-* Click a bundle node to expand it.
-* Hover a node to see a tooltip that displays the node’s type.
+- Ấn vào nốt để chọn.
+- Kéo một nốt để thay đổi vị trí của nó.
+- Nhấp vào biểu tượng mũi tên trong các nốt lớp để mở rộng và thu gọn chúng.
+- Nhấp vào một tập nốt để mở rộng nó.
+- Di chuột qua một nốt để xem chú thích hiển thị loại nốt đó.
 
-### Edges
-Colors are corresponding to the default color scheme.
+### Cạnh
 
-| Edge Type | Image
+Màu sắc hiển thị tương ứng với bảng màu mặc định.
+
+| Kiểu cạnh | Ảnh
 | --- | ---
 | **File Include** | !["Edge Include"](docs/documentation/edge_include.png "Edge Include")
-| **Type Use** | !["Edge Use"](docs/documentation/edge_type_usage.png "Edge Use")
-| **Variable Use** | !["Edge Variable Use"](docs/documentation/edge_variable_use.png "Edge Variable Use")
-| **Function Call** | !["Edge Call"](docs/documentation/edge_call.png "Edge Call")
-| **Inheritance** | !["Edge Inheritance"](docs/documentation/edge_inheritance.png "Edge Inheritance")
-| **Method Override** | !["Edge Override"](docs/documentation/edge_override.png "Edge Override")
-| **Template Specialization & Template Argument Use** | !["Edge Template Param"](docs/documentation/edge_template_param.png "Edge Template Param")
-| **Template Member Specialization** | !["Edget Template Member Specialization"](docs/documentation/edge_template_member_specialization.png "Edget Template Member Specialization")
-| **Bundled Edges**: Bundles multiple edges between the child nodes of the 2 nodes. The thickness gives an impression of how many edges are bundled. Hover the edge to get the number of bundled edges. | !["Edge Bunled Edges"](docs/documentation/edge_bundled_edges.png "Edge Bunled Edges")
+| **Sử dụng kiểu dữ liệu** | !["Edge Use"](docs/documentation/edge_type_usage.png "Edge Use")
+| **Sử dụng biến** | !["Edge Variable Use"](docs/documentation/edge_variable_use.png "Edge Variable Use")
+| **Gọi hàm** | !["Edge Call"](docs/documentation/edge_call.png "Edge Call")
+| **Kế thừa** | !["Edge Inheritance"](docs/documentation/edge_inheritance.png "Edge Inheritance")
+| **Ghi đè phương thức** | !["Edge Override"](docs/documentation/edge_override.png "Edge Override")
+| **Chuyên môn hóa mẫu & sử dụng lập luận mẫu** | !["Edge Template Param"](docs/documentation/edge_template_param.png "Edge Template Param")
+| **Chuyên môn hóa thành viên mẫu** | !["Edget Template Member Specialization"](docs/documentation/edge_template_member_specialization.png "Edget Template Member Specialization")
+| **Gộp cạnh**: Gộp nhiều cạnh giữa các nút con của hai nút. Độ dày của cạnh cho biết số lượng cạnh được gộp. Di chuột qua cạnh để xem số lượng cạnh được gộp. | !["Edge Bunled Edges"](docs/documentation/edge_bundled_edges.png "Edge Bunled Edges")
 
-**Interactions:**
+**Thao tác**
 
-* Click an edge to see its location in the [Code View](#code-view).
-* Click a bundled edges to activate all its corresponding edges.
-* Hover an edge to see a tooltip that displays the edge’s type.
+- Nhấn vào một cạnh để xem vị trí của nó trong [màn hình mã nguồn](#màn-hình-mã-nguồn).
+- Nhấn vào một nhóm các cạnh để xem tất cả các cạnh tương ứng.
+- Di chuột qua một cạnh để xem chú giải hiển thị loại cạnh đó.
 
-### Custom Trail
-Using the toolbar in the top left you can display whole call graphs, inheritance chains or include trees for the currently active symbol if the right symbol type is currently active. Or you can use the Custom Trail Dialog to display graphs based on custom criteria.
+### Tuỳ chỉnh liên kết 
+
+Sử dụng thanh công cụ ở góc trên bên trái, bạn có thể hiển thị toàn bộ biểu đồ hàm gọi, chuỗi kế thừa hoặc cây bao gồm tên nếu tên được chọn. Hoặc bạn có thể sử dụng hộp thoại tuỳ chỉnh liên kết để hiển thị biểu đồ dựa trên các tiêu chí tuỳ chỉnh.
 
 !["Call Graph"](docs/documentation/call_graph.png "Call Graph")
 
-**Interactions:**
+**Thao tác**
 
-* Click the arrow button to expand/collapse the `Custom Trail` controls.
-* Click the `Custom Trail Dialog` button to show the `Custom Trail Dialog`.
-* Click the `Predefined Custom Trail` buttons to show a graph of depending/dependent nodes based on the currently active symbol.
-* Change the slider position to change the maximum depth of the graph. Moving it to the top will use infinite depth.
-* Click on a node to activate it.
-* Click on an edge to show it's source location in the [Code View](#code-view).
+- Nhấp vào nút mũi tên để mở rộng/thu gọn `Custom Trail`. 
+- Nhấp vào `Custom Trail Dialog` để hiển thị `Custom Trail Dialog`.
+- Nhấp vào `Predefined Custom Trail` để hiển thị biểu đồ các nốt phụ thuộc dựa trên tên được chọn.
+- Thay đổi vị trí thanh trượt để thay đổi độ sâu tối đa của biểu đồ. Di chuyển thanh trượt lên trên cùng sẽ sử dụng độ sâu vô hạn.
+- Nhấp vào một nốt để kích hoạt nó.
+- Nhấp vào một cạnh để hiển thị vị trí trong mã nguồn của nó trong [màn hình mã nguồn](#màn-hình-mã-nguồn).
 
+### Hộp thoại tuỳ chỉnh liên kết
 
-#### Custom Trail Dialog
-The Custom Trail Dialog can be accessed within the trail controls in the top left of the graph view. It allows to display Custom Trails based on certain criteria.
+Bạn có thể truy cập hộp thoại tuỳ chỉnh liên kết trong phần điều khiển đường dẫn ở góc trên bên trái của màn hình đồ thị. Hộp thoại này cho phép hiển thị các tuỳ chỉnh liên kết dựa trên các tiêu chí nhất định.
 
 <img src="docs/documentation/custom_trail.png" width="700" alt="Custom Trail">
 
-Every Custom Trail has a specific Start Symbol, then 1 of 3 different modes can be chosen:
+Mỗi tuỳ chỉnh liên kết đều có một tên bắt đầu cụ thể, sau đó có thể chọn 1 trong 3 chế độ khác nhau:
 
-| Mode | Description
+| Chế độ | Mô tả
 | --- | ---
-| **To Target Symbol** | Specify another target symbol. The graph will only contain paths from the origin to the target symbol.
-| **All Referenced** | The graph will only contain nodes that are referenced by the origin symbol.
-| **All Referencing** | The graph will only contain nodes that depend on the origin symbol.
+| **To Target Symbol** | Chỉ định tên mục tiêu. Đồ thị sẽ chỉ chứa các đường dẫn từ điểm gốc đến tên mục tiêu.
+| **All Referenced** | Đồ thị sẽ chỉ chứa các nốt được tham chiếu bởi tên gốc.
+| **All Referencing** | Đồ thị sẽ chỉ chứa các nốt phụ thuộc vào tên gốc.
 
-Additional options allow defining which information should be shown:
+Các tuỳ chọn bổ sung cho phép xác định thông tin nào nên được hiển thị:
 
-| Setting | Description
+| Tuỳ chọn | Mô tả
 | --- | ---
-| **Maximum Depth** | Define the depth of the resulting graph. When searching paths from origin to target, all paths that are beyond this depth will not be found.
-| **Layout Direction** | Define if the graph should be displayed vertically or horizontally.
-| **Node Filters** | Define which node types will be part of the resulting graph. Only node types present in the loaded project are displayed. This setting is ignored for the origin and target nodes.
-| **Edge Filters** | Define which edge types will be part of the resulting graph. Only node types present in the loaded project are displayed. The special edge "member" defines whether parent-child relations are considered as edge.
+| **Maximum Depth** | Xác định độ sâu của đồ thị. Khi tìm kiếm các đường dẫn từ điểm gốc đến mục tiêu, tất cả các đường dẫn vượt quá độ sâu này sẽ không được tìm thấy.
+| **Layout Direction** | Xác định xem đồ thị nên được hiển thị theo chiều dọc hay chiều ngang.
+| **Node Filters** | Xác định loại nốt nào sẽ là một phần của đồ thị. Chỉ các loại nốt có trong dự án mới được hiển thị. Cài đặt này bị bỏ qua đối với các nốt gốc và đích.
+| **Edge Filters** | Xác định loại cạnh nào sẽ là một phần của đồ thị kết quả. Chỉ các loại nốt có trong dự án mới được hiển thị. Cạnh đặc biệt "member" xác định xem mối quan hệ cha-con có được coi là cạnh hay không.
 
-**Interactions:**
+**Thao tác**
 
-* Search for start and target symbols using a search field. The interactions are the same as in the main [Search Field](#search-bar).
-* Drag the Max Depth slider to change the maximum depth of the resulting graph.
-* Click the **Check All** and **Uncheck All** buttons to check all available node or edge filters.
-* Click on Cancel to close the dialog.
-* Click on Search to search for a Custom Trail using the selected options.
+- Tìm kiếm tên bắt đầu và đích bằng thanh tìm kiếm. Các thao tác tương tự như trong [thanh tìm kiếm](#thanh-tìm-kiếm).
+- Kéo thanh `Max Depth` để thay đổi độ sâu tối đa của đồ thị.
+- Nhấp vào `Check All` và `Uncheck All` để chọn tất cả các bộ lọc nốt hoặc cạnh có sẵn.
+- Nhấp vào `Cancel` để đóng hộp thoại.
+- Nhấp vào `Search` để tìm kiếm liên kết tuỳ chỉnh bằng cách sử dụng các tuỳ chọn đã chọn.
 
-### Node Grouping
+### Nhóm nốt
 
-Using grouping buttons in the top left you can specify if nodes in the graph shall be grouped by either namespace/package or defining file.
+Sử dụng các nút nhóm ở góc trên bên trái, bạn có thể xác định xem các nút trong đồ thị có nên được nhóm theo namespace/gói hoặc tập tin hay không.
 
 !["Grouping Buttons"](docs/documentation/grouping_buttons.png "Grouping Buttons")
 
-#### Namespace/Package Grouping
+#### Namespace/Gói
 
-All nodes that belong to the same namespace or package are grouped together in a separate group node.
+Tất cả các nốt cùng namespace hoặc gói được nhóm lại với nhau trong một nốt nhóm riêng biệt.
 
 <img src="docs/documentation/grouping_namespace.png" width="800" alt="Grouping Namespace">
 
-#### File Grouping
+#### Nhóm tập tin
 
-All nodes defined in the same source or header file are grouped together in a separate group node.
+Tất cả các nốt được định nghĩa trong cùng một mã nguồn được nhóm lại với nhau trong một nốt nhóm riêng biệt.
 
 <img src="docs/documentation/grouping_file.png" width="800" alt="Grouping File">
 
-**Interactions:**
+**Thao tác**
 
-* Click on the group name to activate the corresponding namespace/package or file node.
+- Nhấp vào tên nhóm để chọn namespace/gói hoặc nốt tập tin tương ứng.
 
+### Chú thích đồ thị
 
-### Graph Legend
-
-Click the `?` button in the bottom right corner of the graph view or enter the keyword `legend` in the [search field](#search-bar) to show the graph legend. It gives you an overview on the different node and edge types and provides examples of graph layouts.
+Nhấp vào nốt `?` ở góc dưới bên phải của màn hình đồ thị hoặc nhập từ khoá `legend` ở [thanh tìm kiếm](#thanh-tìm-kiếm) để hiển thị chú thích. Nó giúp bạn có một cái nhìn tổng quan về các loại nốt và cạch khác nhau cũng như các ví dụ về bố cục đồ thị.
 
 !["Graph Legend"](docs/documentation/graph_legend.png "Graph Legend")
 
-## Code View
+## Màn hình mã nguồn
 
-The code view displays the corresponding source code of the currently selected symbols. The code view has two modes. In list mode it contains a list of one or more files. In single file mode it shows one full source file at a time.
+Màn hình mã nguồn hiển thị mã nguồn tương ứng của các tên được chọn. Màn hình mã nguồn có hai chế độ. Ở chế độ danh sách, nó chứa danh sách một hoặc nhiều tập tin. Ở chế độ đơn, nó hiển thị đầy đủ mã nguồn của một tập tin.
 
-<img src="docs/documentation/code_view.png" width="800" alt="Code View">
+**Tương tác**
 
-**Interactions:**
-
-* Iterate the references of the currently active symbol with the `reference` navigation in the upper left corner.
-* Iterate local references of the currently selected local variable or multiple references of a symbol within a local scope with the `local reference` navigation in center.
-* Switch between Snippet List and Single File mode with the `mode selection` in the upper right corner.
-* Scroll up and down to see the different source files.
+- Lặp lại các tham chiếu của ký hiệu hiện đang hoạt động bằng cách sử dụng điều hướng `reference` ở góc trên bên trái.
+- Lặp lại các tham chiếu cục bộ của biến cục bộ được chọn hoặc nhiều tham chiếu của một tên trong phạm vi cục bộ bằng cách sử dụng thanh điều hướng `local reference` ở giữa. 
+- Chuyển đổi giữa chế độ `Snippet List` và `Single File` bằng cách chọn `mode selection` ở góc trên bên phải.
+- Cuộc lên và xuống để xem các tập tin nguồn khác nhau.
 
 <img src="docs/documentation/code_view_show_errors.png" width="800" alt="Code View Show Errors">
 
-If a viewed file had errors during indexing, its file icon will contain an `x` and there is a `Show Errors`-button visible in the files title bar. Clicking one `Show Errors` will show you only the errors that cause this specific file to be incomplete in the [Errors Tab](#errors-tab).
+Nếu một tập tin đang xem có lỗi trong quá trình phân tích, biểu tượng của tập tin đó sẽ chứa dấu `x` và có một nút là `Show Errors` hiển thị trên thanh tiêu đề của tập tin. Nhấp vào `Show Errors` sẽ chỉ hiển thị cho bạn các lỗi khiến tập tin này không hoàn thành ở [thẻ lỗi](#thẻ-lỗi).
 
-### Snippet List Mode
+### Chế độ danh sách đoạn mã
 
-In this mode the Code View will provide all references of the currently active symbol at once. The top most snippet will show the definition of the symbol if available.
+Ở chế độ này, màn hình mã nguồn sẽ hiển thị tất cả tham chiếu của tên được chọn cùng lúc. Đoạn mã ở trên cùng sẽ hiển thị định nghĩa của tên nếu có.
 
-#### Files
+#### Tập tin
 
-Each file has a title bar with the file's name. Clicking the title bar will change the display state. There are 2 different states:
+Mỗi tập tin có thanh tiêu đề cùng với tên tập tin. Nhấp vào thanh tiêu đề sẽ thay đổi trạng thái hiển thị. Có 2 trạng thái khác nhau:
 
-* **Minimized:** The file does not show its content.
+- **Thu nhỏ:** tập tin không hiển thị nội dung của nó.
 
 <img src="docs/documentation/snippet_minimized.png" width="800" alt="Snippet Minimized">
 
-* **Snippets:** The file displays the snippets containing active locations separated by lines.
+- **Đoạn mã:** tập tin hiển thị các đoạn mã chứa các vị trí được làm nổi bật được phân tách bằng dòng.
 
 <img src="docs/documentation/snippet_snippets.png" width="800" alt="Snippet Snippets">
 
-**Interactions:**
+**Thao tác**
 
-* Hover the title to see the full file path.
-* Click the title to activate the file's corresponding node and switch to full file view.
-* Click the title bar to minimize the file or show its snippets.
-* Click the snippet button to switch to snippet or full file view, depending on the file node
-* Click the maximize button to switch to [Single File Mode](#single-file-mode).
+- Di chuột qua tiêu đề để xem đường dẫn đầy đủ của tập tin.
+- Nhập vào tiêu đề để kích hoạt nốt tương ứng của tập tin và chuyển sang chế độ xem đầy đủ mã nguồn.
+- Nhấp vào thanh tiêu đề để thu nhỏ tập tin hoặc hiển một đoạn mã của nó.
+- Nhấp vào nút đoạn mã để chuyển sang chế độ xem đoạn mã hoặc toàn bộ tập tin, tuỳ thuộc vào nốt tập tin.
+- Nhấp vào nút phóng to để chuyển sang [chế độ tập tin đơn](#chế-độ-tập-tin-đơn).
 
-#### Snippets
+#### Đoạn mã
 
-A code snippet contains the lines of interest for the currently active symbol surrounded by some more lines to provide some context. Other symbols that were indexed by Sourcetrail are framed by a box when hovered. Here Sourcetrail distinguishes between local symbols and symbols that can be related to any other part of the code base. In case the snippet is part of a class, function or namespace, an additional line at the top of the snippet provides information about the snippet’s context (e.g. the surrounding scope).
+Một đoạn mã chứa các dòng cần quan tâm cho tên được chọn, được bao quanh bởi một số dòng khác để cung cấp thêm ngữ cảnh. Các tên khác được Sourcetrail phân tích sẽ được đóng khung bằng một hộp khi di chuột qua. Ở đây, Sourcetrail phân biệt giữa các tên cục bộ và tên có thể liên quan đến bất kỳ phần nào khác của mã nguồn. Trong trường hợp đoạn mã là một phần của một lớp (class), hàm (function) hoặc namespace, đầu đoạn mã cung cấp sẽ có thêm một dòng bổ sung về ngữ cảnh của đoạn mã (ví dụ: phạm vi xung quanh,...).
 
 <img src="docs/documentation/code_view_snippet.png" width="800" alt="Code View Snippet">
 
-**Interactions:**
+**Tương tác**
 
-* Click the top line to show the whole scope around the snippet.
-* Click a boxed symbol to activate it.
-* Click a boxed local symbol to highlight all its usages in the visible code.
+- Nhấp vào dòng trên cùng để hiển thị toàn bộ phạm vi xung quanh đoạn mã.
+- Nhấp vào biểu tượng được đóng khung để chọn nó.
+- Nhấp vào biểu tượng cục bộ được đóng khung để làm nổi bật tất cả những vị trí của nó trong đoạn mã hiển thị.
 
-### Single File Mode
+### Chế độ tập tin đơn
 
-In single file mode you will only every have one file visible at a time. The first file shown is usually the file containing the definition of the active snippet if available. Other than that the user interface is the same as in [Snippet List Mode](#snippet-list-mode).
+Ở chế độ tập tin đơn, bạn sẽ chỉ thấy một tập tin tại một thời điểm. Tập tin đầu tiên được hiển thị thường là tập tin chứa định nghĩa của đoạn mã được chọn nếu có. Ngoài ra, giao diện người dùng giống như trong [chế độ danh sách đoạn mã](#chế-độ-danh-sách-đoạn-mã).
 
 <img src="docs/documentation/code_view_single.png" width="800" alt="Code View Single">
 
-**Interactions:**
+**Tương tác**
 
-* Hover the title to see the full file path.
-* Click the title to activate the file's corresponding node.
-* Click the snippet button to switch to [Snippet List Mode](#snippet-list-mode).
+- Di chuột qua tiêu đề để xem đường dẫn đầy đủ của tập tin.
+- Nhấp vào tiêu đề để kích hoạt nốt tương ứng của tập tin.
+- Nhấp vào nút đoạn mã để chuyển sang [chế độ danh sách đoạn mã](#chế-độ-danh-sách-đoạn-mã).
 
-## Search View
+## Màn hình tìm kiếm
 
-The Search View contains the search field and some other related user interface elements.
+Màn hình tìm kiếm chứa thanh tìm kiếm và một số thành phần liên quan đến giao diện người dùng.
 
 <img src="docs/documentation/search_view.png" width="800" alt="Search View">
 
-### Back, Forward and History
+### Quay lại, tiến lên và lịch sử
 
-The left `Backward` button lets you undo your last navigation actions (see [Back](#back)) and the right `Forward` button lets you redo your undone navigation actions again (see [Forward](#forward)). Both buttons are only enabled when the respective actions are available at the moment.
+Nút `Backward` bên trái cho phép bạn hoàn tác các thao tác điều hướng gần đây nhất và nút `Forward` bên phải cho phép bạn thực hiện lại các thao tác điều hướng đã hoàn tác. Cả hai nút chỉ khả dụng khi các thao tác tương ứng khả dụng. 
 
-The middle button shows a list of the recently active symbol stack. Select a symbol to activate it.
+Nút ở giữa hiển thị danh sách các tên được chọn gần đây. Chọn một tên để kích hoạt nó.
 
 !["Undo Redo View"](docs/documentation/undo_redo_buttons.png "Undo Redo View")
 
 !["History List"](docs/documentation/history_list.png "History List")
 
-**Interactions:**
+**Tương tác**
 
-* Hover the buttons to see a tool tip.
-* Press the buttons to execute the respective action.
-* Press the history button to show the active symbol stack and click on an item to activate it.
+- Di chuột qua các nút để xem chú thích.
+- Nhấn vào các nút để thực hiện tạo tác tương ứng.
+- Nhấn vào nút lịch sử để hiển thị ngăn xếp các tên và nhấp vào một đối tượng để kích hoạt.
 
-### Refresh
+### Làm mới
 
-The refresh button allows you to refresh the current project and reindex all updated, added and removed files. To reindex the whole project choose the **Force Refresh** option from the [Edit Menu](#edit).
+Nút làm mới cho phép bạn làm mới dự án hiện tại và phân tích lại toàn bộ các tập tin đã được cập nhật, thêm vào và xoá. Để phân tích lại toàn bộ dự án, hãy chọn tuỳ chọn **Force Refresh** từ [menu chỉnh sửa](#edit).
 
 !["Refresh Button"](docs/documentation/refresh_button.png "Refresh Button")
 
-**Interactions:**
+**Tương tác**
 
-* Hover the buttons to see a tooltip.
-* Press the refresh button to refresh the project.
+- Di chuột qua các nút để xem chú giải.
+- Nhấn nút làm mới để làm mới dự án
 
-### Overview Button
+### Nút tổng quan
 
-Show the overview screen, which gives a summary of the loaded project. The overview screen is shown after the project was loaded. Alternatively use the shortcut [To overview](#shortcuts).
+Hiển thị màn hình tổng quan, cung cấp tóm tắt về dự án hiện tại. Màn hình tổng quan được hiển thị sau khi dự án được nạp. Hoặc sử dụng phím tắt [đến tổng quan](#phím-tắt)
 
 !["Overview Button"](docs/documentation/overview_button.png "Overview Button")
 
-**Interactions:**
+**Thao tác**
 
-* Press the overview button to show the project overview.
+- Nhấn nút tổng quan để hiển thị tổng quan dự án.
 
-### Search Bar
+### Thanh tìm kiếm
 
-The search bar allows you to enter search requests to find one of Sourcetrail's indexed symbols. It doesn't allow for full text searching across all files so far. The search field allows for most text editing interactions common to text fields. When typing your request the [Autocompletion Popup](#autocompletion-popup) will show you search results matching to your entered string.
+Thanh tìm kiếm cho phép bạn nhập yêu cầu tìm kiếm để tìm một trong các tên đã được phân tích của Sourcetrail. Hiện tại, chức năng này chưa thể tìm kiếm đầy đủ nội dung trên tất cả tập tin. Trường tìm kiếm cho phép hầu hết các thao tác chỉnh sửa văn bản thông thường của các trường văn bản khác. Khi bạn nhập yêu cầu, [thanh gợi ý](#thanh-gợi-ý) sẽ hiển thị kết quả tìm kiếm phù hợp với chuỗi bạn đã nhập.
 
 !["Search Bar"](docs/documentation/search_bar.png "Search Bar")
 
-**Interactions:**
+**Thao tác**
 
-* Focus the search field by clicking it or using the [Find Symbol](#find-symbol) action.
-* Enter your search request by typing on your keyboard.
-* By pressing enter or clicking on the search icon on the right you send your request.
-* The search field allows for most interactions known from other text fields such as moving the cursor, copy&paste and text selection.
+- Tập trung vào thanh tìm kiếm bằng cách nhập vào đó hoặc sử dụng thao tác [tìm tên](#tìm-tên).
+- Nhập yêu cầu tìm kiếm của bạn bằng cách gõ bàn phím.
+- Nhấm phím Enter hoặc nhấp vào biểu tượng tìm kiếm ở bên phải để bắt đầu tìm kiếm.
+- Thanh tìm kiếm cho phép hầu hết các tương tác quen thuộc từ các trường văn bản khác như di chuyển con trỏ, sao chép & dán và chọn văn bản.
 
+### Thanh gợi ý 
 
-### Autocompletion Popup
-
-The Autocompletion Popup displays all [Nodes](#nodes) matching your search request within all indexed symbols. The match results are determined by a fuzzy matching algorithm, that allows you to skip characters. The popup shows which characters in the words are matching and displays their corresponding node color. The node type is displayed on the right.
+Thanh tự động hoàn thành hiển thị tất cả các [nốt](#nốt) khớp với các yêu cầu tìm kiếm của bạn trong tất cả các tên được phân tích. Kết quả khớp được xác đỉnh bởi thuật toán khớp mờ, cho phép bạn bỏ qua các ký tự. Thanh gợi ý hiển thi các ký tự nào trong từ khớp và hiển thị màu nốt tương ứng. Loại nốt được hiển thị ở bên phải.
 
 <img src="docs/documentation/search_view_completion.png" width="800" alt="Search View Completion">
 
-**Interactions:**
+**Tương tác**
 
-* Use the up and down arrow keys to switch between search results.
-* Pressing tab or clicking on the search result will insert it into the search field.
-* Pressing enter will select the search result and send the search request.
+- Sử dụng các phím mũi tên lên và xuống để chuyển đổi giữa các kết quả tìm kiếm.
+- Nhấm phím tab hoặc nhấp vào kết quả tìm kiếm sẽ chèn nó vào trường tìm kiếm.
+- Nhấm phím Enter sẽ chọn kết quả tìm kiếm và gửi yêu cầu tìm kiếm.
 
-### Keywords
+### Từ khoá
 
-Additionally the search view provides specific keywords that select a certain group of symbols.
+Ngoài ra, chế độ xem tìm kiếm cung cấp các từ khoá cụ thể để chọn một nhóm tên nhất định.
 
-| keyword | effect
+| Từ khoá | Tác dụng
 | --- | ---
-| **overview** | Shows an overview of all indexed symbols in the [graph view](#graph-view) and some statistics in the [code view](#code-view).
-| **error** | Shows all errors in the [code view]().
+| **overview** | Hiển thị tổng quan về tất cả các tên được phân tích trong [màn hình đồ thị](#màn-hình-đồ-thị) và một số thống kê trong [màn hình mã nguồn](#màn-hình-mã-nguồn).
+| **error** | Hiển thị tất cả các lỗi trong [màn hình mã nguồn](#màn-hình-mã-nguồn).
 
-### Full text search
+### Tìm kiếm đầy đủ văn bản
 
-Search for a certain string in all indexed files by putting `?` at the front of your search query. The default full text search is case-insensitive, use `??` to search case-sensitive.
+Tìm kiếm một chuỗi ký tự nhất định trong tất cả các tập tin đã được phân tích bằng cách đặt `?` ở đầu truy vấn tìm kiếm của bạn. Mặc định, tìm kiếm toàn văn bản không phân biệt chữ hoa chữ thường, hãy sử dụng `??` để phân biệt chữ hoa thường.
 
 !["Search View Fulltext"](docs/documentation/search_view_fulltext.png "Search View Fulltext")
 
-**Interactions:**
+**Thao tác**
 
-* Start a query with `?` or use the [Find Text](#find-text) action to do a case-insensitive full text search.
-* Start a query with `??` to do a case-sensitive full text search.
+- Bắt đầu tìm kiếm bằng `?` hoặc sử dụng thao tác [tìm văn bản](#phím-tắt) để tìm kiếm toàn văn bản không phân biệt chữ hoa thường.
+- Bắt đầu tìm kiếm bằng `??` để tìm kiếm toàn văn bản phân biệt chữ hoa thường.
 
-### Bookmarking Buttons
+### Nút đánh dấu trang
 
-The `Bookmark Active Symbol` button on the left opens the [Bookmark Creator](#bookmark-creator) to create a new bookmark. The `Bookmark Manager` button on the right is used to display the [Bookmark Manager](#bookmark-manager) for activating and editing your bookmarks.
+Nút `Bookmark Active Symbol` ở bên trái mở [trình tạo đánh dấu trang](#trình-tạo-đánh-dấu-trang) để tạo đánh dấu trang mới. Nút `Bookmark Manager` ở bên phải được sử dụng để hiển thị [quản lý đánh dấu trang](#quản-lý-đánh-dấu-trang) để mở và chỉnh sửa các đánh dấu trang của bạn.
 
 !["Bookmark Buttons"](docs/documentation/bookmark_buttons.png "Bookmark Buttons")
 
-**Interactions:**
+**Thao tác**
 
-* Hover the buttons to see a tool tip.
-* Press the buttons to execute the respective action.
+- Di chuột qua các nút để xem chú thích công cụ.
+- Nhấn vào các nút để thực hiện hành động tương ứng.
 
-### Bookmark Creator
+### Trình tạo đánh dấu trang
 
-Use the `Bookmark Creator` to create or edit bookmarks.
+Sử dụng trình tạo đánh dấu trang để tạo hoặc chỉnh sửa đánh dấu trang.
 
 <img src="docs/documentation/bookmark_creator.png" width="700" alt="Bookmark Creator">
 
-| Setting | Description
+| Cài đặt | Mô tả
 | --- | ---
-| **Name** | The name of the bookmark. Initially the name of the node or edge is used.
-| **Comment** | Add an optional comment to the bookmark.
-| **Category** | Add the bookmark to a certain category. Bookmarks with the same category are grouped together in the [Bookmark Manager](#bookmark-manager).
+| **Name** | Tên của đánh dấu trang. Ban đầu, tên của nốt hoặc cạnh được sử dụng.
+| **Comment** | Thêm tuỳ chọn bình luận vào đánh dấu trang.
+| **Category** | Thêm đánh dấu trang vào một danh mục cụ thể. Các đánh dấu trang cùng danh mục sẽ được nhóm lại với nhau trong [quản lý đánh dấu trang](#quản-lý-đánh-dấu-trang).
 
-**Interactions:**
+**Thao tác**
 
-* Press `Cancel` to close without changes.
-* Press `Create/Save` to save the bookmark or apply the changes.
+- Nhấn `Cancel` để đóng mà không thay đổi.
+- Nhấn `Create/Save` để lưu đánh dấu trang hoặc áp dụng các thay đổi.
 
-### Bookmark Manager
+### Quản lý đánh dấu trang
 
-Use the `Bookmark Manager` to view and activate your bookmarks. Bookmarks are displayed as lines below their respective category. If a bookmark does not have a category it will be placed within the `default` category. The buttons for removing/editing categories or bookmarks are only visible when hovering the respective line. Bookmark information is stored within a separate `.srctrlbm` file next to your `.srctrlprj` project file.
+Sử dụng quản lý đánh dấu trang để xem và các đánh dấu trang. Các đánh dấu trang được hiển thị theo dòng bên dưới danh mục tương ứng. Nếu một dấu trang không có danh mục, nó sẽ được đặt trong danh mục `default`. Các nút để xoá/chỉnh sửa danh mục hoặc dấu trang chỉ hiển thị khi di chuột qua dòng tương ứng. Thông tin đánh dấu trang được lưu trữ trong tập tin `.srctrlbm` riêng biệt bên cạnh tập tin `.strtrlprj` của bạn.
 
 <img src="docs/documentation/bookmark_manager.png" width="800" alt="Bookmark Manager">
 
-**Interactions:**
+**Thao tác**
 
-* Activate bookmarks by clicking on the name.
-* Open/Collapse the bookmark comment by clicking within the bookmark line.
-* Click the `Edit` button to change the contents of the bookmark.
-* Click the `Delete` button at a bookmark to remove the bookmark.
-* Open/Collapse categories by clicking in their line.
-* Click the `Delete` button at a category to remove the category and all bookmarks within.
-* Change the `Show` filter to switch between display of nodes and/or edges.
-* Change the `Sorting` to change the order of bookmarks within their categories.
+- Nhấn vào tên để mở đánh dấu trang.
+- Mở/thu gọn bình luận đánh dấu trang bằng cách nhấp vào bên trong dòng đánh dấu trang.
+- Nhấp vào nút `Edit` để thay đổi nội dung của dấu trang.
+- Nhấp vào nút `Delete` tại một dấu trang để xoá nó.
+- Mở/thu gọn các danh mục bằng nhấp vào dòng của chúng.
+- Nhấp vào nút `Delete` tại một danh mục để xoá danh mục đó và tất cả các dấu trang bên trong.
+- Nhấp vào `Show` để chuyển đổi giữa hiển thị các nốt và/hoặc các cạnh.
+- Nhấp vào `Sorting` để thay đổi thứ tự các dấu trang trong các danh mục của chúng.
 
-## Status View
+## Màn hình trạng thái
 
-This view provides different tabs with information about your project. This
-view is hidden by default.
+Màn hình này cung cấp các thẻ khác nhau với thông tin về dự án của bạn. Màn hình này mặc định bị ẩn.
 
-**Interactions:**
+**Thao tác**
 
-* Click on the titles on top to switch between tabs.
-* Click on the `x`-button in the top right corner to close the Status View.
+- Nhấp vào các tiêu đề trên cùng để chuyển đổi giữa các thẻ.
+- Nhấp vào nút `x` ở góc trên bên phải để đóng.
 
-### Status Tab
+### Thẻ trạng thái
 
-This table gives some information about status updates while running Sourcetrail. It can be helpful to figure out why something does not the way it's expected to.
+Bảng này cung cấp một số thông tin về các cập nhật trạng thái trong khi chạy Sourcetrail. Nó có thể hữu ích để tìm ra lý do tại sao hoạt động không như mong đợi.
 
 !["Status View Status"](docs/documentation/status_view_status.png "Status View Status")
 
-**Interactions:**
+**Thao tác**
 
-* Double click on a table cell to select the text for copy&paste.
-* Use the checkboxes below to filter the shown messages by type.
-* Click on `Clear Table` to remove all rows from the table.
+- Nhấp đúp vào một ô trong bảng để chọn văn bản để sao chép và dán.
+- Sử dụng các hộp kiểm tra bên dưới để lọc các thông báo hiển thị theo loại.
+- Nhấp vào `Clear Table` để xoá tất cả các hàng khỏi bảng.
 
-### Errors Tab
+### Thẻ lỗi
 
-This list shows errors occurred during indexing.
+Danh sách này hiển thị các lỗi xảy ra trong quá trình phân tích.
 
 !["Status View Error"](docs/documentation/status_view_error.png "Status View Error")
 
-The following information is provided:
+Thông tin được hiển thị bao gồm:
+- **Type:** LỖI hoặc NGHIÊM TRỌNG. Lỗi NGHIÊM TRỌNG gây ra nhiều thông tin bị thiếu vì trình phân tích phải dừng lại ở lỗi này.
+- **Error message:** nội dung lỗi.
+- **File:** tập tin bị lỗi.
+- **Line number:** dòng có lỗi.
+- **Indexed:** tập tin đã được phân tích hay chưa.
+- **Translation Unit:** tập tin gây ra lỗi này trong khi đang được phân tích.
 
-* **Type:** ERROR or FATAL. A FATAL error causes lots of missing information since the indexer had to stop at this error.
-* **Error message**
-* **File**
-* **Line number**
-* **Indexed:** Whether the file is within the indexed files.
-* **Translation Unit:** The source file that produced this error while being indexed.
+**Thao tác**
 
-**Interactions:**
+- Nhấp vào một dòng lỗi để xem vị trí của lỗi trong [màn hình mã nguồn](#màn-hình-mã-nguồn).
+- Nhấp vào tiêu đề cột để sắp xếp các lỗi tăng dần hoặc giảm dần theo thông tin.
+- Nhấp đúp vào ô trong bảng để chọn văn bản cần sao chép và dán.
+- Sử dụng các hộp kiểm tra bên dưới để lọc các lỗi hiển thị theo các tiêu chí nhất định.
+- Nhấp vào `Edit Project` để mở [hộp thoại sửa dự án](#trình-thiết-lập-dự-án).
 
-* Click on a error line to see the location of the error in the [Code View](#code-view).
-* Click on the column headers to sort the error rows ascending or descending by this data.
-* Double click on a table cell to select the text for copy&paste.
-* Use the checkboxes below to filter the shown errors by certain criteria.
-* Click on `Edit Project` to open the [Edit Project Dialog](#project-setup-wizard).
+## Chú thích công cụ
 
-## Tooltips
-
-Show information about hovered symbols in the [Graph View](#graph-view) and [Code View](#code-view)
+Hiển thị thông tin về các tên được di chuột trong [màn hình đồ thị](#màn-hình-đồ-thị) và [màn hình mã nguồn](#màn-hình-mã-nguồn).
 
 <img src="docs/documentation/tooltip.png" width="500" alt="Tooltip">
 
-**The following information is provided:**
+Thông tin được hiển thị bao gồm:
+- Loại tên
+- Khả năng truy cập (ví dụ: công khai hoặc riêng tư)
+- Số lượng tham chiếu
+- Tên
+- Tên có thể nhấp vào được đối với các biến và các trường toàn cục
+- Đầy đủ dấu hiệu nhận biết về tên kiểu trả về có thể nhấp vào được và tên kiểu tham số cho các hàm và phương thức.
 
-* Symbol type
-* Visibility (e.g. public or private)
-* Reference count
-* Symbol name
-* Clickable type name for global variables and fields.
-* Full signatures with clickable return type name and parameter types names for functions and methods.
+**Thao tác**
 
-**Interactions:**
+- Nhấp vào tên để kích hoạt chúng.
 
-* Click on symbol names to activate them.
+# Thiết lập dự án
 
-# Project Setup
+Thiết lập dự án trong Sourcetrail được thực hiện thông qua [trình thiết lập dự án](#trình-thiết-lập-dự-án), có thể truy cập trên [cửa sổ bắt đầu](#cửa-sổ-bắt-đầu) bằng cách ấn vào `New Project` hoặc từ [menu dự án](#project) với thao tác `New Project`.
 
-Project Setup in Sourcetrail is done via the [Project Setup Wizard](#project-setup-wizard), which can be accessed on the [Start Window](#start-window) by clicking `New Project` or from the [Project Menu](#project) with the `New Project` action.
+Trình thiết lập dự án cho phép bạn tạo một dự án Sourcetrail mới. Bằng cách điền tên và đường dẫn của dự án và thêm một số **Nhóm mã nguồn** để khai báo những tập tin mã nguồn cần được phân tích. Có nhiều cách để tạo Nhóm mã nguồn, đối với hầu hết các dự án, chỉ cần thêm một Nhóm mã nguồn là đủ.
 
-The Project Setup Wizard lets you create a new Sourcetrail project. It allows for defining name and location of your Sourcetrail project and adding several **Source Groups**, that define which source files will be indexed. There are several ways to create Source Groups. It is sufficient to add only one Source Group for most projects.
-
-After you added Source Groups to your project this dialog allows you to edit their configurations, as well as removing or duplicating them.
+Sau khi bạn đã thêm Nhóm mã nguồn vào dự án của mình, hộp thoại này cho phép bạn chỉnh sửa thiết lập của chúng, cũng như xoá hoặc sao chép chúng.
 
 <img src="docs/documentation/project_setup_wizard_start.png" width="800" alt="Project Setup Wizard Start">
 
-| Setting | Description
+| Cài đặt | Mô tả
 | --- | ---
-| Sourcetrail Project Name | The name of the project. This will also be the name of the `.srctrlprj` file generated by Sourcetrail.
-| Sourcetrail Project Location | Choose the location of the project file from the dialog.
+| Sourcetrail Project Name | Tên của dự án. Đây cũng sẽ là tên của tập tin `.srctrlprj` được tạo bởi Sourcetrail.
+| Sourcetrail Project Location | Chọn đường dẫn lưu của tập tin dự án từ hộp thoại.
 
-**Interactions:**
+**Thao tác**
 
-* Clicking `Cancel` or pressing `ESC` will close the window and abort the setup process.
-* Clicking `Add Source Group` will take you to the creation of a new Source Group.
-* Clicking `General` will take you to the name and location setting of the project.
-* Clicking a `Source Group` will let you edit it's configuration and change it's name.
-* Clicking `+` beneath the Source Group list will take you to the creation of a new Source Group.
-* Clicking `-` beneath the Source Group list will delete the currently selected Source Group.
-* Clicking `☐` beneath the Source Group list will duplicate the currently selected Source Group.
-* Clicking `Create` will close this window and create the new project.
+- Nhấp vào `Cancel` hoặc nhấn `ESC` sẽ đóng cửa sổ và huỷ quá trình thiết lập.
+- Nhấp vào `Add Source Group` sẽ đưa bạn đến trang Tạo nhóm mã nguồn mới.
+- Nhấp vào `General` sẽ đưa bạn đến trang thiết lập tên và đường dẫn của dự án.
+- Nhấp vào `Source Group` để chỉnh sửa thiết lập và thay đổi tên của nhóm.
+- Nhấp vào `+` bên dưới danh sách Nhóm mã nguồn sẽ đưa bạn đến trang tạo Nhóm mã nguồn mới.
+- Nhấp vào `-` bên dưới danh sách Nhóm mã nguồn sẽ xoá Nhóm mã nguồn hiện đang được chọn.
+- Nhấp vào `☐` bên dưới danh sách Nhóm mã nguồn sẽ sao chép Nhóm mã nguồn hiện đang được chọn.
+- Nhấp vào `Create` sẽ đóng cửa sổ này và tạo dự án mới.
 
-This window is also used when editing the project. You can select a Source Group from the list on the left and edit it's contents then. Additionally you can also set the `active` flag of certain Source Groups to false, so they won't get indexed when refreshing the project.
+Cửa sổ này cũng được sử dụng khi chỉnh sửa dự án. Bạn có thể chọn một Nhóm mã nguồn từ danh sách bên trái và chỉnh sửa nó. Ngoài ra, bạn cũng có thể đặt cờ `active` của một số Nhóm mã nguồn thành `false` để chúng sẽ không được phân tích khi làm dự án mới.
 
 <img src="docs/documentation/project_setup_wizard_edit.png" width="800" alt="Project Setup Wizard Edit">
 
-**Interactions:**
+**Thao tác**
 
-* Change the name of the Source Group.
-* Activate/Deactivate the Source Group for indexing.
-* Change any settings defined during Source Group setup.
+- Thay đổi tên Nhóm mã nguồn.
+- Kích hoạt/vô hiệu hoá Nhóm mã nguồn được phân tích.
+- Thay đổi bất kỳ cài đặt nào được xác định trong quá trình thiết lập Nhóm mã nguồn.
 
-## Choose a Source Group Type
+## Chọn loại nhóm mã nguồn
 
-When creating a new Source Group you can choose between different methods of setup depending on your project language. Please have a look at our [QUICK START GUIDE](#getting-started) section for help on choosing the right Source Group type.
+Khi tạo một nhóm mã nguồn mới, bạn có thể chọn giữa các phương pháp thiết lập khác nhau tuỳ thuộc vào ngôn ngữ dự án của bạn. Vui lòng xem [hướng dẫn nhanh](#hướng-dẫn-sử-dụng) để được trợ giúp về việc chọn đúng loại Nhóm mã nguồn.
 
 <img src="docs/documentation/project_setup_wizard_source_group_type.png" width="600" alt="Project Setup Wizard Source Group Type">
 
-**Interactions:**
+**Thao tác**
 
-* Select the language used in code project.
-* Selecting a Source Group type will determine how you enter all the required information.
-* Clicking `Cancel` or pressing `ESC` will close the window.
-* Clicking `Next` will take you to the next step of the setup process.
+- Chọn ngôn ngữ được sử dụng trong `Code Project`.
+- Chọn loại nhóm mã nguồn sẽ xác định cách bạn nhập tất cả thông tin cần thiết.
+- Nhấp vào `Cancel` hoặc nhấn `ESC` sẽ đóng cửa sổ.
+- Nhấp vào `Next` sẽ đưa bạn đến bước tiếp theo của quá trình thiết lập.
+
 
 ## Empty C/C++ Source Group
 
-Empty C/C++ Source Groups have the following configuration options:
+Empty C/C++ Source Groups có các tuỳ chọn thiết lập sau:
 
-| Setting | Description
+| Thiết lập | Mô tả
 | --- | ---
-| Standard | Select the language standard that should be used for indexing your project. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Cross-compilation | Check **Use specific target** and then use the dropdown boxes to specify a certain target platform. Please have a look at the clang compiler documentation on [cross-compilation](https://clang.llvm.org/docs/CrossCompilation.html) for more information.
-| Files & Directories to Index | These paths define the files and directories that will be indexed by Sourcetrail. Provide a directory to recursively add all contained source and header files. If your project's source code resides in one location, but generated source files are kept at a different location, you will also need to add that directory. You can make use of environment variables with `${ENV_VAR}`.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.cpp`. Sourcetrail will only try to index files that match one of these extensions.
-| Include Paths | Include Paths are used for resolving #include directives in the indexed source and header files. These paths are usually passed to the compiler with the `-I` or `-iquote` flags. Add all paths #include directives throughout your project are relative to. If all #include directives are specified relative to the project's root directory, please add that root directory here. If your project also includes files from external libraries (e.g. boost), please add these directories as well (e.g. add `path/to/boost_home/include`). You can make use of environment variables with `${ENV_VAR}`.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Global Include Paths | The Global Include Paths will be used in all your projects in addition to the project specific Include Paths. These paths are usually passed to the compiler with the '-isystem' flag. Use them to add system header paths (See [Finding System Header Locations](#finding-system-header-locations) or use the auto detection below).<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Framework Search Paths (macOS only) | These paths are used to find `.framework` files used by your project. (<br />For instructions on how to add paths see [Path List Box](#path-list-box).)
-| Global Framework Search Paths (macOS only) | These Framework Search Paths will be used in all your projects. (<br />For instructions on how to add paths see [Path List Box](#path-list-box). For instructions on how to find the system header paths see [Finding System Header Locations](#finding-system-header-locations))
-| Compiler Flags | Define additional compiler flags used during indexing including the dash (e.g. use `-DRELEASE` to add a `#define` for `RELEASE`).<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Precompiled Header File | Select the path to the header file that should be used to generate a Precompiled Header File. The Precompiled Header File will be generated as pre-indexing step. If no path is supplied, no Precompiled Header File will be generated.
-| Precompiled Header Flags | Define if the already supplied compiler flags should be used for Precompiled Header File generation and define additional flags for Precompiled Header File generation only.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
+| Standard | Chọn chuẩn ngôn ngữ sẽ được sử dụng để phân tích cho dự án của bạn. Thông thường, chuẩn ngôn ngữ mới nhất sẽ được chọn trước (xem [ngôn ngữ hỗ trợ](#ngôn-ngữ-hỗ-trợ)).
+| Cross-compilation | Chọn **Use specific target** và sau đó chọn một nền tảng làm mục tiêu cụ thể. Vui lòng xem tài liệu trình biên dịch Clang về [cross-compilation](https://clang.llvm.org/docs/CrossCompilation.html) để biết thêm thông tin.
+| Files & Directories to Index | Các đường dẫn này xác định các tập tin và thư mục sẽ được Sourcetrail phân tích. Cung cấp một thư mục để thêm đệ quy tất cả các tập tin nguồn và tập tin tiêu đề. Nếu mã nguồn của dự án nằm ở một vị trí, nhưng các tệp tin mã nguồn được tạo ra được lưu ở một vị trí khác, bạn cũng cần thêm thư mục đó. Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, hãy xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Excluded Files & Directories | Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại khỏi quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho tất cả ký tự, ngoại trừ `\` hoặc `/` (ví dụ: `src/*/test.h` khớp với `src/app/test.h` nhưng không khớp với `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý (ví dụ: `src**test.h` khớp với `src/app/test.h` và `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môn trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Source File Extensions | Xác định các phần mở rộng hợp lệ cho các tập tin mã nguồn bao dấu chấm, ví dụ: `.cpp`. Sourcetrail sẽ chỉ cố gắng phân tích các tập tin khớp với một trong các phần mở rộng này. 
+| Include Paths | Include Paths được dùng để quyết các lệnh `#include` trong các tập tin mã nguồn và tập tin tiêu đề được phân tích. Những đường dẫn này thường được truỳ cho trình biên dịch bằng cờ `-I` hoặc `-iquote` . Thêm tất cả các đường dẫn mà các lệnh `#include` trong toàn bộ dự án của bạn có liên quan đến. Nếu tất cả lệnh `#include` được chỉ định liên quan đến thư mục gốc của dự án, vui lòng thêm thư mục gốc đó vào đây. Nếu dự án của bạn có sử dụng thư viện bên ngoài (ví dụ: boost,...), vui lòng thêm các thư mục đó (ví dụ: thêm `path/to/boost_home/include`). Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, hãy xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Global Include Paths | Global Include Paths sẽ được sử dụng trong tất cả dự án của bạn, ngoài *Include Paths* dành riêng cho dự án. Những đường dẫn này thường được truỳ cho trình biên dịch bằng cờ '-ísystem'. Sử dụng chúng để thêm các đường dẫn tiêu đề hệ thống (xem [tìm thư viện hệ thống](#thư-viện-hệ-thống) hoặc sử dụng tính năng tự động phát hiện bên dưới).<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Framework Search Paths (chỉ MacOS) | Những đường dẫn này dùng để tìm các tập tin `.framework` được sử bởi dự án của bạn. (<br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).)
+| Global Framework Search Paths (chỉ MacOS) | Framework Search Paths được dùng cho toàn bộ các dự án. (<br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn). Để biết hướng dẫn về cách tìm đường dẫn thư viện hệ thống, xem [tìm thư viện hệ thống](#tìm-thư-viện-hệ-thống)).
+| Compiler Flags | Xác định các cờ trình biên dịch bổ sung được sử dụng trong quá trình phân tích, bao gồm cả dấu gạch ngang (ví dụ: dùng `-DRELEASE` để thêm `#define RELEASE`).<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Precompiled Header File | Chọn đường dẫn đến tập tin tiêu đề sẽ được sử dụng để tạo tập tin tiêu đề được biên dịch trước. Tập tin tiêu đề được biên dịch trước sẽ được tạo trước khi phân tích. Nếu không cung cấp đường dẫn, sẽ không có tập tin tiêu đề được biên dịch trước nào được tạo.
+| Precompiled Header Flags | Xác định xem các cờ biên dịch đã cung cấp có nên sử dụng cho việc tạo tập tin tiêu được biên dịch trước hay không và xác định thêm các cờ chỉ dành cho việc tạo các tập tin tiêu đề đã biên dịch trước<br /><br />Để biết hướng dẫn về các thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
 
-## C/C++ Source Group from Compilation Database
+## C/C++ from Compilation Database
 
-If you are using [CMake](https://cmake.org/) you can export compile commands by defining the `CMAKE_EXPORT_COMPILE_COMMANDS` flag and then use the exported `.json` file for Sourcetrail project setup.
-For non-CMake projects you can use [Bear](https://github.com/rizsotto/Bear). Bear generates a `.json` file during the simulated build process. Bear has been tested on FreeBSD, GNU/Linux and OS X.
-C/C++ Source Groups from Compilation Database offer the following configuration options:
+Nếu bạn đang sử dụng [CMake](https://cmake.org/), bạn có thể sử dụng cờ `CMAKE_EXPORT_COMPILE_COMMANDS=On` và sau đó dử dụng tập tin `.json` đã xuất để thiết lập dự án Sourcetrail.
 
-| Setting | Description
+Đối với các dự án không sử dụng CMake, bạn có thể sử dụng [Bear](https://github.com/rizsotto/Bear). Bear tạo ra một tập tin `.json` trong quá trình mô phỏng biên dịch. Bear đã được thử nghiệm trên FreeBSD, GNU/Linux hoặc OS X.
+
+C/C++ from Compilation Database cung cấp các cài đặt sau:
+
+| Cài đặt | Mô tả
 | --- | ---
-| Compilation Database | Select the compilation database file for the project. Sourcetrail will index your project based on the compile commands this file contains using all include paths and compiler flags of these compile commands. The project will stay up to date with changes in the compilation database on every refresh. You can make use of environment variables with ${ENV_VAR}.
-| Header Files & Directories to Index | Your Compilation Database already specifies which source files are part of your project. But Sourcetrail still needs to know which header files to index as part of your project and which to skip. Choosing to skip indexing your system headers or external frameworks will significantly improve the overall indexing performance. Use this list to define which header files should be indexed by Sourcetrail. Provide a directory to recursively add all contained files. You can make use of environment variables with ${ENV_VAR}.<br />**Hint**: Just enter the root path of your project if you want Sourcetrail to index all contained headers it encounters.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Additional Include Paths | Include Paths are used for resolving #include directives in the indexed source and header files. These paths are usually passed to the compiler with the '-I' or '-iquote' flags. Add all paths #include directives throughout your project are relative to. If all #include directives are specified relative to the project's root directory, please add that root directory here. If your project also includes files from external libraries (e.g. boost), please add these directories as well (e.g. add 'path/to/boost_home/include'). You can make use of environment variables with ${ENV_VAR}.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Global Include Paths | The Global Include Paths will be used in all your projects in addition to the project specific Include Paths. These paths are usually passed to the compiler with the '-isystem' flag. Use them to add system header paths (See [Finding System Header Locations](#finding-system-header-locations) or use the auto detection below).<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Framework Search Paths (macOS only) | These paths are used to find `.framework` files used by your project. (<br />For instructions on how to add paths see [Path List Box](#path-list-box).)
-| Global Framework Search Paths (macOS only) | These Framework Search Paths will be used in all your projects. (<br />For instructions on how to add paths see [Path List Box](#path-list-box). For instructions on how to find the system header paths see [Finding System Header Locations](#finding-system-header-locations))
-| Additional Compiler Flags | Define additional compiler flags used during indexing including the dash (e.g. use `-DRELEASE` to add a `#define` for `RELEASE`).<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Precompiled Header File | Select the path to the header file that should be used to generate a Precompiled Header File. The Precompiled Header File will be generated as pre-indexing step. If no path is supplied, no Precompiled Header File will be generated.
-| Precompiled Header Flags | Define if the already supplied compiler flags should be used for Precompiled Header File generation and define additional flags for Precompiled Header File generation only.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
+| Compilation Database | Chọn tập tin cơ sở dữ liệu biên dịch cho dự án. Sourcetrail sẽ phân tích dự án của bạn dựa trên các lệnh biên dịch mà tập tin này chứa, sử dụng tất cả các đường dẫn được thêm bằng `include` và cờ biên dịch của các lệnh biên dịch này. Dự án sẽ được cập nhật với các thay đổi trong cơ sở dữ liệu biên dịch sau mỗi làn làm mới. Bạn có thể sử dụng các biên môi trường với `${ENV_VAR}`.
+| Header Files & Directories to Index | Cơ sở dữ liệu biên dịch của bạn đã cho biết các tập tin nào thuộc dự án. Nhưng Sourcetrail vẫn cần biết các tập tin tiêu đề nào cần phân tích và tập tin nào cần bỏ qua. Việc chọn bỏ qua phân tích các tập tin tiêu đề hệ thống hoặc thư viện bên ngoài sẽ cải thiện đáng kể thổng thể hiệu năng phân tích dự án. Sử dụng danh sách này để xác định các tập tin tiêu đề nào nên được Sourcetrail phân tích. Cung cấp một thư mục để thêm đệ quy tất cả các tập tin có trong đó. Bạn có thể sử dụng các biến môi trường với ${ENV_VAR}.<br />**Gợi ý**: chỉ cần nhập đường dẫn gốc của dự án nếu bạn muốn Sourcetrail phân tích tất cả tập tin tiêu đề có trong đó mà nó gặp phải.<br /><br />Để biết đướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Excluded Files & Directories | Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại bỏ quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho các ký tự trừ `\` hoăc `/` (ví dụ: `src/*/test.h` khớp `src/app/test.h` nhưng không khớp `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý(ví dụ: `src**test.h` khớp `src/app/test.h` cũng như `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Additional Include Paths | Additional Include Paths được dùng để quyết các lệnh `#include` trong các tập tin mã nguồn và tập tin tiêu đề được phân tích. Những đường dẫn này thường được truỳ cho trình biên dịch bằng cờ `-I` hoặc `-iquote` . Thêm tất cả các đường dẫn mà các lệnh `#include` trong toàn bộ dự án của bạn có liên quan đến. Nếu tất cả lệnh `#include` được chỉ định liên quan đến thư mục gốc của dự án, vui lòng thêm thư mục gốc đó vào đây. Nếu dự án của bạn có sử dụng thư viện bên ngoài (ví dụ: boost,...), vui lòng thêm các thư mục đó (ví dụ: thêm `path/to/boost_home/include`). Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, hãy xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Global Include Paths | Global Include Paths sẽ được sử dụng trong tất cả dự án của bạn, ngoài *Include Paths* dành riêng cho dự án. Những đường dẫn này thường được truỳ cho trình biên dịch bằng cờ '-ísystem'. Sử dụng chúng để thêm các đường dẫn tiêu đề hệ thống (xem [tìm thư viện hệ thống](#thư-viện-hệ-thống) hoặc sử dụng tính năng tự động phát hiện bên dưới).<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Framework Search Paths (chỉ MacOS) | Những đường dẫn này dùng để tìm các tập tin `.framework` được sử bởi dự án của bạn. (<br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).)
+| Global Framework Search Paths (macOS only) | Framework Search Paths được dùng cho toàn bộ các dự án. (<br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn). Để biết hướng dẫn về cách tìm đường dẫn thư viện hệ thống, xem [tìm thư viện hệ thống](#tìm-thư-viện-hệ-thống)).
+| Additional Compiler Flags | Xác định các cờ trình biên dịch bổ sung được sử dụng trong quá trình phân tích, bao gồm cả dấu gạch ngang (ví dụ: dùng `-DRELEASE` để thêm `#define RELEASE`).<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Precompiled Header File | Chọn đường dẫn đến tập tin tiêu đề sẽ được sử dụng để tạo tập tin tiêu đề được biên dịch trước. Tập tin tiêu đề được biên dịch trước sẽ được tạo trước khi phân tích. Nếu không cung cấp đường dẫn, sẽ không có tập tin tiêu đề được biên dịch trước nào được tạo.
+| Precompiled Header Flags | Xác định xem các cờ biên dịch đã cung cấp có nên sử dụng cho việc tạo tập tin tiêu được biên dịch trước hay không và xác định thêm các cờ chỉ dành cho việc tạo các tập tin tiêu đề đã biên dịch trước<br /><br />Để biết hướng dẫn về các thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
 
-## C/C++ Source Group from Visual Studio
+## C/C++ from Visual Studio
 
-If you are using Visual Studio you can export a Compilation Database with our [Visual Studio Plugin](#visual-studio) and use it to create a project with Sourcetrail.
+Nếu bạn đang sử dụng Visual Studio, bạn có thể tạo tập tin cơ sở dữ liệu biên dịch bằng [Visual Studio Plugin](#visual-studio) và sử dụng nó để tạo dự án với Sourcetrail.
 
 <img src="docs/documentation/project_setup_wizard_visual_studio.png" width="700" alt="Project Setup Wizard Visual Studio">
 
-**Interactions:**
+**Thao tác**
 
-* Clicking `Create CDB` will communicate to the [Visual Studio Plugin](#visual-studio) that a project should be exported as Compilation Database. Please have a look at the [Visual Studio Plugin](#visual-studio) for more details on the steps within Visual Studio.
+- Nhấp vào `Create CDB` để thông báo [Visual Studio Plugin](#visual-studio) rằng dự án nên được xuất dứoi dạng cơ sở dữ liệu biên dịch. Vui lòng xem [Visual Studio Plugin](#visual-studio) để biết thêm chi tiết về các bước trong Visual Studio.
 
-> After finishing the export process within Visual Studio the Source Group setup uses the same steps as creating a Source Group directly [from Compilation Database](#create-a-project-from-compilation-database).
+> Sau khi hoàn tất quá trình xuất trong Visual Studio, thiết lập Nhóm mã nguồn sử dụng các bước tương tự như tạo Nhóm mã nguồn trực tiếp [từ cơ sở dữ liệu biên dịch](#c-c++-from-compilation-database). 
 
-## C/C++ Source Group from Code::Blocks
+## C/C++ from Code::Blocks
 
-If you already have a working Code::Blocks project (`.cbp`) for your source code you can use it to create a project with Sourcetrail. Note that a `.cbp` file will be generated by the **QtCreator** if a CMakeLists file is imported.
-C/C++ Source Groups from Code::Blocks offer the following configuration options:
+Nếu bạn đã có một dự án Code::Blocks (`.cbp`), bạn có thể sử dụng nó để tạo dự án với Sourcetrail. Lưu ý rằng tập tin `.cbp` sẽ được tạo bở **QtCreator** nếu tập tin `CMakeLists.txt` được nhập.
 
-| Setting | Description
+C/C++ from Code::Blocks cung cấp các cài đặt sau:
+
+| Cài đặt | Mô tả
 | --- | ---
-| C++ Standard | Select the language standard that should be used for indexing your project's C++ files. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| C Standard | Select the language standard that should be used for indexing your project's C files. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Code::Blocks Project | Select the `.cbp` file for the project. Sourcetrail will index your project based on the settings specified by the Code::Blocks project file. Your Sourcetrail project will stay up to date with changes in the Code::Blocks project file on every refresh. You can make use of environment variables with ${ENV_VAR}.
-| Header Files & Directories to Index | Your Code::Blocks project already specifies which source files are part of your project. But Sourcetrail still needs to know which header files to index as part of your project and which to skip. Choosing to skip indexing your system headers or external frameworks will significantly improve the overall indexing performance. Use this list to define which header files should be indexed by Sourcetrail. Provide a directory to recursively add all contained files. You can make use of environment variables with ${ENV_VAR}.<br />**Hint**: Just enter the root path of your project if you want Sourcetrail to index all contained headers it encounters.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.cpp`. Sourcetrail will only try to index files that match one of these extensions.
-| Additional Include Paths | Include Paths are used for resolving #include directives in the indexed source and header files. These paths are usually passed to the compiler with the '-I' or '-iquote' flags. Add all paths #include directives throughout your project are relative to. If all #include directives are specified relative to the project's root directory, please add that root directory here. If your project also includes files from external libraries (e.g. boost), please add these directories as well (e.g. add 'path/to/boost_home/include'). You can make use of environment variables with ${ENV_VAR}.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Global Include Paths | The Global Include Paths will be used in all your projects in addition to the project specific Include Paths. These paths are usually passed to the compiler with the '-isystem' flag. Use them to add system header paths (See [Finding System Header Locations](#finding-system-header-locations) or use the auto detection below).<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Framework Search Paths (macOS only) | These paths are used to find `.framework` files used by your project. (<br />For instructions on how to add paths see [Path List Box](#path-list-box).)
-| Global Framework Search Paths (macOS only) | These Framework Search Paths will be used in all your projects. (<br />For instructions on how to add paths see [Path List Box](#path-list-box). For instructions on how to find the system header paths see [Finding System Header Locations](#finding-system-header-locations))
-| Additional Compiler Flags | Define additional compiler flags used during indexing including the dash (e.g. use `-DRELEASE` to add a `#define` for `RELEASE`).<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
+| C++ Standard | Chọn chuẩn ngôn ngữ sẽ được sử dụng để phân tích các tập tin C++ của dự án. Thông thường, chuẩn ngôn ngữ nhất được chọn trước ở đây. (Xem [ngôn ngữ hỗ trợ](#ngôn-ngữ-hỗ-trợ))
+| C Standard | Chọn chuẩn ngôn ngữ sẽ được sử dụng để phân tích các tập tin C của dự án. Thông thường, chuẩn ngôn ngữ nhất được chọn trước ở đây. (Xem [ngôn ngữ hỗ trợ](#ngôn-ngữ-hỗ-trợ))
+| Code::Blocks Project | Chọn tập tin `.cbp` cho dự án. Sourcetrail sẽ chỉ phân tích dự án của bạn dựa trên cài đặt được chỉ định bởi tập tin dự án Code::Blocks. Dự án Sourcetrail của bạn sẽ luôn được cập nhật với những thay đổi trong tập tin dự của Code::Blocks mỗi làm được làm mới. Bạn có thể sử dụng các biến môi trường với ${ENV_VAR}.
+| Header Files & Directories to Index | Dự án Code::Blocks cho biết các tập tin nào thuộc dự án. Nhưng Sourcetrail vẫn cần biết các tập tin tiêu đề nào cần phân tích và tập tin nào cần bỏ qua. Việc chọn bỏ qua phân tích các tập tin tiêu đề hệ thống hoặc thư viện bên ngoài sẽ cải thiện đáng kể thổng thể hiệu năng phân tích dự án. Sử dụng danh sách này để xác định các tập tin tiêu đề nào nên được Sourcetrail phân tích. Cung cấp một thư mục để thêm đệ quy tất cả các tập tin có trong đó. Bạn có thể sử dụng các biến môi trường với ${ENV_VAR}.<br />**Gợi ý**: chỉ cần nhập đường dẫn gốc của dự án nếu bạn muốn Sourcetrail phân tích tất cả tập tin tiêu đề có trong đó mà nó gặp phải.<br /><br />Để biết đướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Excluded Files & Directories | Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại khỏi quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho tất cả ký tự, ngoại trừ `\` hoặc `/` (ví dụ: `src/*/test.h` khớp với `src/app/test.h` nhưng không khớp với `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý (ví dụ: `src**test.h` khớp với `src/app/test.h` và `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môn trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Source File Extensions | Xác định các phần mở rộng hợp lệ cho các tập tin mã nguồn bao dấu chấm, ví dụ: `.cpp`. Sourcetrail sẽ chỉ cố gắng phân tích các tập tin khớp với một trong các phần mở rộng này. 
+| Additional Include Paths | Additional Include Paths được dùng để quyết các lệnh `#include` trong các tập tin mã nguồn và tập tin tiêu đề được phân tích. Những đường dẫn này thường được truỳ cho trình biên dịch bằng cờ `-I` hoặc `-iquote` . Thêm tất cả các đường dẫn mà các lệnh `#include` trong toàn bộ dự án của bạn có liên quan đến. Nếu tất cả lệnh `#include` được chỉ định liên quan đến thư mục gốc của dự án, vui lòng thêm thư mục gốc đó vào đây. Nếu dự án của bạn có sử dụng thư viện bên ngoài (ví dụ: boost,...), vui lòng thêm các thư mục đó (ví dụ: thêm `path/to/boost_home/include`). Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, hãy xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Global Include Paths | Global Include Paths sẽ được sử dụng trong tất cả dự án của bạn, ngoài *Include Paths* dành riêng cho dự án. Những đường dẫn này thường được truỳ cho trình biên dịch bằng cờ '-ísystem'. Sử dụng chúng để thêm các đường dẫn tiêu đề hệ thống (xem [tìm thư viện hệ thống](#thư-viện-hệ-thống) hoặc sử dụng tính năng tự động phát hiện bên dưới).<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Framework Search Paths (chỉ MacOS) | Những đường dẫn này dùng để tìm các tập tin `.framework` được sử bởi dự án của bạn. (<br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).)
+| Global Framework Search Paths (macOS only) | Framework Search Paths được dùng cho toàn bộ các dự án. (<br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn). Để biết hướng dẫn về cách tìm đường dẫn thư viện hệ thống, xem [tìm thư viện hệ thống](#tìm-thư-viện-hệ-thống)).
+| Additional Compiler Flags | Xác định các cờ trình biên dịch bổ sung được sử dụng trong quá trình phân tích, bao gồm cả dấu gạch ngang (ví dụ: dùng `-DRELEASE` để thêm `#define RELEASE`).<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
 
 ## Empty Java Source Group
 
-Choose this option if you want to index Java files using Sourcetrail.
-Empty Java Source Groups offer the following configuration options:
+Chọn tuỳ chọn này nếu bạn muốn phân tích các tập tin Java bằng Sourcetrail.
 
-| Setting | Description
+Empty Java Source Group cung cấp các cài đặt sau:
+
+| Cài đặt | Mô tả
 | --- | ---
-| Standard | Select the language standard that should be used for indexing your the Source Group. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Files & Directories to Index | These paths define the files and directories that will be indexed by Sourcetrail. Provide a directory to recursively add all contained source and header files. If your project's source code resides in one location, but generated source files are kept at a different location, you will also need to add that directory. You can make use of environment variables with ${ENV_VAR}.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.java`. Sourcetrail will only try to index files that match one of these extensions.
-| Class Path | Enter all the .jar files your project depends on. If your project depends on uncompiled java code that should not be indexed, please add the root directory of those .java files here (the one where all the package names are relative to). You can make use of environment variables with ${ENV_VAR}.
-| JRE System Library | Tick this box to use the JRE System library jars specified in your application settings. Disable this setting if you want to use another JRE System library for this project and add the respective jars to the project's Class Path.
+| Standard | Chọn chuẩn ngôn ngữ sẽ được sử dụng để phân tích các tập tin C++ của dự án. Thông thường, chuẩn ngôn ngữ nhất được chọn trước ở đây. (Xem [ngôn ngữ hỗ trợ](#ngôn-ngữ-hỗ-trợ))
+| Files & Directories to Index | Các đường dẫn này xác định các tập tin và thư mục sẽ được Sourcetrail phân tích. Cung cấp một thư mục để thêm đệ quy tất cả các tập tin nguồn và tập tin tiêu đề. Nếu mã nguồn của dự án nằm ở một vị trí, nhưng các tệp tin mã nguồn được tạo ra được lưu ở một vị trí khác, bạn cũng cần thêm thư mục đó. Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, hãy xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Excluded Files & Directories | Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại khỏi quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho tất cả ký tự, ngoại trừ `\` hoặc `/` (ví dụ: `src/*/test.h` khớp với `src/app/test.h` nhưng không khớp với `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý (ví dụ: `src**test.h` khớp với `src/app/test.h` và `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môn trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Source File Extensions | Xác định các phần mở rộng hợp lệ cho các tập tin mã nguồn bao dấu chấm, ví dụ: `.java`. Sourcetrail sẽ chỉ cố gắng phân tích các tập tin khớp với một trong các phần mở rộng này. 
+| Class Path | Nhập tất cả các tập tin .jar mà dự án của bạn phụ thuộc vào. Nếu dự án của bạn phụ thuộc vào những tập tin java chưa được biên dịch nên chưa được phân tích, vui lòng thêm thư mục gốc của các tập tin .java vào đây (tập tin chứa tất cả tên gói có liên quan đến). Bạn có thể sử dụng các biên môi trường với ${ENV_VAR}.
+| JRE System Library | Đánh dấu vào ô này để sử dụng các thư viện jar của hệ thống JRE được xác định trong cài đặt ứng dụng. Tắt cài đặt này nếu bạn muốn sử dụng thư viện hệ thống JRE khác cho dự án này và thêm các jar tương ứng vào *Class Path*.
 
 ## Java Source Group from Gradle
 
-If you are using a Gradle configuration to manage and build your project use this approach to create a Sourcetrail Source Group.
-Java Source Groups from Gradle offer the following configuration options:
+Nếu bạn đang sử dụng Gradle để quản lý và xây dựng dự án của mình, hãy sử dụng cách này để tạo Nhóm mã nguồn Sourcetrail.
 
-| Setting | Description
+Java from Gradle cung cấp các cài đặt sau:
+
+| Cài đặt | Mô tả
 | --- | ---
-| Standard | Select the language standard that should be used for indexing your the Source Group. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Gradle Project File |  The path to the `build.gradle` file in the root folder of your Gradle project.
-| Should Index Tests |  This checkbox indicates whether or not Sourcetrail indexes the test code that is part of your Gradle project.
-| Intermediate Dependencies Directory | Directory where Sourcetrail stores all of the project's `.jar` dependencies.
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.java`. Sourcetrail will only try to index files that match one of these extensions.
+| Standard | Chọn chuẩn ngôn ngữ sẽ được sử dụng để phân tích các tập tin C++ của dự án. Thông thường, chuẩn ngôn ngữ nhất được chọn trước ở đây. (Xem [ngôn ngữ hỗ trợ](#ngôn-ngữ-hỗ-trợ))
+| Gradle Project File | Đường dẫn đến tập tin `build.gradle` trong thư mục gốc của dự án Gradle của bạn.
+| Should Index Tests | Hộp này cho biết liệu Sourcetrail có phân tích các mã nguồn kiểm thử thuộc dự án Gradle của bạn hay không.
+| Intermediate Dependencies Directory | Thư mục nơi Sourcetrail lưu trữ tất cả các `.jar` mà dự án phụ thuộc.
+| Excluded Files & Directories | Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại khỏi quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho tất cả ký tự, ngoại trừ `\` hoặc `/` (ví dụ: `src/*/test.h` khớp với `src/app/test.h` nhưng không khớp với `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý (ví dụ: `src**test.h` khớp với `src/app/test.h` và `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môn trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Source File Extensions | Xác định các phần mở rộng hợp lệ cho các tập tin mã nguồn bao dấu chấm, ví dụ: `.java`. Sourcetrail sẽ chỉ cố gắng phân tích các tập tin khớp với một trong các phần mở rộng này.
 
 ## Java Source Group from Maven
 
-If you are using a Maven configuration to manage and build your project use this approach to create a Sourcetrail Source Group.
-Java Source Groups from Maven offer the following configuration options:
+Nếu bạn đang sử dụng Maven để quản lý và xây dựng dự án của mình, hãy sử dụng cách này để tạo Nhóm mã nguồn Sourcetrail.
 
-| Setting | Description
+Java Source Group from Maven cung cấp các cài đặt sau:
+
+| Cài đặt | Mô tả
 | --- | ---
-| Standard | Select the language standard that should be used for indexing your the Source Group. Usually the most recent language standard is preselected here. (See [Language Support](#supported-languages))
-| Maven Project File |  The path to the `pom.xml` file in the root folder of your Maven project.
-| Should Index Tests |  This checkbox indicates whether or not Sourcetrail indexes the test code that is part of your Maven project.
-| Intermediate Dependencies Directory | Directory where Sourcetrail stores all of the project's `.jar` dependencies.
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.java`. Sourcetrail will only try to index files that match one of these extensions.
+| Standard | Chọn chuẩn ngôn ngữ sẽ được sử dụng để phân tích các tập tin C++ của dự án. Thông thường, chuẩn ngôn ngữ nhất được chọn trước ở đây. (Xem [ngôn ngữ hỗ trợ](#ngôn-ngữ-hỗ-trợ))
+| Maven Project File | Đường dẫn đến tập tin `pom.xml` trong thư mục gốc của dự án Maven.
+| Should Index Tests | Hộp này cho biết liệu Sourcetrail có phân tích các mã nguồn kiểm thử thuộc dự án Maven của bạn hay không.
+| Intermediate Dependencies Directory | Thư mục nơi Sourcetrail lưu trữ tất cả các `.jar` mà dự án phụ thuộc.
+| Excluded Files & Directories | Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại khỏi quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho tất cả ký tự, ngoại trừ `\` hoặc `/` (ví dụ: `src/*/test.h` khớp với `src/app/test.h` nhưng không khớp với `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý (ví dụ: `src**test.h` khớp với `src/app/test.h` và `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môn trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Source File Extensions | Xác định các phần mở rộng hợp lệ cho các tập tin mã nguồn bao dấu chấm, ví dụ: `.java`. Sourcetrail sẽ chỉ cố gắng phân tích các tập tin khớp với một trong các phần mở rộng này.
 
 ## Empty Python Source Group
 
-Choose this option if you want to index Python files using Sourcetrail.
-Empty Python Source Groups offer the following configuration options:
+Chọn tuỳ chọn này bạn muốn phân tích các tập tin Python bằng Sourcetrail.
 
-| Setting | Description
+Empty Python Source Group cung cấp các cài đặt sau:
+
+| Cài đặt | Mô tả
 | --- | ---
-| Python Environment | Here you can specify the path to the directory or to the executable of the (virtual) Python environment that should be used to resolve dependencies within the indexed source code.<br />If you would run:<br />`$ cd c:\dev\python\envs`<br />`$ virtualenv py37`<br />you would set it to `C:\dev\python\envs\py37` or `C:\dev\python\envs\py37\Scripts\python.exe`.<br />Leave blank to use the default Python environment. You can make use of environment variables with `${ENV_VAR}`.
-| Files & Directories to Index | These paths define the files and directories that will be indexed by Sourcetrail. Provide a directory to recursively add all contained source and header files. If your project's source code resides in one location, but generated source files are kept at a different location, you will also need to add that directory. You can make use of environment variables with ${ENV_VAR}.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.py`. Sourcetrail will only try to index files that match one of these extensions.
+| Python Environment | Bạn có thể xác định đường dẫn đến thu mục hoặc tập tin thực của môi trường (ảo) Python sẽ được sử dụng để giải quyết các phần phụ thuộc trong mã nguồn được phân tích.<br />Nếu bạn chạy:<br />`$ cd c:\dev\python\envs`<br />`$ virtualenv py37`<br />bạn sẽ đặt nó thành `C:\dev\python\envs\py37` hoặc `C:\dev\python\envs\py37\Scripts\python.exe`.<br />Để trống để sử dụng môi trường Python mặc định. Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.
+| Files & Directories to Index | Các đường dẫn này xác định các tập tin và thư mục sẽ được Sourcetrail phân tích. Cung cấp một thư mục để thêm đệ quy tất cả các tập tin nguồn và tập tin tiêu đề. Nếu mã nguồn của dự án nằm ở một vị trí, nhưng các tệp tin mã nguồn được tạo ra được lưu ở một vị trí khác, bạn cũng cần thêm thư mục đó. Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, hãy xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Excluded Files & Directories | Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại khỏi quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho tất cả ký tự, ngoại trừ `\` hoặc `/` (ví dụ: `src/*/test.h` khớp với `src/app/test.h` nhưng không khớp với `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý (ví dụ: `src**test.h` khớp với `src/app/test.h` và `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môn trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Source File Extensions | Xác định các phần mở rộng hợp lệ cho các tập tin mã nguồn bao dấu chấm, ví dụ: `.java`. Sourcetrail sẽ chỉ cố gắng phân tích các tập tin khớp với một trong các phần mở rộng này.
 
 ## Custom Command Source Group
 
-In a Custom Command Source Group you can define a set of files and a command line call used to index each of these files. This Source Group type was introduced to integrate custom indexers written with [SourcetrailDB](https://github.com/CoatiSoftware/SourcetrailDB).
+Trong Custom Command Source Group, bạn có thể xác định một tập hợp các tập tin và dòng lệnh để phân tích từng tập tin này. Loại Nhóm mã nguồn này được tạo để tích với các bộ phân tích tuỳ chỉnh được viết bằng [SourcetrailDB](https://github.com/CoatiSoftware/SourcetrailDB).
 
-Custom Command Source Groups offer the following configuration options:
+Custom Command Source Group cung cấp các cài đặt sau:
 
-| Setting | Description
+| Cài đặt | Mô tả
 | --- | ---
-| Custom Command | The command line call executed for each source file. You can pass different pre-defined parameters:<br /><ul><li>**%{SOURCE_FILE_PATH}**: The path to each source file in the source group (mandatory)</li><li>**%{DATABASE_FILE_PATH}**: The path to the database of the project</li><li>**%{DATABASE_VERSION}**: The database version of the used Sourcetrail instance</li><li>**%{PROJECT_FILE_PATH}**: The path to the project file</li></ul>
-| Run in Parallel |  Whether files should be processed in parallel.
-| Files & Directories to Index | These paths define the files and directories that will be indexed by Sourcetrail. Provide a directory to recursively add all contained source and header files. If your project's source code resides in one location, but generated source files are kept at a different location, you will also need to add that directory. You can make use of environment variables with ${ENV_VAR}.<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).
-| Excluded Files & Directories | These paths define the files and directories that will be left out from indexing.<br />Hints:<br /><ul><li>You can use the wildcard `*` which represents characters except `\` or `/` (e.g. `src/*/test.h` matches `src/app/test.h` but does not match `src/app/widget/test.h` or `src/test.h`)</li><li>You can use the wildcard `**` which represents arbitrary characters (e.g. `src**test.h` matches `src/app/test.h` as well as `src/app/widget/test.h` or `src/test.h`)</li><li>You can make use of environment variables with `${ENV_VAR}`<br /><br />For instructions on how to add paths see [Path List Box](#path-list-box).</li></ul>
-| Source File Extensions | Define the valid extensions for source files including the dot e.g. `.ext`. Sourcetrail will only try to index files that match one of these extensions. If no extension is defined, any file extension is valid.
+| Custom Command | Dòng lệnh được thực thi cho từng tập tin mã nguồn. Bạn có thể chuyển các tham số được xác định trước khác nhau:<br /><ul><li>**%{SOURCE_FILE_PATH}**: Đường dẫn đến từ tập tin trong nhóm mã nguồn (bắt buộc)</li><li>**%{DATABASE_FILE_PATH}**: Đường dẫn đến cơ sở dữ liệu của dự án</li><li>**%{DATABASE_VERSION}**: Phiên bản cơ sở dữ liệu của phiên bản Sourcetrail đã sử dụng</li><li>**%{PROJECT_FILE_PATH}**: Đường dẫn đến tập tin dự án</li></ul>
+| Run in Parallel | Liệu các tập tin có nên được xử lý song song hay không.
+| Files & Directories to Index | Các đường dẫn này xác định các tập tin và thư mục sẽ được Sourcetrail phân tích. Cung cấp một thư mục để thêm đệ quy tất cả các tập tin nguồn và tập tin tiêu đề. Nếu mã nguồn của dự án nằm ở một vị trí, nhưng các tệp tin mã nguồn được tạo ra được lưu ở một vị trí khác, bạn cũng cần thêm thư mục đó. Bạn có thể sử dụng các biến môi trường với `${ENV_VAR}`.<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, hãy xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).
+| Excluded Files & Directories | 
+Các đường dẫn này xác định các tập tin và thư mục sẽ bị loại khỏi quá trình phân tích.<br />Gợi ý:<br /><ul><li>Bạn có thể sử dụng ký tự đại diện `*` để đại diện cho tất cả ký tự, ngoại trừ `\` hoặc `/` (ví dụ: `src/*/test.h` khớp với `src/app/test.h` nhưng không khớp với `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng ký tự đại diện `**` để đại diện cho các ký tự tuỳ ý (ví dụ: `src**test.h` khớp với `src/app/test.h` và `src/app/widget/test.h` hoặc `src/test.h`)</li><li>Bạn có thể sử dụng các biến môn trường với `${ENV_VAR}`<br /><br />Để biết hướng dẫn về cách thêm đường dẫn, xem [khung danh sách đường dẫn](#khung-danh-sách-đường-dẫn).</li></ul>
+| Source File Extensions | Xác định các phần mở rộng hợp lệ cho các tập tin mã nguồn bao dấu chấm, ví dụ: `.ext`. Sourcetrail sẽ chỉ cố gắng phân tích các tập tin khớp với một trong các phần mở rộng này.
 
-# Code Editor Plugins
+# Câu hỏi thường gặp
 
-In order to make Sourcetrail the perfect partner for your development workflow you can connect Sourcetrail with different code editors. You can find more information on the plugins in Sourcetrail's download package located in the folder `/ide_plugins`. Have a look at the following list of supported code editors to find out what editors are currently supported.
+### Tôi có thể sử dụng Sourcetrail với các mã nguồn bí mật không?
 
-The plugins are Opensource and available on [github](https://github.com/CoatiSoftware/).
+Có. Sourcetrail lưu dữ liệu hoàn toàn ngoại tuyến. Sourcetrail chỉ kết nối với Internet để kiểm tra xem có phiên bản mới hơn hay không.
 
-**Supported Editors:**
+### Điều gì xảy ra với dữ liệu được phân tích?
 
-* Atom
-* CLion
-* Eclipse
-* Emacs
-* IntelliJ IDEA (PyCharm, CLion, etc.)
-* Qt Creator
-* Sublime Text 2
-* Sublime Text 3
-* Vim
-* Visual Studio Code
-* Visual Studio 2012
-* Visual Studio 2013
-* Visual Studio 2015
-* Visual Studio 2017
+1. Dữ liệu được lưu trữ trong tập tin `.srctrldb` nằm trong cùng thư mục với tập tin `.srctrlprj`. Tập tin cơ sở dữ liệu này được Sourcetrail sử dụng để phục vụ mục đích cho phép bạn điều hướng mã nguồn của mình và cũng cho phép Sourcetrail mở lại dự án mà không cần phân tích lại mã nguồn.
+2. Nếu tính năng ghi nhật ký được bật, một số dữ liệu sẽ được ghi vào tập tin nhật ký được lưu trong [data](#thư-mục-dữ-liệu)/logs. Những nhật ký này có thể hữu ích cho chúng tôi trong việc sửa lỗi. Chúng tôi có thể yêu cầu thông tin nhật ký về các báo cáo lỗi, nhưng bạn chỉ nên cung cấp những tin đó nếu mã nguồn của bạn không được bảo mật.
 
-The communication between Sourcetrail and the code editor is achieved using a local TCP connection. Sourcetrail uses the port 6667 to listen for incoming messages. Outgoing messages will be sent to the port 6666. The port numbers can be edited in the [Preferences Window](#preferences-window).
-
-Outgoing messages are in the form:
-`moveCursor>>absolute/file_path>>line_number>>column_number<EOM>`
-Incoming messages are in the form:
-`setActiveToken>>absolute/file_path>>line_number>>column_number<EOM>`
-
-## From Sourcetrail
-
-If you want your editor to open a file at a specific location from within Sourcetrail, you can achieve this by either selecting the option `Set IDE Cursor` from the right-click menu in the <a href="#CodeView">Code View]() or by simply clicking into a line in the [Code View](#code-view) while holding down the `Ctrl` or `Cmd` key.
-
-<img src="docs/documentation/plugin_use_in_sourcetrail.png" width="600" alt="Plugin Use In Sourcetrail">
-
-## To Sourcetrail
-
-By using a Sourcetrail plugin for your code editor, you can select a location within a source file and Sourcetrail will show you all symbols found at this location. Please have look at the list below to see which plugins are currently available and how they are used.
-
-### Atom
-
-**Repo**: [https://github.com/CoatiSoftware/atom-sourcetrail](https://github.com/CoatiSoftware/atom-sourcetrail)
-
-**Installation**
-
-1. In Atom go to Settings with `Edit -> Preferences` or `Ctrl` + `,`
-1. Go to Install and search for sourcetrail
-1. Install atom-sourcetrail
-
-**Use**
-
-To start the Tcp Server got `Packages -> Sourcetrail -> Start Server`
-To send a location to Sourcetrail, place the cursor and right-click and select `Send location to Sourcetrail`
-or `Packages -> Sourcetrail -> Send location to Sourcetrail`
-
-### CLion/IntelliJ IDEA
-
-**Repo**: [https://github.com/CoatiSoftware/idea-sourcetrail](https://github.com/CoatiSoftware/idea-sourcetrail)
-
-**Installation**
-
-1. File | Settings... (or IntelliJ IDEA | Preferences... for macOS) to open the Settings
-1. Go to Plugins
-1. Click Marketplace tab
-1. Search for idea-sourcetrail
-1. Click Install for idea-sourcetrail plugin
-
-**Use**
-
-If you want IntelliJ IDEA/CLion to activate a certain element in Sourcetrail, right-click that element to
-bring up the context menu and choose the “Sent Location” option.
-
-!["Plugin Use In CLion"](docs/documentation/plugin_use_in_clion.png "Plugin Use In CLion")
-
-### Eclipse
-
-**Repo**: [https://github.com/CoatiSoftware/eSourcetrail](https://github.com/CoatiSoftware/eSourcetrail)
-
-**Installation**
-
-* Updatesite:
-	1. In Eclipse go in the menu to `Help -> Install new Software...`
-	1. Add the Sourcetrail Updatesite
-		* type [https://CoatiSoftware.github.io/eSourcetrail/updatesite](https://CoatiSoftware.github.io/eSourcetrail/updatesite) into the `Work with:` field
-		* or press `Add...` and add the address above
-	1. Select all and finish the next step.
-	1. Eclipse needs to restart and can now communicate with Eclipse.
-* Manually:
-	1. Download this [eSourcetrail-gh-pages.zip](https://github.com/CoatiSoftware/eSourcetrail/archive/gh-pages.zip) and unzip it.
-	1. In Eclipse go in the menu to `Help -> Install new Software...`
-	1. Click the `Add...` Button
-	1. Click the `Local...` Button select the updatesite folder in the unzipped folder
-	1. Select all and finish the next step.
-	1. Eclipse needs to restart and can now communicate with Eclipse.
-
-**Use**
-
-If you want Eclipse to activate a certain element in Sourcetrail, right-click that element to bring up the context menu and choose the “Set active Token” option.
-
-!["Plugin Use In Eclipse"](docs/documentation/plugin_use_in_eclipse.png "Plugin Use In Eclipse")
-
-### Emacs
-
-**Repo**: [https://github.com/CoatiSoftware/emacs-sourcetrail](https://github.com/CoatiSoftware/emacs-sourcetrail)
-
-**Installation**
-
-* Manually
-	1. Download the sourcetrail.el from [https://github.com/CoatiSoftware/emacs-sourcetrail](https://github.com/CoatiSoftware/emacs-sourcetrail)
-	1. In Emacs press `M` + `x` and type in `package-install-file`
-	1. Type in the path to the downloaded sourcetrail.el file
-* Melpa
-	1. Add Melpa to your package-archives
-	1. Press `M` + `x` and type `list-packages`
-	1. Search for sourcetrail and mark sourcetrail with `i` then press `x` and the confirm with yes
-
-**Use**
-
-If you want Emacs to activate a certain element in Sourcetrail, set your cursor to that element and
-`M` + `x` and type in `sourcetrail-send-location`.
-To get Location from Sourcetrail the sourcetrail-mode need to be active. To active the sourcetrail-mode
-press `M` + `x` and type in `sourcetrail-mode`
-
-### Qt Creator
-
-**Repo**: [https://github.com/CoatiSoftware/qtc-sourcetrail](https://github.com/CoatiSoftware/qtc-sourcetrail)
-
-**Installation**
-
-1. Download the plugin for your system from [here](https://github.com/CoatiSoftware/qtc-sourcetrail/releases).
-1. Copy the files into the plugin folder where the QtCreator is installed(eg. /usr/lib/qtcreator/plugins)
-	* the plugin path can be found at Help -> System Information... -> PluginsPath
-
-**Use**
-
-If you want QtCreator to activate a certain element in Sourcetrail, click a location to place the cursor, right-click to bring up the context menu and choose the “Sourcetrail - Set active Token” option. Please note that the position of the cursor will be sent to Sourcetrail and not the position you opened the context menu at.
-
-### Sublime Text
-
-**Repo**: [https://github.com/CoatiSoftware/sublime-sourcetrail](https://github.com/CoatiSoftware/sublime-sourcetrail)
-
-**Installation**
-
-* Manually
-	1. To install the Sourcetrail plugin for Sublime Text copy the SourcetrailPlugin folder located in your `ide_plugins/sublime_text` to your `SublimeText/Packages` folder
-	1. restart Sublime
-* Package Control
-	1. If you don't have Package Control for Sublime go to https://packagecontrol.io and install it
-	1. Open Command Palette  with `Ctrl` + `Shift` + `P`
-	1. Select `Package Control: Install Package`
-	1. Install `sourcetrail`
-
-**Use**
-
-If you want Sublime to activate a certain element in Sourcetrail, click a location to place the cursor, right-click to bring up the context menu and choose the “Sourcetrail - Set active Token” option. Please note that the position of the cursor will be sent to Sourcetrail and not the position you opened the context menu at.
-
-<img src="docs/documentation/plugin_use_in_sublime_text.png" width="600" alt="Plugin Use In Sublime Text">
-
-### Vim
-
-**Repo**: [https://github.com/CoatiSoftware/vim-sourcetrail](https://github.com/CoatiSoftware/vim-sourcetrail)
-
-**Installation**
-
-Please visit the [vim-sourcetrail](https://github.com/CoatiSoftware/vim-sourcetrail) repository on GitHub for details.
-
-**Use**
-
-If you want Vim to activate a certain element in Sourcetrail, go to the code location and use
-`:SourcetrailActivateToken`, now Sourcetrail should display your the chosen location.
-Use`:help sourcetrail.txt` get get more information about the plugin
-
-### VS Code
-
-**Repo**: [https://github.com/CoatiSoftware/vsce-sourcetrail](https://github.com/CoatiSoftware/vsce-sourcetrail)
-
-**Installation**
-
-1. In VS Code go to Extensions(`Ctrl` + `Shift` + `X`)
-1. Search for sourcetrail in the marketplace
-1. Install sourcetrail
-
-**Use**
-
-To start the Tcp Server go to the Command Palette(`Ctrl` + `Shift` + `P`) and type: `Sourcetrail: (Re)start server`
-To send a location to Sourcetrail, place the cursor and right-click and select `Sourcetrail: Send Location`
-or type in the Command Palette: `Sourcetrail: Send Location`
-
-### Visual Studio
-
-**Download, Reviews:**
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=vs-publisher-1208751.SourcetrailExtension)
-
-**Repo**: [https://github.com/CoatiSoftware/vs-sourcetrail](https://github.com/CoatiSoftware/vs-sourcetrail)
-
-**Installation**
-
-1. open Visual Studio
-1. from the menu bar select "Tools" -> "Extensions and Updates..."
-1. in the "Extensions and Updates" dialog choose "Online" -> "Visual Studio Gallery"
-1. press `Ctrl` + `E` and enter "Sourcetrail Extension" into the search bar
-1. click the install button
-
-**Use**
-
-If you want Visual Studio to activate a certain element in Sourcetrail, right-click that element to bring up the context menu and choose the “Set active Token” option.
-
-!["Plugin Use In Visual Studio"](docs/documentation/plugin_use_in_visual_studio.png "Plugin Use In Visual Studio")
-
-**Create a Clang Compilation Database from a VS Solution**
-
-As a Clang based tool Sourcetrail supports the JSON Compilation Database format for simplified project setup. This extension enables you to generate a JSON Compilation Database from your Visual Studio projects and solutions. The great news is: This format is independent from the Sourcetrail tool, so you can also use the generated Compilation Database to run other Clang based tools.
-The wizard for creating a Compilation Database is located in the Sourcetrail section in the VS menu bar. Note that the option is only useable if a solution containing at least one C/C++ project is loaded.
-
-!["VS Plugin Menu"](docs/documentation/vs_plugin_menu.png "VS Plugin Menu")
-
-In the Compilation Database wizard you can select projects you want to include in the JSON file as well as the desired build target platform and configuration and a number of other options.
-
-!["VS Extension Dialog"](docs/documentation/vs_extension_dialog.png "VS Extension Dialog")
-
-| Option | Description
-| --- | ---
-| Select Projects | The list of C/C++ projects in your solution. Check all projects you want to be included in the generated JSON Compilation Database file.
-| De/Select All | Will select all projects if at least one project is not selected. If all projects are selected they will all be unselected.
-| Configuration | A dropdown list of the available build configurations. The selected configuration affects include paths and compile flags for the Compilation Database.
-| Platform | A dropdown list of the available target platforms. The selected platform affects include paths and compile flags for the Compilation Database.
-| Browse | Opens a folder browser to select the directory where the Compilation Database will be created in. By default it is the directory of your solution. Instead of using the folder browser you can also paste a path into the adjacent text field.
-| filename | This is the name for the Compilation Database file. By default it is the same name as your solution.
-| C Standard | A dropdown list of all C standards supported by Sourcetrail. If your projects contain C files select the appropriate standard.
-| Cancel | Aborts the process and closes the wizard.
-| Create | Creates the Compilation Database using the specified options. Note that at least one project has to be selected to start creating.
-
-Once the Compilation Database was successfully created it can be found in the specified target directory. From this Compilation Database you can create a Sourcetrail project as [described above](#create-a-project-from-compilation-database).
-
-**Settings**
-Network settings and logging options can be changed in the plugin's Tools/Options entry.
-
-!["VS Plugin Ports 0"](docs/documentation/vs_plugin_ports_0.png "VS Plugin Ports 0")
-!["VS Plugin Ports 1"](docs/documentation/vs_plugin_ports_1.png "VS Plugin Ports 1")
-
-| Option | Description
-| --- | ---
-| File Logging | Enable log output for the plugin. Additionally to the output file, log messages will also be displayed in VS'
-| Log Obfuscation | Obfuscate project names and file names as well as directories in the log output. Note that already logged data **will not be obfuscated retroactively**. A dictionary, mapping obfuscated names to original names, will be created in a separate file.
-| Sourcetrail Port | The port on which Sourcetrail will receive messages. Note that this must match the port setting in Sourcetrail itself.
-| Thread Count | The number of threads used during creation of the Compilation Database
-| VS Port | The port on which Visual Studio will receive messages. Note that this must match the port setting in Sourcetrail itself.
-
-**Logging**
-
-The plugin offers optional file logging. Should you ever have issues with the plugin we recommend to turn logging on. This will help to pinpoint and resolve the root cause faster.
-Logs will be created in `..\AppData\Local\Coati Software\Plugins\VS` folder. A new log file will be created every time you restart VS and logging is enabled.
-
-!["VS Log Folder"](docs/documentation/vs_log_folder.png "VS Log Folder")
-
-Note that the logs will include project names and file names as well as directories specific to your project. If you wish to keep this information secret you can enable [log obfuscation](#vs-plugin-option-obfuscation).
-Project- and file names as well as directories will be replaced by an alphanumeric sequence. The sequence has the form `a0, b0, c0,..., a1, b1, c1,...`. Note that after switching on obfuscation, already logged data **will not be obfuscated retroactively**. No log files will be send to Coati Software automatically. You can check any file you may want to send us for sensible information before sending it.
-A dictionary, mapping obfuscated names to original names, will be created in your log folder if log obfuscation is switched on. When during the support process we refer to project items by their obfuscated name you can still make sense of it. **Do not send the dictionary to anybody else**.
-
-Lastly, log messages are also displayed in the VS output window. This is tied to file logging and is not enabled or disabled separately.
-
-!["VS Output Window"](docs/documentation/vs_output_window.png "VS Output Window")
-
-## IDE Communication Protocol
-
-Sourcetrail's IDE plugins communicate with Sourcetrail via sockets, using TCP. Sourcetrail implements a number of messages to provide an interface for the plugins.
-This chapter explains the general structure of those messages, followed by a list of possible message types.
-
-### Message Structure
-
-The basic structure of the messages used by Sourcetrail plugins consists of a prefix to identify the message type, followed by no, one, or multiple parameters and ends with an 'end-of-message' token. Parameters and tokens are separated by a 'divider' token.
-
-| Name | Token | Description
-| --- | --- | ---
-| messageType | [see below](#message-types) | A string that determines how the message will be interpreted by Sourcetrail or the plugin
-| divider | `>>` | Separates the tokens of the message
-| parameter | [see below](#message-types) | Typically an integer or string
-| endOfMessage | `<EOM>` | Helps to determine the end of a message
-
-Messages have the following form:
-
-`messageType<<parameter<<...<<parameter<EOM>`
-
-### Message Types
-
-Sourcetrail does implement a number of message types that can be used by Sourcetrail plugins. In the following is a list of the messages that Sourcetrail may send to plugins and messages that may be sent by a plugin to Sourcetrail.
-
-Note that you can chose which messages you want to implement. Sourcetrail will not make problems if you chose to ignore certain messages.
-
-**Incoming messages**
-These messages may be received by a plugin.
-
-| Message | Parameters | Description
-| --- | --- | ---
-| `moveCursor` | `fileLocation: string`<br />`row: integer`<br />`column: integer` | Set the cursor of your editor or IDE to the given file location.<br />Note that fileLocation is the absolute path and name of the target file.
-| `createCDB` |  | Sourcetrail may send this message to prompt your plugin to create a Compilation Database (CDB). Once the CDB is ready you may want to respond with a `createCDBProject` message.
-| `ping` |  | Sourcetrail may send a ping to determine if anybody is listening. Respond with a ping message yourself. Sourcetrail will not respond to this message.
-
-**Outgoing messages**
-Your plugin may send these messages to Sourcetrail.
-
-| Message | Parameters | Description
-| --- | --- | ---
-| `setActiveToken` | `fileLocation: string`<br />`row: integer`<br />`column: integer` | Tells Sourcetrail to shift focus to the token located at the given position. Note that fileLocation is the absolute path and name of the target file.
-| `createCDBProject` | `cdbPath: string`<br />`headerPaths: string` | If your plugin can provide a Compilation Database this message can prompt Sourcetrail to import it and display an appropriate dialog for the user. headerPaths is a list of the base project's header include paths. Separate the single paths using the divider token. You can add as many paths as you need.
-| `ping` |  | Your plugin may send this message to Sourcetrail to tell it it's listening.
-
-# Frequently Asked Questions
-
-### Can I use Sourcetrail on confidential source code?
-
-Yes. Sourcetrail keeps the data completely offline and unless disabled, will only establish a connection to the internet to check if a more recent version is available.
-
-### What happens to the indexed data?
-
-Sourcetrail does two things with the data collected during indexing:
-
-1. The data is stored in the `.srctrldb` file which is in the same directory as the `.srctrlprj` file. This database file is used by Sourcetrail to serve its purpose of letting you navigate your source code and also allowing Sourcetrail to re-open the project without re-indexing the source code each time.
-1. If logging is enabled, some of the data gets logged into a log file saved in [data](#datafolter)/logs. These logs can be useful to us for fixing bugs. We may ask for log information on bug reports, but you should only provide it, if your source code is not confidential.
-
-**Note:** The ` .srctrldb ` file is actually a ` .sqlite ` database file and can be inspected using the [DB Browser for SQLite](https://sqlitebrowser.org/).
+**Lưu ý:** tập tin `.srctrldb` thực chất là tập tin cơ sở dữ liệu `.sqlite` và có thể được kiếm tra bằng [trình duyệt DB dành cho SQLite](https://sqlitebrowser.org/).
