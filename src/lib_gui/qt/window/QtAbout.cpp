@@ -108,9 +108,9 @@ void QtAbout::setupAbout()
 
 	{
 		QLabel* webLabel = new QLabel(
-			"<b>Repository: <a href=\"https://github.com/CoatiSoftware/Sourcetrail\" "
+			"<b>Repository: <a href=\"https://github.com/PhongLamBaoMat/Sourcetrail\" "
 			"style=\"color: "
-			"white;\">github.com/CoatiSoftware/Sourcetrail</a></b>",
+			"white;\">github.com/PhongLamBaoMat/Sourcetrail</a></b>",
 			this);
 		webLabel->setObjectName(QStringLiteral("small"));
 		webLabel->setOpenExternalLinks(true);
