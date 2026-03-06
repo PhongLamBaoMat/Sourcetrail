@@ -802,6 +802,8 @@ endif ()
 
 # Test ----------------------------------------------------------------------
 
+find_package(Catch2 CONFIG REQUIRED)
+
 if (UNIX)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test/")
 else ()
@@ -817,15 +819,12 @@ create_source_groups(${TEST_FILES})
 
 target_link_libraries(
     ${TEST_PROJECT_NAME}
+    Catch2::Catch2WithMain
     ${LIB_GUI_PROJECT_NAME}
     $<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
     $<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
     $<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
     ${LIB_PROJECT_NAME}
-    ${LIB_GUI_PROJECT_NAME}
-    $<$<BOOL:${BUILD_CXX_LANGUAGE_PACKAGE}>:${LIB_CXX_PROJECT_NAME}>
-    $<$<BOOL:${BUILD_JAVA_LANGUAGE_PACKAGE}>:${LIB_JAVA_PROJECT_NAME}>
-    $<$<BOOL:${BUILD_PYTHON_LANGUAGE_PACKAGE}>:${LIB_PYTHON_PROJECT_NAME}>
 )
 
 set_property(

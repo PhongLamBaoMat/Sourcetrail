@@ -1,19 +1,28 @@
+#include <catch2/interfaces/catch_interfaces_reporter.hpp>
 #define CATCH_CONFIG_MAIN	 // This tells Catch to provide a main() function
 
 #include "catch.hpp"
 // IMPORTANT NOTE: removed signal listener for "EXCEPTION_ACCESS_VIOLATION" from catch source code
 // because it interferes with the jni interface that emits such a signal on purpose
 
+#include <iostream>
+
+#include "Application.h"
 #include "ApplicationSettings.h"
+#include "Version.h"
 #include "language_packages.h"
 #include "utilityPathDetection.h"
 
-struct EventListener: Catch::TestEventListenerBase
+struct EventListener: Catch::EventListenerBase
 {
-	using TestEventListenerBase::TestEventListenerBase;	   // inherit constructor
+	using EventListenerBase::EventListenerBase;	   // inherit constructor
 
 	void testRunStarting(const Catch::TestRunInfo& testRunInfo) override
 	{
+		if (!Application::getInstance())
+		{
+			Application::createInstance(Version(), nullptr, nullptr);
+		}
 #ifdef __linux__
 		const std::string homedir = getenv("HOME");
 
@@ -57,6 +66,14 @@ struct EventListener: Catch::TestEventListenerBase
 					  << ApplicationSettings::getInstance()->getJavaPath().str() << std::endl;
 		}
 #endif
+	}
+
+	void testRunEnded(const Catch::TestRunStats& testRunStats) override
+	{
+		// if (Application::getInstance())
+		// {
+		// 	Application::getInstance()->destroyInstance();
+		// }
 	}
 };
 
