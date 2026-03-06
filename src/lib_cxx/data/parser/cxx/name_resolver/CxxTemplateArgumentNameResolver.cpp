@@ -47,7 +47,7 @@ std::wstring CxxTemplateArgumentNameResolver::getTemplateArgumentName(
 
 		std::string buf;
 		llvm::raw_string_ostream os(buf);
-		argument.print(pp, os, true);
+		argument.print(pp, os, false);
 		return utility::decodeFromUtf8(os.str());
 	}
 	case clang::TemplateArgument::Pack:

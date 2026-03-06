@@ -395,10 +395,10 @@ bool CxxAstVisitor::TraverseClassTemplateSpecializationDecl(clang::ClassTemplate
 
 	if (ReturnValue)
 	{
-		const clang::ArrayRef<clang::TemplateArgumentLoc> tstl =
-			D->getTemplateArgsAsWritten()->arguments();
-		if (!tstl.empty())
+		const clang::ASTTemplateArgumentListInfo* ATALI = D->getTemplateArgsAsWritten();
+		if (ATALI)
 		{
+			auto tstl = ATALI->arguments();
 			for (unsigned I = 0, E = tstl.size(); I != E; ++I)
 			{
 				if (!TraverseTemplateArgumentLoc(tstl[I]))

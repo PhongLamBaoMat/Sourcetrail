@@ -1,5 +1,7 @@
 #include "FileSystem.h"
 
+#include <boost/filesystem/operations.hpp>
+#include <boost/system/detail/error_code.hpp>
 #include <set>
 
 #include <boost/date_time.hpp>
@@ -18,9 +20,10 @@ std::vector<FilePath> FileSystem::getFilePathsFromDirectory(
 	{
 		boost::filesystem::recursive_directory_iterator it(path.getPath());
 		boost::filesystem::recursive_directory_iterator endit;
+		boost::system::error_code ec;
 		while (it != endit)
 		{
-			if (boost::filesystem::is_symlink(*it))
+			if (boost::filesystem::is_symlink(*it, ec))
 			{
 				// check for self-referencing symlinks
 				boost::filesystem::path p = boost::filesystem::read_symlink(*it);
@@ -75,20 +78,23 @@ std::vector<FileInfo> FileSystem::getFileInfosFromPaths(
 				path.getPath(), boost::filesystem::directory_options::follow_directory_symlink);
 			boost::filesystem::recursive_directory_iterator endit;
 			boost::system::error_code ec;
-			for (; it != endit; it.increment(ec))
+			while (it != endit)
 			{
-				if (boost::filesystem::is_symlink(*it))
+				if (boost::filesystem::is_symlink(*it, ec))
 				{
 					if (!followSymLinks)
 					{
 						it.disable_recursion_pending();
+						++it;
 						continue;
 					}
 
 					// check for self-referencing symlinks
-					boost::filesystem::path p = boost::filesystem::read_symlink(*it);
+					boost::filesystem::path p = boost::filesystem::read_symlink(*it, ec);
 					if (p.filename() == p.string() && p.filename() == it->path().filename())
 					{
+						it.disable_recursion_pending();
+						++it;
 						continue;
 					}
 
@@ -101,6 +107,7 @@ std::vector<FileInfo> FileSystem::getFileInfosFromPaths(
 						if (symlinkDirs.find(absDir) != symlinkDirs.end())
 						{
 							it.disable_recursion_pending();
+							++it;
 							continue;
 						}
 
@@ -115,11 +122,13 @@ std::vector<FileInfo> FileSystem::getFileInfosFromPaths(
 					const FilePath canonicalPath = FilePath(it->path().wstring()).getCanonical();
 					if (filePaths.find(canonicalPath) != filePaths.end())
 					{
+						++it;
 						continue;
 					}
 					filePaths.insert(canonicalPath);
 					files.push_back(getFileInfoForPath(canonicalPath));
 				}
+				++it;
 			}
 		}
 		else if (path.exists() && (ext.empty() || ext.find(utility::toLowerCase(path.extension())) != ext.end()))
@@ -154,14 +163,16 @@ std::set<FilePath> FileSystem::getSymLinkedDirectories(const std::vector<FilePat
 				path.getPath(), boost::filesystem::directory_options::follow_directory_symlink);
 			boost::filesystem::recursive_directory_iterator endit;
 			boost::system::error_code ec;
-			for (; it != endit; it.increment(ec))
+			while (it != endit)
 			{
-				if (boost::filesystem::is_symlink(*it))
+				if (boost::filesystem::is_symlink(*it, ec))
 				{
 					// check for self-referencing symlinks
 					boost::filesystem::path p = boost::filesystem::read_symlink(*it);
 					if (p.filename() == p.string() && p.filename() == it->path().filename())
 					{
+						it.disable_recursion_pending();
+						++it;
 						continue;
 					}
 
@@ -174,12 +185,14 @@ std::set<FilePath> FileSystem::getSymLinkedDirectories(const std::vector<FilePat
 						if (symlinkDirs.find(absDir) != symlinkDirs.end())
 						{
 							it.disable_recursion_pending();
+							++it;
 							continue;
 						}
 
 						symlinkDirs.insert(absDir);
 					}
 				}
+				++it;
 			}
 		}
 	}

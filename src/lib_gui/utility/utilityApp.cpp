@@ -1,6 +1,6 @@
 #include "utilityApp.h"
 
-#include <boost/asio/readable_pipe.hpp>
+#include <boost/asio.hpp>
 #include <boost/filesystem/file_status.hpp>
 #include <boost/process/v2/environment.hpp>
 #include <boost/process/v2/process.hpp>
@@ -11,12 +11,6 @@
 #include <memory>
 #include <mutex>
 #include <set>
-
-#include <boost/asio/buffer.hpp>
-#include <boost/asio/cancel_after.hpp>
-#include <boost/asio/io_context.hpp>
-#include <boost/asio/read.hpp>
-#include <boost/process.hpp>
 
 #include <QThread>
 
@@ -67,18 +61,7 @@ utility::ProcessOutput utility::executeProcess(
 		boost::asio::readable_pipe rp {ctx};
 		std::shared_ptr<boost::process::process> process;
 
-		std::unordered_map<boost::process::environment::key, boost::process::environment::value> env;
-		for (const auto& kv: boost::process::environment::current())
-		{
-			if (kv.key().string() == "PATH")
-			{
-				env[kv.key()] = kv.value().string() + ":/opt/local/bin:/usr/local/bin:$HOME/bin";
-			}
-			else
-			{
-				env[kv.key()] = kv.value();
-			}
-		}
+		auto env = boost::process::environment::current();
 		std::wstring executable_file = command;
 		if (!boost::filesystem::is_regular_file(executable_file))
 		{

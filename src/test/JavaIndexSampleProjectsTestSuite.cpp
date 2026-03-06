@@ -7,7 +7,6 @@
 #	include <fstream>
 
 #	include "ApplicationSettings.h"
-#	include "FileRegister.h"
 #	include "IndexerCommandJava.h"
 #	include "JavaEnvironmentFactory.h"
 #	include "JavaParser.h"
@@ -15,7 +14,6 @@
 #	include "TestStorage.h"
 #	include "TextAccess.h"
 #	include "TimeStamp.h"
-#	include "utility.h"
 #	include "utilityJava.h"
 #	include "utilityPathDetection.h"
 #	include "utilityString.h"

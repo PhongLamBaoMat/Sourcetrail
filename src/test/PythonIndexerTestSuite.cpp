@@ -15,6 +15,7 @@
 #	include "TaskExecuteCustomCommands.h"
 #	include "TestStorage.h"
 #	include "utilityApp.h"
+#	include "FilePathFilter.h"
 
 namespace
 {

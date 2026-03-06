@@ -70,10 +70,10 @@ struct EventListener: Catch::EventListenerBase
 
 	void testRunEnded(const Catch::TestRunStats& testRunStats) override
 	{
-		// if (Application::getInstance())
-		// {
-		// 	Application::getInstance()->destroyInstance();
-		// }
+		if (Application::getInstance())
+		{
+			Application::getInstance()->destroyInstance();
+		}
 	}
 };
 

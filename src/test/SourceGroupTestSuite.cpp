@@ -286,7 +286,8 @@ TEST_CASE("can create application instance")
 {
 	// required to query in SourceGroup for dialog view... this is not a very elegant solution.
 	// should be refactored to pass dialog view to SourceGroup on creation.
-	Application::createInstance(Version(), nullptr, nullptr);
+	if (!Application::getInstance())
+		Application::createInstance(Version(), nullptr, nullptr);
 	REQUIRE(Application::getInstance().use_count() >= 1);
 }
 

@@ -1,6 +1,7 @@
 #include "catch.hpp"
 
 #include "language_packages.h"
+#include <iostream>
 
 #if BUILD_CXX_LANGUAGE_PACKAGE
 
@@ -3402,7 +3403,8 @@ TEST_CASE(
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(
-			client->typeUses, L"A<&g_p, q> -> P g_p <8:10 8:12>"	// TODO: this is completely wrong?
+			client->typeUses,
+			L"A<&g_p, value-parameter-0-0> -> P g_p <8:10 8:12>"	// TODO: this is completely wrong?
 																	// should be a normal usage
 			));
 	REQUIRE(
@@ -3426,7 +3428,7 @@ TEST_CASE(
 		"};\n");
 
 	REQUIRE(
-		utility::containsElement<std::wstring>(client->typeUses, L"A<g_p, q> -> P g_p <8:9 8:11>"));
+		utility::containsElement<std::wstring>(client->typeUses, L"A<g_p, value-parameter-0-0> -> P g_p <8:9 8:11>"));
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:14> <8:14 8:14>"));
 }
@@ -3540,7 +3542,8 @@ TEST_CASE("record base class of implicit template class specialization")
 
 	REQUIRE(
 		utility::containsElement<std::wstring>(
-			client->inheritances, L"Vector2<float> -> VectorBase<float, 2> <5:24 5:33>"));
+			client->inheritances,
+			L"Vector2<class T> -> VectorBase<class T, unsigned int N> <5:24 5:33>"));
 }
 
 TEST_CASE("cxx parser finds template class specialization with template argument")

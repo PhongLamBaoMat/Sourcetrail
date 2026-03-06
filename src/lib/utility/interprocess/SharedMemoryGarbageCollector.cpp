@@ -1,5 +1,7 @@
 #include "SharedMemoryGarbageCollector.h"
 
+#include <memory>
+#include <string>
 #include <thread>
 
 #include "TimeStamp.h"
