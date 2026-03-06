@@ -1,32 +1,28 @@
 package com.sourcetrail;
 
-import java.util.HashSet;
-import java.util.Set;
 import org.eclipse.jdt.core.dom.IBinding;
 
-public class ContextList
-{
-	private Set<String> m_bindingKeys = new HashSet<>();
+import java.util.HashSet;
+import java.util.Set;
 
-	public ContextList copy()
-	{
-		ContextList contextList = new ContextList();
+public class ContextList {
+    private Set<String> m_bindingKeys = new HashSet<>();
 
-		contextList.m_bindingKeys = new HashSet<>(m_bindingKeys);
+    public ContextList copy() {
+        ContextList contextList = new ContextList();
 
-		return contextList;
-	}
+        contextList.m_bindingKeys = new HashSet<>(m_bindingKeys);
 
-	public void add(IBinding v)
-	{
-		if (v != null)
-		{
-			m_bindingKeys.add(v.getKey());
-		}
-	}
+        return contextList;
+    }
 
-	public boolean contains(IBinding v)
-	{
-		return v != null && m_bindingKeys.contains(v.getKey());
-	}
+    public void add(IBinding v) {
+        if (v != null) {
+            m_bindingKeys.add(v.getKey());
+        }
+    }
+
+    public boolean contains(IBinding v) {
+        return v != null && m_bindingKeys.contains(v.getKey());
+    }
 }

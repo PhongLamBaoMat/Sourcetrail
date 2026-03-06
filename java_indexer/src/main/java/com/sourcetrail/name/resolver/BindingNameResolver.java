@@ -5,392 +5,299 @@ import com.sourcetrail.name.DeclName;
 import com.sourcetrail.name.FunctionDeclName;
 import com.sourcetrail.name.TypeName;
 import com.sourcetrail.name.VariableDeclName;
+import org.eclipse.jdt.core.dom.*;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.IPackageBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jdt.core.dom.Modifier;
 
-public class BindingNameResolver extends NameResolver
-{
-	public static IBinding getParentBinding(IBinding binding)
-	{
-		if (binding instanceof ITypeBinding)
-		{
-			return getParentBinding((ITypeBinding)binding);
-		}
-		if (binding instanceof IMethodBinding)
-		{
-			return ((IMethodBinding)binding).getDeclaringClass();
-		}
-		if (binding instanceof IVariableBinding)
-		{
-			return ((IVariableBinding)binding).getDeclaringClass();
-		}
-		return null;
-	}
+public class BindingNameResolver extends NameResolver {
+    public BindingNameResolver(
+            File currentFile, CompilationUnit compilationUnit, ContextList ignoredContexts) {
+        super(currentFile, compilationUnit, ignoredContexts);
+    }
 
-	public static IBinding getParentBinding(ITypeBinding binding)
-	{
-		if (binding.isLocal() || binding.isAnonymous())
-		{
-			if (binding.getDeclaringMember() instanceof IVariableBinding)
-			{
-				IVariableBinding variableBinding = (IVariableBinding)binding.getDeclaringMember();
-				if (variableBinding.getDeclaringClass() != null)
-				{
-					return variableBinding.getDeclaringClass();
-				}
-				else
-				{
-					return variableBinding.getDeclaringMethod();
-				}
-			}
-			else
-			{
-				return binding.getDeclaringMethod();
-			}
-		}
-		else if (binding.isMember())
-		{
-			return binding.getDeclaringClass();
-		}
-		else if (binding.isTypeVariable())
-		{
-			if (binding.getDeclaringClass() != null)
-			{
-				return binding.getDeclaringClass();
-			}
-			else
-			{
-				return binding.getDeclaringMethod();
-			}
-		}
-		else if (binding.isTopLevel())
-		{
-			return binding.getPackage();
-		}
+    public static IBinding getParentBinding(IBinding binding) {
+        if (binding instanceof ITypeBinding) {
+            return getParentBinding((ITypeBinding) binding);
+        }
+        if (binding instanceof IMethodBinding) {
+            return ((IMethodBinding) binding).getDeclaringClass();
+        }
+        if (binding instanceof IVariableBinding) {
+            return ((IVariableBinding) binding).getDeclaringClass();
+        }
+        return null;
+    }
 
-		return null;	// we don't have a parent (like void doesn't have a parent)
-	}
+    public static IBinding getParentBinding(ITypeBinding binding) {
+        if (binding.isLocal() || binding.isAnonymous()) {
+            if (binding.getDeclaringMember() instanceof IVariableBinding) {
+                IVariableBinding variableBinding = (IVariableBinding) binding.getDeclaringMember();
+                if (variableBinding.getDeclaringClass() != null) {
+                    return variableBinding.getDeclaringClass();
+                } else {
+                    return variableBinding.getDeclaringMethod();
+                }
+            } else {
+                return binding.getDeclaringMethod();
+            }
+        } else if (binding.isMember()) {
+            return binding.getDeclaringClass();
+        } else if (binding.isTypeVariable()) {
+            if (binding.getDeclaringClass() != null) {
+                return binding.getDeclaringClass();
+            } else {
+                return binding.getDeclaringMethod();
+            }
+        } else if (binding.isTopLevel()) {
+            return binding.getPackage();
+        }
 
-	public BindingNameResolver(
-		File currentFile, CompilationUnit compilationUnit, ContextList ignoredContexts)
-	{
-		super(currentFile, compilationUnit, ignoredContexts);
-	}
+        return null;    // we don't have a parent (like void doesn't have a parent)
+    }
 
-	public static Optional<TypeName> getQualifiedName(
-		ITypeBinding binding, File currentFile, CompilationUnit compilationUnit)
-	{
-		return getQualifiedName(binding, currentFile, compilationUnit, null);
-	}
+    public static Optional<TypeName> getQualifiedName(
+            ITypeBinding binding, File currentFile, CompilationUnit compilationUnit) {
+        return getQualifiedName(binding, currentFile, compilationUnit, null);
+    }
 
-	public static Optional<TypeName> getQualifiedName(
-		ITypeBinding binding,
-		File currentFile,
-		CompilationUnit compilationUnit,
-		ContextList ignoredContexts)
-	{
-		BindingNameResolver resolver = new BindingNameResolver(
-			currentFile, compilationUnit, ignoredContexts);
-		return resolver.getQualifiedName(binding);
-	}
+    public static Optional<TypeName> getQualifiedName(
+            ITypeBinding binding,
+            File currentFile,
+            CompilationUnit compilationUnit,
+            ContextList ignoredContexts) {
+        BindingNameResolver resolver = new BindingNameResolver(
+                currentFile, compilationUnit, ignoredContexts);
+        return resolver.getQualifiedName(binding);
+    }
 
-	public Optional<TypeName> getQualifiedName(ITypeBinding binding)
-	{
-		if (binding == null)
-		{
-			return Optional.empty();
-		}
+    public static Optional<DeclName> getQualifiedName(
+            IMethodBinding binding, File currentFile, CompilationUnit compilationUnit) {
+        return getQualifiedName(binding, currentFile, compilationUnit, null);
+    }
 
-		if (binding.isArray())
-		{
-			return getQualifiedName(binding.getElementType());
-		}
-		else if (binding.isAnonymous())
-		{
-			ASTNode node = m_compilationUnit.findDeclaringNode(binding);
-			if (node instanceof AnonymousClassDeclaration)
-			{
-				DeclName decl = DeclNameResolver.getQualifiedDeclName(
-					(AnonymousClassDeclaration)node,
-					m_currentFile,
-					m_compilationUnit,
-					m_ignoredContexts);
-				return Optional.of(new TypeName(
-					decl.getName(), decl.getTypeParameterNames(), null, decl.getParent()));
-			}
-			else
-			{
-				return Optional.empty();
-			}
-		}
+    public static Optional<DeclName> getQualifiedName(
+            IMethodBinding binding,
+            File currentFile,
+            CompilationUnit compilationUnit,
+            ContextList ignoredContexts) {
+        BindingNameResolver resolver = new BindingNameResolver(
+                currentFile, compilationUnit, ignoredContexts);
+        return resolver.getQualifiedName(binding);
+    }
 
-		if (binding.isParameterizedType())
-		{
-			List<TypeName> typeArguments = new ArrayList<>();
-			for (ITypeBinding typeArgumentBinding: binding.getTypeArguments())
-			{
-				Optional<TypeName> typeArgument = getQualifiedName(typeArgumentBinding);
-				if (typeArgument.isPresent())
-				{
-					typeArguments.add(typeArgument.get());
-				}
-			}
+    public static Optional<DeclName> getQualifiedName(
+            IPackageBinding binding, File currentFile, CompilationUnit compilationUnit) {
+        return getQualifiedName(binding, currentFile, compilationUnit, null);
+    }
 
-			Optional<TypeName> typeName = getQualifiedName(binding.getTypeDeclaration());
-			if (typeName.isPresent())
-			{
-				DeclName declName = typeName.get().toDeclName();
-				return Optional.of(new TypeName(
-					declName.getName(),
-					declName.getTypeParameterNames(),
-					typeArguments,
-					declName.getParent()));
-			}
-			else
-			{
-				return Optional.empty();
-			}
-		}
+    public static Optional<DeclName> getQualifiedName(
+            IPackageBinding binding,
+            File currentFile,
+            CompilationUnit compilationUnit,
+            ContextList ignoredContexts) {
+        BindingNameResolver resolver = new BindingNameResolver(
+                currentFile, compilationUnit, ignoredContexts);
+        return resolver.getQualifiedName(binding);
+    }
 
-		String name = binding.getName();
-		List<String> typeParameterNames = null;
-		if (binding.isGenericType())
-		{
-			typeParameterNames = new ArrayList<>();
-			for (ITypeBinding typeParameter: binding.getTypeParameters())
-			{
-				typeParameterNames.add(typeParameter.getName());
-			}
-		}
+    public static DeclName getQualifiedName(
+            IVariableBinding binding, File currentFile, CompilationUnit compilationUnit) {
+        return getQualifiedName(binding, currentFile, compilationUnit, null);
+    }
 
-		DeclName parentDeclName = getQualifiedContextName(binding);
-		if (parentDeclName != null && parentDeclName.getIsUnsolved())
-		{
-			return Optional.empty();
-		}
+    public static DeclName getQualifiedName(
+            IVariableBinding binding,
+            File currentFile,
+            CompilationUnit compilationUnit,
+            ContextList ignoredContexts) {
+        BindingNameResolver resolver = new BindingNameResolver(
+                currentFile, compilationUnit, ignoredContexts);
+        return resolver.getQualifiedName(binding);
+    }
 
-		// type arguments will be set in caller (which is this same method)
-		return Optional.of(new TypeName(name, typeParameterNames, null, parentDeclName));
-	}
+    public Optional<TypeName> getQualifiedName(ITypeBinding binding) {
+        if (binding == null) {
+            return Optional.empty();
+        }
 
-	public static Optional<DeclName> getQualifiedName(
-		IMethodBinding binding, File currentFile, CompilationUnit compilationUnit)
-	{
-		return getQualifiedName(binding, currentFile, compilationUnit, null);
-	}
+        if (binding.isArray()) {
+            return getQualifiedName(binding.getElementType());
+        } else if (binding.isAnonymous()) {
+            ASTNode node = m_compilationUnit.findDeclaringNode(binding);
+            if (node instanceof AnonymousClassDeclaration) {
+                DeclName decl = DeclNameResolver.getQualifiedDeclName(
+                        (AnonymousClassDeclaration) node,
+                        m_currentFile,
+                        m_compilationUnit,
+                        m_ignoredContexts);
+                return Optional.of(new TypeName(
+                        decl.getName(), decl.getTypeParameterNames(), null, decl.getParent()));
+            } else {
+                return Optional.empty();
+            }
+        }
 
-	public static Optional<DeclName> getQualifiedName(
-		IMethodBinding binding,
-		File currentFile,
-		CompilationUnit compilationUnit,
-		ContextList ignoredContexts)
-	{
-		BindingNameResolver resolver = new BindingNameResolver(
-			currentFile, compilationUnit, ignoredContexts);
-		return resolver.getQualifiedName(binding);
-	}
+        if (binding.isParameterizedType()) {
+            List<TypeName> typeArguments = new ArrayList<>();
+            for (ITypeBinding typeArgumentBinding : binding.getTypeArguments()) {
+                Optional<TypeName> typeArgument = getQualifiedName(typeArgumentBinding);
+                if (typeArgument.isPresent()) {
+                    typeArguments.add(typeArgument.get());
+                }
+            }
 
-	public Optional<DeclName> getQualifiedName(IMethodBinding binding)
-	{
-		if (binding == null)
-		{
-			return Optional.empty();
-		}
+            Optional<TypeName> typeName = getQualifiedName(binding.getTypeDeclaration());
+            if (typeName.isPresent()) {
+                DeclName declName = typeName.get().toDeclName();
+                return Optional.of(new TypeName(
+                        declName.getName(),
+                        declName.getTypeParameterNames(),
+                        typeArguments,
+                        declName.getParent()));
+            } else {
+                return Optional.empty();
+            }
+        }
 
-		String name = binding.getName();
+        String name = binding.getName();
+        List<String> typeParameterNames = null;
+        if (binding.isGenericType()) {
+            typeParameterNames = new ArrayList<>();
+            for (ITypeBinding typeParameter : binding.getTypeParameters()) {
+                typeParameterNames.add(typeParameter.getName());
+            }
+        }
 
-		List<String> typeParameterNames = null;
-		if (binding.isGenericMethod())
-		{
-			typeParameterNames = new ArrayList<>();
-			for (ITypeBinding typeParameter: binding.getTypeParameters())
-			{
-				typeParameterNames.add(typeParameter.getName());
-			}
-		}
+        DeclName parentDeclName = getQualifiedContextName(binding);
+        if (parentDeclName != null && parentDeclName.getIsUnsolved()) {
+            return Optional.empty();
+        }
 
-		DeclName declName = null;
-		{
-			boolean isStatic = Modifier.isStatic(binding.getModifiers());
+        // type arguments will be set in caller (which is this same method)
+        return Optional.of(new TypeName(name, typeParameterNames, null, parentDeclName));
+    }
 
-			ContextList ignoredContexts = m_ignoredContexts.copy();
-			ignoredContexts.add(binding);
+    public Optional<DeclName> getQualifiedName(IMethodBinding binding) {
+        if (binding == null) {
+            return Optional.empty();
+        }
 
-			TypeName returnTypeName = binding.isConstructor()
-				? null
-				: getQualifiedName(
-					  binding.getReturnType(), m_currentFile, m_compilationUnit, ignoredContexts)
-					  .orElse(TypeName.unsolved());
+        String name = binding.getName();
 
-			if (binding.isAnnotationMember())
-			{
-				declName = new VariableDeclName(name, returnTypeName, isStatic);
-			}
-			else
-			{
-				List<TypeName> parameterTypeNames = new ArrayList<>();
-				for (ITypeBinding parameterType: binding.getParameterTypes())
-				{
-					parameterTypeNames.add(
-						getQualifiedName(
-							parameterType, m_currentFile, m_compilationUnit, ignoredContexts)
-							.orElse(TypeName.unsolved()));
-				}
+        List<String> typeParameterNames = null;
+        if (binding.isGenericMethod()) {
+            typeParameterNames = new ArrayList<>();
+            for (ITypeBinding typeParameter : binding.getTypeParameters()) {
+                typeParameterNames.add(typeParameter.getName());
+            }
+        }
 
-				declName = new FunctionDeclName(
-					name, typeParameterNames, returnTypeName, parameterTypeNames, isStatic);
-			}
-		}
+        DeclName declName = null;
+        {
+            boolean isStatic = Modifier.isStatic(binding.getModifiers());
 
-		DeclName parentDeclName = getQualifiedContextName(binding);
-		if (parentDeclName != null)
-		{
-			if (!parentDeclName.getIsUnsolved())
-			{
-				declName.setParent(parentDeclName);
-			}
-			else
-			{
-				return Optional.empty();
-			}
-		}
+            ContextList ignoredContexts = m_ignoredContexts.copy();
+            ignoredContexts.add(binding);
 
-		return Optional.of(declName);
-	}
+            TypeName returnTypeName = binding.isConstructor()
+                    ? null
+                    : getQualifiedName(
+                    binding.getReturnType(), m_currentFile, m_compilationUnit, ignoredContexts)
+                    .orElse(TypeName.unsolved());
 
-	public static Optional<DeclName> getQualifiedName(
-		IPackageBinding binding, File currentFile, CompilationUnit compilationUnit)
-	{
-		return getQualifiedName(binding, currentFile, compilationUnit, null);
-	}
+            if (binding.isAnnotationMember()) {
+                declName = new VariableDeclName(name, returnTypeName, isStatic);
+            } else {
+                List<TypeName> parameterTypeNames = new ArrayList<>();
+                for (ITypeBinding parameterType : binding.getParameterTypes()) {
+                    parameterTypeNames.add(
+                            getQualifiedName(
+                                    parameterType, m_currentFile, m_compilationUnit, ignoredContexts)
+                                    .orElse(TypeName.unsolved()));
+                }
 
-	public static Optional<DeclName> getQualifiedName(
-		IPackageBinding binding,
-		File currentFile,
-		CompilationUnit compilationUnit,
-		ContextList ignoredContexts)
-	{
-		BindingNameResolver resolver = new BindingNameResolver(
-			currentFile, compilationUnit, ignoredContexts);
-		return resolver.getQualifiedName(binding);
-	}
+                declName = new FunctionDeclName(
+                        name, typeParameterNames, returnTypeName, parameterTypeNames, isStatic);
+            }
+        }
 
-	public Optional<DeclName> getQualifiedName(IPackageBinding binding)
-	{
-		if (!binding.isUnnamed())
-		{
-			return Optional.of(DeclName.fromDotSeparatedString(binding.getName()));
-		}
-		return Optional.empty();
-	}
+        DeclName parentDeclName = getQualifiedContextName(binding);
+        if (parentDeclName != null) {
+            if (!parentDeclName.getIsUnsolved()) {
+                declName.setParent(parentDeclName);
+            } else {
+                return Optional.empty();
+            }
+        }
 
-	public static DeclName getQualifiedName(
-		IVariableBinding binding, File currentFile, CompilationUnit compilationUnit)
-	{
-		return getQualifiedName(binding, currentFile, compilationUnit, null);
-	}
+        return Optional.of(declName);
+    }
 
-	public static DeclName getQualifiedName(
-		IVariableBinding binding,
-		File currentFile,
-		CompilationUnit compilationUnit,
-		ContextList ignoredContexts)
-	{
-		BindingNameResolver resolver = new BindingNameResolver(
-			currentFile, compilationUnit, ignoredContexts);
-		return resolver.getQualifiedName(binding);
-	}
+    public Optional<DeclName> getQualifiedName(IPackageBinding binding) {
+        if (!binding.isUnnamed()) {
+            return Optional.of(DeclName.fromDotSeparatedString(binding.getName()));
+        }
+        return Optional.empty();
+    }
 
-	public DeclName getQualifiedName(IVariableBinding binding)
-	{
-		if (binding == null)
-		{
-			return DeclName.unsolved();
-		}
+    public DeclName getQualifiedName(IVariableBinding binding) {
+        if (binding == null) {
+            return DeclName.unsolved();
+        }
 
-		if (binding.isField() || binding.isEnumConstant())
-		{
-			DeclName declName;
-			if (binding.isEnumConstant())
-			{
-				declName = new DeclName(binding.getName());
-			}
-			else
-			{
-				TypeName typeName = getQualifiedName(binding.getType()).orElse(TypeName.unsolved());
-				declName = new VariableDeclName(
-					binding.getName(), typeName, Modifier.isStatic(binding.getModifiers()));
-			}
+        if (binding.isField() || binding.isEnumConstant()) {
+            DeclName declName;
+            if (binding.isEnumConstant()) {
+                declName = new DeclName(binding.getName());
+            } else {
+                TypeName typeName = getQualifiedName(binding.getType()).orElse(TypeName.unsolved());
+                declName = new VariableDeclName(
+                        binding.getName(), typeName, Modifier.isStatic(binding.getModifiers()));
+            }
 
-			DeclName parentDeclName = getQualifiedContextName(binding);
-			if (parentDeclName != null)
-			{
-				if (!parentDeclName.getIsUnsolved())
-				{
-					declName.setParent(parentDeclName);
-				}
-				else
-				{
-					declName = DeclName.unsolved();
-				}
-			}
+            DeclName parentDeclName = getQualifiedContextName(binding);
+            if (parentDeclName != null) {
+                if (!parentDeclName.getIsUnsolved()) {
+                    declName.setParent(parentDeclName);
+                } else {
+                    declName = DeclName.unsolved();
+                }
+            }
 
-			return declName;
-		}
-		else
-		{
-			if (binding.getDeclaringMethod() != null)
-			{
-				return DeclName.localSymbol(
-					getQualifiedName(binding.getDeclaringMethod()).orElse(DeclName.unsolved()),
-					binding.getVariableId());
-			}
-			else
-			{
-				return DeclName.globalSymbol(m_currentFile, binding.getVariableId());
-			}
-		}
-	}
+            return declName;
+        } else {
+            if (binding.getDeclaringMethod() != null) {
+                return DeclName.localSymbol(
+                        getQualifiedName(binding.getDeclaringMethod()).orElse(DeclName.unsolved()),
+                        binding.getVariableId());
+            } else {
+                return DeclName.globalSymbol(m_currentFile, binding.getVariableId());
+            }
+        }
+    }
 
-	private DeclName getQualifiedContextName(IBinding binding)
-	{
-		IBinding parentBinding = getParentBinding(binding);
+    private DeclName getQualifiedContextName(IBinding binding) {
+        IBinding parentBinding = getParentBinding(binding);
 
-		if (parentBinding == null || m_ignoredContexts.contains(parentBinding))
-		{
-			return null;
-		}
+        if (parentBinding == null || m_ignoredContexts.contains(parentBinding)) {
+            return null;
+        }
 
-		if (parentBinding instanceof ITypeBinding)
-		{
-			return getQualifiedName((ITypeBinding)parentBinding)
-				.map(tn -> tn.toDeclName())
-				.orElse(DeclName.unsolved());
-		}
-		else if (parentBinding instanceof IMethodBinding)
-		{
-			return getQualifiedName((IMethodBinding)parentBinding).orElse(DeclName.unsolved());
-		}
-		else if (parentBinding instanceof IVariableBinding)
-		{
-			return getQualifiedName((IVariableBinding)parentBinding);
-		}
-		else if (parentBinding instanceof IPackageBinding)
-		{
-			return getQualifiedName((IPackageBinding)parentBinding).orElse(null);
-		}
+        if (parentBinding instanceof ITypeBinding) {
+            return getQualifiedName((ITypeBinding) parentBinding)
+                    .map(tn -> tn.toDeclName())
+                    .orElse(DeclName.unsolved());
+        } else if (parentBinding instanceof IMethodBinding) {
+            return getQualifiedName((IMethodBinding) parentBinding).orElse(DeclName.unsolved());
+        } else if (parentBinding instanceof IVariableBinding) {
+            return getQualifiedName((IVariableBinding) parentBinding);
+        } else if (parentBinding instanceof IPackageBinding) {
+            return getQualifiedName((IPackageBinding) parentBinding).orElse(null);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

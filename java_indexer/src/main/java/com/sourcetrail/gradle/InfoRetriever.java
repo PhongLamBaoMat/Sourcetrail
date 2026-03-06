@@ -1,153 +1,121 @@
 package com.sourcetrail.gradle;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.gradle.api.GradleException;
 import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
 
-public class InfoRetriever
-{
-	public static String getMainSrcDirs(String projectRootPath, String initScriptPath)
-	{
-		try
-		{
-			String ret = "";
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-			List<String> srcDirs = getSrcDirs("printMainSrcDirs", projectRootPath, initScriptPath);
-			for (int i = 0; i < srcDirs.size(); i++)
-			{
-				if (i != 0)
-				{
-					ret += ";";
-				}
-				ret += srcDirs.get(i);
-			}
+public class InfoRetriever {
+    public static String getMainSrcDirs(String projectRootPath, String initScriptPath) {
+        try {
+            StringBuilder ret = new StringBuilder();
 
-			return ret;
-		}
-		catch (GradleException e)
-		{
-			return "[ERROR] " + e.getMessage();
-		}
-	}
+            List<String> srcDirs = getSrcDirs("printMainSrcDirs", projectRootPath, initScriptPath);
+            for (int i = 0; i < srcDirs.size(); i++) {
+                if (i != 0) {
+                    ret.append(";");
+                }
+                ret.append(srcDirs.get(i));
+            }
 
-	public static String getTestSrcDirs(String projectRootPath, String initScriptPath)
-	{
-		try
-		{
-			String ret = "";
+            return ret.toString();
+        } catch (GradleException e) {
+            return "[ERROR] " + e.getMessage();
+        }
+    }
 
-			List<String> srcDirs = getSrcDirs("printTestSrcDirs", projectRootPath, initScriptPath);
-			for (int i = 0; i < srcDirs.size(); i++)
-			{
-				if (i != 0)
-				{
-					ret += ";";
-				}
-				ret += srcDirs.get(i);
-			}
+    public static String getTestSrcDirs(String projectRootPath, String initScriptPath) {
+        try {
+            StringBuilder ret = new StringBuilder();
 
-			return ret;
-		}
-		catch (GradleException e)
-		{
-			return "[ERROR] " + e.getMessage();
-		}
-	}
+            List<String> srcDirs = getSrcDirs("printTestSrcDirs", projectRootPath, initScriptPath);
+            for (int i = 0; i < srcDirs.size(); i++) {
+                if (i != 0) {
+                    ret.append(";");
+                }
+                ret.append(srcDirs.get(i));
+            }
 
-	public static void copyCompileLibs(String projectRootPath, String initScriptPath, String targetPath)
-	{
-		executeTask(
-			"copyCompileLibs",
-			projectRootPath,
-			initScriptPath,
-			Arrays.asList("-Psourcetrail_lib_path=" + targetPath));
-	}
+            return ret.toString();
+        } catch (GradleException e) {
+            return "[ERROR] " + e.getMessage();
+        }
+    }
 
-	public static void copyTestCompileLibs(String projectRootPath, String initScriptPath, String targetPath)
-	{
-		executeTask(
-			"copyTestCompileLibs",
-			projectRootPath,
-			initScriptPath,
-			Arrays.asList("-Psourcetrail_lib_path=" + targetPath));
-	}
+    public static void copyCompileLibs(String projectRootPath, String initScriptPath, String targetPath) {
+        executeTask(
+                "copyCompileLibs",
+                projectRootPath,
+                initScriptPath,
+                Collections.singletonList("-Psourcetrail_lib_path=" + targetPath));
+    }
 
-	private static List<String> getSrcDirs(String taskName, String projectRootPath, String initScriptPath)
-	{
-		String output = executeTask(taskName, projectRootPath, initScriptPath, null);
+    public static void copyTestCompileLibs(String projectRootPath, String initScriptPath, String targetPath) {
+        executeTask(
+                "copyTestCompileLibs",
+                projectRootPath,
+                initScriptPath,
+                Collections.singletonList("-Psourcetrail_lib_path=" + targetPath));
+    }
 
-		List<String> paths = new ArrayList<>();
+    private static List<String> getSrcDirs(String taskName, String projectRootPath, String initScriptPath) {
+        String output = executeTask(taskName, projectRootPath, initScriptPath, null);
 
-		try (BufferedReader reader = new BufferedReader(new StringReader(output)))
-		{
-			String line;
-			while ((line = reader.readLine()) != null)
-			{
-				paths.add(line);
-			}
-		}
-		catch (IOException e)
-		{
-			// TODO: LOGERROR
-		}
+        List<String> paths = new ArrayList<>();
 
-		return paths;
-	}
+        try (BufferedReader reader = new BufferedReader(new StringReader(output))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                paths.add(line);
+            }
+        } catch (IOException e) {
+            // TODO: LOGERROR
+        }
 
-	private static String executeTask(
-		String taskName, String projectRootPath, String initScriptPath, List<String> additionalArguments)
-		throws GradleException
-	{
-		ProjectConnection connection =
-			GradleConnector.newConnector().forProjectDirectory(new File(projectRootPath)).connect();
+        return paths;
+    }
 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		ByteArrayOutputStream errorStream = new ByteArrayOutputStream();
+    private static String executeTask(
+            String taskName, String projectRootPath, String initScriptPath, List<String> additionalArguments)
+            throws GradleException {
+        ProjectConnection connection =
+                GradleConnector.newConnector().forProjectDirectory(new File(projectRootPath)).connect();
 
-		try
-		{
-			List<String> arguments = new ArrayList<>();
-			arguments.add("--init-script");
-			arguments.add(initScriptPath);
-			arguments.add("-q");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream errorStream = new ByteArrayOutputStream();
 
-			if (additionalArguments != null)
-			{
-				arguments.addAll(additionalArguments);
-			}
+        try {
+            List<String> arguments = new ArrayList<>();
+            arguments.add("--init-script");
+            arguments.add(initScriptPath);
+            arguments.add("-q");
 
-			BuildLauncher Launcher = connection.newBuild()
-										 .forTasks(taskName)
-										 .withArguments(arguments)
-										 .setStandardOutput(new PrintStream(outputStream))
-										 .setStandardError(new PrintStream(errorStream));
+            if (additionalArguments != null) {
+                arguments.addAll(additionalArguments);
+            }
 
-			Launcher.run();
-		}
-		catch (Exception e)
-		{
-			// TODO: LOGERROR
-		}
-		finally
-		{
-			connection.close();
-		}
+            BuildLauncher Launcher = connection.newBuild()
+                    .forTasks(taskName)
+                    .withArguments(arguments)
+                    .setStandardOutput(new PrintStream(outputStream))
+                    .setStandardError(new PrintStream(errorStream));
 
-		if (!errorStream.toString().isEmpty())
-		{
-			throw new GradleException(errorStream.toString());
-		}
+            Launcher.run();
+        } catch (Exception e) {
+            // TODO: LOGERROR
+        } finally {
+            connection.close();
+        }
 
-		return outputStream.toString();
-	}
+        if (!errorStream.toString().isEmpty()) {
+            throw new GradleException(errorStream.toString());
+        }
+
+        return outputStream.toString();
+    }
 }
