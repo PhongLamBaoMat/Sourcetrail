@@ -127,6 +127,10 @@ endif()
 #if (UNIX AND "${CMAKE_BUILD_TYPE}" STREQUAL "Release")
 #add_definitions(-fno-omit-frame-pointer)
 #endif ()
+if (UNIX AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "-O0 -g")
+    set(CMAKE_C_FLAGS "-O0 -g")
+endif()
 
 
 # Clang ------------------------------------------------------------------------
