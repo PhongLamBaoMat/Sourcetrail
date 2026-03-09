@@ -4,6 +4,7 @@ ABORT="\033[31mAbort:\033[00m"
 SUCCESS="\033[32mSuccess:\033[00m"
 INFO="\033[33mInfo:\033[00m"
 
+ARCH=`uname -m`
 MY_PATH=`dirname "$0"`
 cd $MY_PATH
 
@@ -38,7 +39,7 @@ if [ -d "$PACKAGE_DIR" ]
 then
 	echo -e $INFO "Removing old package."
 	rm -rf $PACKAGE_DIR
-	rm ${PACKAGE_DIR}_macOS_arm64.dmg
+	rm ${PACKAGE_DIR}_macOS_${ARCH}.dmg
 fi
 
 BUNDLE_PATH=$PACKAGE_DIR/$BUNDLE_NAME.app
@@ -239,7 +240,7 @@ echo -e $SUCCESS "Created bundle successfully!";
 echo -e $INFO "create DMG package";
 
 ln -s /Applications $PACKAGE_DIR/Applications;
-hdiutil create -fs HFS+ ${PACKAGE_DIR}_macOS_arm64.dmg -volname ${PACKAGE_DIR} -srcfolder ${PACKAGE_DIR};
+hdiutil create -fs HFS+ ${PACKAGE_DIR}_macOS_${ARCH}.dmg -volname ${PACKAGE_DIR} -srcfolder ${PACKAGE_DIR};
 rm $PACKAGE_DIR/Applications;
 
 echo -e $SUCCESS "Created DMG package successfully!";
