@@ -86,7 +86,7 @@ Thêm tham số cho lúc chạy CMake ở bước 3 - Khởi tạo môi trườn
 
 ## Biên dịch trình phân tích mã nguồn Java
 ### Yêu cầu
-- __JDK__ từ phiên bản 1.8 trở lên
+- __JDK__ từ phiên bản 25 trở lên
   * __Lý do__: sử dụng để gọi thư viện Java từ C++ thông qua JNI.
   * __Lưu ý__: chắc chắn giá trị `<jdk_root>/bin` đã tồn tại trong biến môi trường `PATH` và biến `JAVA_HOME` cũng đã được thiết lập.
 

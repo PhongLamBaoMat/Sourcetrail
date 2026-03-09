@@ -24,7 +24,7 @@ Lưu ý: Sourcetrail hiện tải chỉ hỗ trợ phân tích ngôn ngữ C/C++
 C/C++ được hỗ trợ bởi [Clang 21.1.8](https://clang.llvm.org/). Mọi vấn đề liên quan đến việc phân tích mã nguồn C/C++, vui lòng kiểm tra qua [Clang language compatibility](https://clang.llvm.org/compatibility.html) hoặc gửi báo cáo lỗi đến chúng tôi tại [Issues](https://github.com/PhongLamBaoMat/Sourcetrail/issues).
 
 ### Java
-Sourcetrail hỗ trợ Java 12 và các phiên bản thấp hơn bởi [Eclipse JDT](https://github.com/eclipse/eclipse.jdt.core). Nếu bạn gặp bất kì lỗi nào, vui lòng gửi báo cáo đến chúng tôi tại [Issues](https://github.com/PhongLamBaoMat/Sourcetrail/issues).
+Sourcetrail hỗ trợ Java 25 và các phiên bản thấp hơn bởi [Eclipse JDT](https://github.com/eclipse/eclipse.jdt.core). Nếu bạn gặp bất kì lỗi nào, vui lòng gửi báo cáo đến chúng tôi tại [Issues](https://github.com/PhongLamBaoMat/Sourcetrail/issues).
 
 ### Python
 Sourcetrail hỗ trợ cả Python 2 và 3 bởi [CoatiSoftware SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer). Hiện CoatiSoftware đã dừng phát triển nên chúng tôi không thể hỗ trợ thêm.
