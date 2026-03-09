@@ -3428,7 +3428,8 @@ TEST_CASE(
 		"};\n");
 
 	REQUIRE(
-		utility::containsElement<std::wstring>(client->typeUses, L"A<g_p, value-parameter-0-0> -> P g_p <8:9 8:11>"));
+		utility::containsElement<std::wstring>(
+			client->typeUses, L"A<g_p, value-parameter-0-0> -> P g_p <8:9 8:11>"));
 	REQUIRE(
 		utility::containsElement<std::wstring>(client->localSymbols, L"input.cc<7:14> <8:14 8:14>"));
 }
