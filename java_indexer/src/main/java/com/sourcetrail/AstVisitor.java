@@ -230,8 +230,8 @@ public abstract class AstVisitor extends ASTVisitor {
 
         Range signatureRange = getRange(node);
         if (!node.thrownExceptionTypes().isEmpty()) {
-            Object lastExceptionType = node.thrownExceptionTypes().get(
-                    node.thrownExceptionTypes().size() - 1);
+            Object lastExceptionType = node.thrownExceptionTypes().getLast(
+            );
             if (lastExceptionType instanceof ASTNode) {
                 signatureRange.end = getRange((ASTNode) lastExceptionType).end;
             }
@@ -239,7 +239,7 @@ public abstract class AstVisitor extends ASTVisitor {
             signatureRange.end = getRange(node.getName()).end;
 
             if (!node.parameters().isEmpty()) {
-                Object lastParametersType = node.parameters().get(node.parameters().size() - 1);
+                Object lastParametersType = node.parameters().getLast();
                 if (lastParametersType instanceof ASTNode) {
                     signatureRange.end = getRange((ASTNode) lastParametersType).end;
                 }
@@ -300,8 +300,7 @@ public abstract class AstVisitor extends ASTVisitor {
         ArrayList<SymbolName> childContext = new ArrayList<>();
 
         for (Object declarator : node.fragments()) {
-            if (declarator instanceof VariableDeclarationFragment) {
-                VariableDeclarationFragment fragment = (VariableDeclarationFragment) declarator;
+            if (declarator instanceof VariableDeclarationFragment fragment) {
 
                 DeclName symbolName = DeclNameResolver.getQualifiedDeclName(
                         fragment, m_filePath, m_compilationUnit);
@@ -335,25 +334,24 @@ public abstract class AstVisitor extends ASTVisitor {
         DeclName symbolName = DeclName.unsolved();
         IBinding binding = node.resolveBinding();
         if (binding != null && !binding.isRecovered()) {
-            if (binding instanceof IPackageBinding) {
-                symbolName = BindingNameResolver
+            switch (binding) {
+                case IPackageBinding iPackageBinding -> symbolName = BindingNameResolver
                         .getQualifiedName(
-                                (IPackageBinding) binding, m_filePath, m_compilationUnit)
+                                iPackageBinding, m_filePath, m_compilationUnit)
                         .orElse(DeclName.unsolved());
-            } else if (binding instanceof ITypeBinding) {
-                symbolName = BindingNameResolver
+                case ITypeBinding iTypeBinding -> symbolName = BindingNameResolver
                         .getQualifiedName(
-                                (ITypeBinding) binding, m_filePath, m_compilationUnit)
+                                iTypeBinding, m_filePath, m_compilationUnit)
                         .map(TypeName::toDeclName)
                         .orElse(DeclName.unsolved());
-            } else if (binding instanceof IMethodBinding) {
-                symbolName = BindingNameResolver
+                case IMethodBinding iMethodBinding -> symbolName = BindingNameResolver
                         .getQualifiedName(
-                                (IMethodBinding) binding, m_filePath, m_compilationUnit)
+                                iMethodBinding, m_filePath, m_compilationUnit)
                         .orElse(DeclName.unsolved());
-            } else if (binding instanceof IVariableBinding) {
-                symbolName = BindingNameResolver.getQualifiedName(
-                        (IVariableBinding) binding, m_filePath, m_compilationUnit);
+                case IVariableBinding iVariableBinding -> symbolName = BindingNameResolver.getQualifiedName(
+                        iVariableBinding, m_filePath, m_compilationUnit);
+                default -> {
+                }
             }
         }
 
@@ -574,8 +572,7 @@ public abstract class AstVisitor extends ASTVisitor {
         }
 
         for (Object o : node.typeArguments()) {
-            if (o instanceof Type) {
-                Type type = (Type) o;
+            if (o instanceof Type type) {
                 ITypeBinding typeBinding = type.resolveBinding();
                 m_client.recordReference(
                         ReferenceKind.TYPE_ARGUMENT,
@@ -886,8 +883,7 @@ public abstract class AstVisitor extends ASTVisitor {
             }
 
             for (Object o : typeArguments) {
-                if (o instanceof Type) {
-                    Type type = (Type) o;
+                if (o instanceof Type type) {
                     ITypeBinding typeBinding = type.resolveBinding();
                     m_client.recordReference(
                             ReferenceKind.TYPE_ARGUMENT,

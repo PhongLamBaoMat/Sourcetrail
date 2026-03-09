@@ -8,7 +8,7 @@
     <name>java_indexer</name>
     <url>https://maven.apache.org</url>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>25</java.version>
     </properties>
 
     <build>
@@ -16,7 +16,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.15.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -42,121 +42,128 @@
         <dependency>
             <groupId>org.gradle</groupId>
             <artifactId>gradle-tooling-api</artifactId>
-            <version>6.7.1</version>
+            <version>9.2.1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/gradle-tooling-api-6.7.1.jar</systemPath>
+            <systemPath>${basedir}/lib/gradle-tooling-api-9.2.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.commands</artifactId>
-            <version>3.9.800</version>
+            <version>3.12.500</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.core.commands-3.9.800.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.core.commands-3.12.500.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.contenttype</artifactId>
-            <version>3.7.800</version>
+            <version>3.9.800</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.core.contenttype-3.7.800.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.core.contenttype-3.9.800.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.expressions</artifactId>
-            <version>3.7.0</version>
+            <version>3.9.500</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.core.expressions-3.7.0.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.core.expressions-3.9.500.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.filesystem</artifactId>
-            <version>1.7.500</version>
+            <version>1.11.400</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.core.filesystem-1.7.700.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.core.filesystem-1.11.400.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.jobs</artifactId>
-            <version>3.10.1000</version>
+            <version>3.15.700</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.core.jobs-3.10.1000.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.core.jobs-3.15.700.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.resources</artifactId>
-            <version>3.13.900</version>
+            <version>3.23.100</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.core.resources-3.13.900.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.core.resources-3.23.100.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.core</groupId>
             <artifactId>org.eclipse.core.runtime</artifactId>
-            <version>3.20.0</version>
+            <version>3.34.100</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.core.runtime-3.20.0.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.core.runtime-3.34.100.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>org.eclipse.equinox.app</artifactId>
-            <version>1.5.0</version>
+            <version>1.7.500</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.equinox.app-1.5.0.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.equinox.app-1.7.500.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>org.eclipse.equinox.common</artifactId>
-            <version>3.14.0</version>
+            <version>3.20.300</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.equinox.common-3.14.0.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.equinox.common-3.20.300.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>org.eclipse.equinox.preferences</artifactId>
-            <version>3.8.100</version>
+            <version>3.12.100</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.equinox.preferences-3.8.100.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.equinox.preferences-3.12.100.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>org.eclipse.equinox.registry</artifactId>
-            <version>3.10.0</version>
+            <version>3.12.600</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.equinox.registry-3.10.0.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.equinox.registry-3.12.600.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.core</artifactId>
-            <version>3.24.0</version>
+            <version>3.44.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.jdt.core-3.24.0.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.jdt.core-3.44.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>ecj</artifactId>
+            <version>3.44.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/ecj-3.44.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>org.eclipse.osgi</artifactId>
-            <version>3.16.100</version>
+            <version>3.24.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.osgi-3.16.100.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.osgi-3.24.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>org.eclipse.text</artifactId>
-            <version>3.10.400</version>
+            <version>3.14.500</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/org.eclipse.text-3.10.400.jar</systemPath>
+            <systemPath>${basedir}/lib/org.eclipse.text-3.14.500.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.28</version>
+            <version>2.0.17</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/slf4j-api-1.7.28.jar</systemPath>
+            <systemPath>${basedir}/lib/slf4j-api-2.0.17.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.30</version>
+            <version>2.0.17</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/slf4j-simple-1.7.30.jar</systemPath>
+            <systemPath>${basedir}/lib/slf4j-simple-2.0.17.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

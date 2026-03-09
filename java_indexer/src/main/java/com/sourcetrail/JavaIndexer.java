@@ -43,7 +43,7 @@ public class JavaIndexer {
 
             Path path = Paths.get(filePath);
 
-            ASTParser parser = ASTParser.newParser(AST.JLS_Latest);
+            ASTParser parser = ASTParser.newParser(AST.JLS25);
 
             parser.setResolveBindings(
                     true);      // solve "bindings" like the declaration of the type used in a var decl
@@ -132,7 +132,7 @@ public class JavaIndexer {
     public static String getPackageName(String fileContent) {
         String packageName = "";
 
-        ASTParser parser = ASTParser.newParser(AST.JLS_Latest);
+        ASTParser parser = ASTParser.newParser(AST.JLS25);
         parser.setKind(
                 ASTParser.K_COMPILATION_UNIT);      // specify to parse the entire compilation unit
         parser.setSource(fileContent.toCharArray());
@@ -149,39 +149,33 @@ public class JavaIndexer {
     }
 
     private static String convertLanguageStandard(String s) {
-        switch (s) {
-            case "1":
-                return JavaCore.VERSION_1_1;
-            case "2":
-                return JavaCore.VERSION_1_2;
-            case "3":
-                return JavaCore.VERSION_1_3;
-            case "4":
-                return JavaCore.VERSION_1_4;
-            case "5":
-                return JavaCore.VERSION_1_5;
-            case "6":
-                return JavaCore.VERSION_1_6;
-            case "7":
-                return JavaCore.VERSION_1_7;
-            case "8":
-                return JavaCore.VERSION_1_8;
-            case "9":
-                return JavaCore.VERSION_9;
-            case "10":
-                return JavaCore.VERSION_10;
-            case "11":
-                return JavaCore.VERSION_11;
-            case "12":
-                return JavaCore.VERSION_12;
-            case "13":
-                return JavaCore.VERSION_13;
-            case "14":
-                return JavaCore.VERSION_14;
-            case "15":
-            default:
-                return JavaCore.VERSION_15;
-        }
+        return switch (s) {
+            case "1" -> JavaCore.VERSION_1_1;
+            case "2" -> JavaCore.VERSION_1_2;
+            case "3" -> JavaCore.VERSION_1_3;
+            case "4" -> JavaCore.VERSION_1_4;
+            case "5" -> JavaCore.VERSION_1_5;
+            case "6" -> JavaCore.VERSION_1_6;
+            case "7" -> JavaCore.VERSION_1_7;
+            case "8" -> JavaCore.VERSION_1_8;
+            case "9" -> JavaCore.VERSION_9;
+            case "10" -> JavaCore.VERSION_10;
+            case "11" -> JavaCore.VERSION_11;
+            case "12" -> JavaCore.VERSION_12;
+            case "13" -> JavaCore.VERSION_13;
+            case "14" -> JavaCore.VERSION_14;
+            case "15" -> JavaCore.VERSION_15;
+            case "16" -> JavaCore.VERSION_16;
+            case "17" -> JavaCore.VERSION_17;
+            case "18" -> JavaCore.VERSION_18;
+            case "19" -> JavaCore.VERSION_19;
+            case "20" -> JavaCore.VERSION_20;
+            case "21" -> JavaCore.VERSION_21;
+            case "22" -> JavaCore.VERSION_22;
+            case "23" -> JavaCore.VERSION_23;
+            case "24" -> JavaCore.VERSION_24;
+            default -> JavaCore.VERSION_25;
+        };
     }
 
     private static File extractClassesJarFileFromAarFile(

@@ -33,8 +33,7 @@ public class BindingNameResolver extends NameResolver {
 
     public static IBinding getParentBinding(ITypeBinding binding) {
         if (binding.isLocal() || binding.isAnonymous()) {
-            if (binding.getDeclaringMember() instanceof IVariableBinding) {
-                IVariableBinding variableBinding = (IVariableBinding) binding.getDeclaringMember();
+            if (binding.getDeclaringMember() instanceof IVariableBinding variableBinding) {
                 if (variableBinding.getDeclaringClass() != null) {
                     return variableBinding.getDeclaringClass();
                 } else {
@@ -144,9 +143,7 @@ public class BindingNameResolver extends NameResolver {
             List<TypeName> typeArguments = new ArrayList<>();
             for (ITypeBinding typeArgumentBinding : binding.getTypeArguments()) {
                 Optional<TypeName> typeArgument = getQualifiedName(typeArgumentBinding);
-                if (typeArgument.isPresent()) {
-                    typeArguments.add(typeArgument.get());
-                }
+                typeArgument.ifPresent(typeArguments::add);
             }
 
             Optional<TypeName> typeName = getQualifiedName(binding.getTypeDeclaration());
@@ -286,18 +283,15 @@ public class BindingNameResolver extends NameResolver {
             return null;
         }
 
-        if (parentBinding instanceof ITypeBinding) {
-            return getQualifiedName((ITypeBinding) parentBinding)
-                    .map(tn -> tn.toDeclName())
+        return switch (parentBinding) {
+            case ITypeBinding iTypeBinding -> getQualifiedName(iTypeBinding)
+                    .map(TypeName::toDeclName)
                     .orElse(DeclName.unsolved());
-        } else if (parentBinding instanceof IMethodBinding) {
-            return getQualifiedName((IMethodBinding) parentBinding).orElse(DeclName.unsolved());
-        } else if (parentBinding instanceof IVariableBinding) {
-            return getQualifiedName((IVariableBinding) parentBinding);
-        } else if (parentBinding instanceof IPackageBinding) {
-            return getQualifiedName((IPackageBinding) parentBinding).orElse(null);
-        }
+            case IMethodBinding iMethodBinding -> getQualifiedName(iMethodBinding).orElse(DeclName.unsolved());
+            case IVariableBinding iVariableBinding -> getQualifiedName(iVariableBinding);
+            case IPackageBinding iPackageBinding -> getQualifiedName(iPackageBinding).orElse(null);
+            default -> null;
+        };
 
-        return null;
     }
 }

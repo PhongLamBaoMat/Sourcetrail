@@ -59,16 +59,16 @@ public class FunctionDeclName extends DeclName {
     }
 
     private String getParameterString() {
-        String string = "(";
+        StringBuilder string = new StringBuilder("(");
         if (m_parameterTypeNames != null) {
             for (int i = 0; i < m_parameterTypeNames.size(); i++) {
                 if (i != 0) {
-                    string += ", ";
+                    string.append(", ");
                 }
-                string += m_parameterTypeNames.get(i).toString();
+                string.append(m_parameterTypeNames.get(i).toString());
             }
         }
-        string += ")";
-        return string;
+        string.append(")");
+        return string.toString();
     }
 }

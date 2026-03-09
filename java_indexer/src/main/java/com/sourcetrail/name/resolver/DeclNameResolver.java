@@ -99,7 +99,7 @@ public class DeclNameResolver extends NameResolver {
         boolean isStatic = false;
         Optional<FieldDeclaration> fieldDeclaration = getAncestorOfType(decl, FieldDeclaration.class);
         if (fieldDeclaration.isPresent()) {
-            if (decl.resolveBinding() instanceof IVariableBinding) {
+            if (decl.resolveBinding() != null) {
                 isStatic = Modifier.isStatic(decl.resolveBinding().getModifiers());
             } else {
                 isStatic = Modifier.isStatic(fieldDeclaration.get().getModifiers());
@@ -140,76 +140,76 @@ public class DeclNameResolver extends NameResolver {
         DeclName declName = DeclName.unsolved();
 
         if (decl != null) {
-            if (decl instanceof AnnotationTypeDeclaration) {
-                declName = new DeclName(((AnnotationTypeDeclaration) decl).getName().getIdentifier());
-            } else if (decl instanceof EnumDeclaration) {
-                declName = new DeclName(((EnumDeclaration) decl).getName().getIdentifier());
-            } else if (decl instanceof TypeDeclaration) {
-                TypeDeclaration typeDeclaration = (TypeDeclaration) decl;
+            switch (decl) {
+                case AnnotationTypeDeclaration annotationTypeDeclaration ->
+                        declName = new DeclName(annotationTypeDeclaration.getName().getIdentifier());
+                case EnumDeclaration enumDeclaration ->
+                        declName = new DeclName(enumDeclaration.getName().getIdentifier());
+                case TypeDeclaration typeDeclaration -> {
 
-                List<String> typeParameterNames = new ArrayList<>();
-                for (Object typeParameter : typeDeclaration.typeParameters()) {
-                    if (typeParameter instanceof TypeParameter) {
-                        typeParameterNames.add(
-                                ((TypeParameter) typeParameter).getName().getIdentifier());
+                    List<String> typeParameterNames = new ArrayList<>();
+                    for (Object typeParameter : typeDeclaration.typeParameters()) {
+                        if (typeParameter instanceof TypeParameter) {
+                            typeParameterNames.add(
+                                    ((TypeParameter) typeParameter).getName().getIdentifier());
+                        }
                     }
+
+                    declName = new DeclName(
+                            typeDeclaration.getName().getIdentifier(), typeParameterNames);
                 }
+                case AnnotationTypeMemberDeclaration annotationTypeMemberDeclaration -> declName = new DeclName(
+                        annotationTypeMemberDeclaration.getName().getIdentifier());
+                case EnumConstantDeclaration enumConstantDeclaration ->
+                        declName = new DeclName(enumConstantDeclaration.getName().getIdentifier());
+                case FieldDeclaration fieldDeclaration -> declName = new DeclName("FieldDeclaration");
+                case Initializer initializer -> declName = new DeclName("Initializer");
+                case MethodDeclaration methodDeclaration -> {
 
-                declName = new DeclName(
-                        typeDeclaration.getName().getIdentifier(), typeParameterNames);
-            } else if (decl instanceof AnnotationTypeMemberDeclaration) {
-                declName = new DeclName(
-                        ((AnnotationTypeMemberDeclaration) decl).getName().getIdentifier());
-            } else if (decl instanceof EnumConstantDeclaration) {
-                declName = new DeclName(((EnumConstantDeclaration) decl).getName().getIdentifier());
-            } else if (decl instanceof FieldDeclaration) {
-                declName = new DeclName("FieldDeclaration");
-            } else if (decl instanceof Initializer) {
-                declName = new DeclName("Initializer");
-            } else if (decl instanceof MethodDeclaration) {
-                MethodDeclaration methodDeclaration = (MethodDeclaration) decl;
-
-                List<String> typeParameterNames = new ArrayList<>();
-                for (Object typeParameter : methodDeclaration.typeParameters()) {
-                    if (typeParameter instanceof TypeParameter) {
-                        typeParameterNames.add(
-                                ((TypeParameter) typeParameter).getName().getIdentifier());
+                    List<String> typeParameterNames = new ArrayList<>();
+                    for (Object typeParameter : methodDeclaration.typeParameters()) {
+                        if (typeParameter instanceof TypeParameter) {
+                            typeParameterNames.add(
+                                    ((TypeParameter) typeParameter).getName().getIdentifier());
+                        }
                     }
-                }
 
-                ContextList ignoredContexts = m_ignoredContexts.copy();
-                ignoredContexts.add(((MethodDeclaration) decl).resolveBinding());
+                    ContextList ignoredContexts = m_ignoredContexts.copy();
+                    ignoredContexts.add(methodDeclaration.resolveBinding());
 
-                TypeName returnTypeName = methodDeclaration.isConstructor()
-                        ? null
-                        : BindingNameResolver
-                        .getQualifiedName(
-                                methodDeclaration.getReturnType2().resolveBinding(),
-                                m_currentFile,
-                                m_compilationUnit,
-                                ignoredContexts)
-                        .orElse(TypeName.unsolved());
+                    TypeName returnTypeName = methodDeclaration.isConstructor()
+                            ? null
+                            : BindingNameResolver
+                            .getQualifiedName(
+                                    methodDeclaration.getReturnType2().resolveBinding(),
+                                    m_currentFile,
+                                    m_compilationUnit,
+                                    ignoredContexts)
+                            .orElse(TypeName.unsolved());
 
-                List<TypeName> parameterTypeNames = new ArrayList<>();
-                for (Object parameter : methodDeclaration.parameters()) {
-                    if (parameter instanceof SingleVariableDeclaration) {
-                        parameterTypeNames.add(
-                                BindingNameResolver
-                                        .getQualifiedName(
-                                                ((SingleVariableDeclaration) parameter).getType().resolveBinding(),
-                                                m_currentFile,
-                                                m_compilationUnit,
-                                                ignoredContexts)
-                                        .orElse(TypeName.unsolved()));
+                    List<TypeName> parameterTypeNames = new ArrayList<>();
+                    for (Object parameter : methodDeclaration.parameters()) {
+                        if (parameter instanceof SingleVariableDeclaration) {
+                            parameterTypeNames.add(
+                                    BindingNameResolver
+                                            .getQualifiedName(
+                                                    ((SingleVariableDeclaration) parameter).getType().resolveBinding(),
+                                                    m_currentFile,
+                                                    m_compilationUnit,
+                                                    ignoredContexts)
+                                            .orElse(TypeName.unsolved()));
+                        }
                     }
-                }
 
-                declName = new FunctionDeclName(
-                        methodDeclaration.getName().getIdentifier(),
-                        typeParameterNames,
-                        returnTypeName,
-                        parameterTypeNames,
-                        Modifier.isStatic(methodDeclaration.getModifiers()));
+                    declName = new FunctionDeclName(
+                            methodDeclaration.getName().getIdentifier(),
+                            typeParameterNames,
+                            returnTypeName,
+                            parameterTypeNames,
+                            Modifier.isStatic(methodDeclaration.getModifiers()));
+                }
+                default -> {
+                }
             }
         }
 
@@ -242,20 +242,25 @@ public class DeclNameResolver extends NameResolver {
 
     private DeclName getQualifiedContextName(ASTNode decl) {
         ASTNode parentNode = decl.getParent();
-        if (parentNode == null) {
-            return null;
-        }
-
-        if (parentNode instanceof BodyDeclaration && !(parentNode instanceof FieldDeclaration)) {
-            return getQualifiedDeclName((BodyDeclaration) parentNode);
-        } else if (parentNode instanceof AnonymousClassDeclaration) {
-            return getQualifiedDeclName((AnonymousClassDeclaration) parentNode);
-        } else if (parentNode instanceof CompilationUnit) {
-            PackageDeclaration packageDecl = ((CompilationUnit) parentNode).getPackage();
-            if (packageDecl != null) {
-                return getQualifiedName(packageDecl.getName());
+        switch (parentNode) {
+            case null -> {
+                return null;
             }
-            return null;
+            case BodyDeclaration bodyDeclaration when !(parentNode instanceof FieldDeclaration) -> {
+                return getQualifiedDeclName(bodyDeclaration);
+            }
+            case AnonymousClassDeclaration anonymousClassDeclaration -> {
+                return getQualifiedDeclName(anonymousClassDeclaration);
+            }
+            case CompilationUnit compilationUnit -> {
+                PackageDeclaration packageDecl = compilationUnit.getPackage();
+                if (packageDecl != null) {
+                    return getQualifiedName(packageDecl.getName());
+                }
+                return null;
+            }
+            default -> {
+            }
         }
 
         return getQualifiedContextName(parentNode);

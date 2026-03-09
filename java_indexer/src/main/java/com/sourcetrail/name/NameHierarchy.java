@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class NameHierarchy {
-    private List<NameElement> m_elements = new ArrayList<>();
+    private final List<NameElement> m_elements = new ArrayList<>();
     private char m_separator = '.';
 
     public NameHierarchy() {
@@ -33,28 +33,28 @@ public class NameHierarchy {
 
     public void pop() {
         if (!m_elements.isEmpty()) {
-            m_elements.remove(m_elements.size() - 1);
+            m_elements.removeLast();
         }
     }
 
     public Optional<NameElement> peek() {
         if (!m_elements.isEmpty()) {
-            return Optional.of(m_elements.get(m_elements.size() - 1));
+            return Optional.of(m_elements.getLast());
         }
         return Optional.empty();
     }
 
     public String serialize() {
-        String serialized = m_separator + "\tm";
+        StringBuilder serialized = new StringBuilder(m_separator + "\tm");
 
         for (int i = 0; i < m_elements.size(); i++) {
             if (i != 0) {
-                serialized += "\tn";
+                serialized.append("\tn");
             }
 
-            serialized += m_elements.get(i).serialize();
+            serialized.append(m_elements.get(i).serialize());
         }
 
-        return serialized;
+        return serialized.toString();
     }
 }

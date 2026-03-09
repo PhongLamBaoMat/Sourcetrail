@@ -49,9 +49,8 @@ public class DeclName implements SymbolName {
     }
 
     public static DeclName scope(File fileContext, Position begin) {
-        DeclName declName = new DeclName(
+        return new DeclName(
                 fileContext.getName() + "<" + begin.line + ":" + begin.column + ">");
-        return declName;
     }
 
     public static DeclName fromDotSeparatedString(String s) {
@@ -124,18 +123,18 @@ public class DeclName implements SymbolName {
     }
 
     public String getTypeParameterString() {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         if (m_typeParameterNames != null && !m_typeParameterNames.isEmpty()) {
-            string += "<";
+            string.append("<");
             for (int i = 0; i < m_typeParameterNames.size(); i++) {
                 if (i != 0) {
-                    string += ", ";
+                    string.append(", ");
                 }
-                string += m_typeParameterNames.get(i);
+                string.append(m_typeParameterNames.get(i));
             }
-            string += ">";
+            string.append(">");
         }
-        return string;
+        return string.toString();
     }
 
     public List<String> getTypeParameterNames() {

@@ -139,57 +139,63 @@ public class QualifierVisitor {
 
     private void recordNodeAsQualifier(Expression node, FileContent fileContent) {
         if (node != null) {
-            if (node instanceof Name) {
-                recordNodeAsQualifier((Name) node);
-            } else if (node instanceof SuperFieldAccess) {
-                SuperFieldAccess expression = (SuperFieldAccess) node;
-                IVariableBinding fieldBinding = expression.resolveFieldBinding();
+            switch (node) {
+                case Name name -> recordNodeAsQualifier(name);
+                case SuperFieldAccess expression -> {
+                    IVariableBinding fieldBinding = expression.resolveFieldBinding();
 
-                if (fieldBinding != null) {
+                    if (fieldBinding != null) {
+                        m_client.recordQualifierLocation(
+                                BindingNameResolver
+                                        .getQualifiedName(
+                                                fieldBinding.getDeclaringClass(), m_filePath, m_compilationUnit)
+                                        .orElse(TypeName.unsolved())
+                                        .toDeclName()
+                                        .toNameHierarchy(),
+                                fileContent.findRange(
+                                        "super",
+                                        expression.getQualifier() != null ? getRange(expression.getQualifier()).end
+                                                : getRange(expression).begin));
+                    }
+
+                    recordNodeAsQualifier(expression.getQualifier());
+                }
+                case ThisExpression expression -> {
+
                     m_client.recordQualifierLocation(
                             BindingNameResolver
                                     .getQualifiedName(
-                                            fieldBinding.getDeclaringClass(), m_filePath, m_compilationUnit)
+                                            expression.resolveTypeBinding(), m_filePath, m_compilationUnit)
                                     .orElse(TypeName.unsolved())
                                     .toDeclName()
                                     .toNameHierarchy(),
                             fileContent.findRange(
-                                    "super",
+                                    "this",
                                     expression.getQualifier() != null ? getRange(expression.getQualifier()).end
                                             : getRange(expression).begin));
+
+                    recordNodeAsQualifier(expression.getQualifier());
                 }
-
-                recordNodeAsQualifier(expression.getQualifier());
-            } else if (node instanceof ThisExpression) {
-                ThisExpression expression = (ThisExpression) node;
-
-                m_client.recordQualifierLocation(
-                        BindingNameResolver
-                                .getQualifiedName(
-                                        expression.resolveTypeBinding(), m_filePath, m_compilationUnit)
-                                .orElse(TypeName.unsolved())
-                                .toDeclName()
-                                .toNameHierarchy(),
-                        fileContent.findRange(
-                                "this",
-                                expression.getQualifier() != null ? getRange(expression.getQualifier()).end
-                                        : getRange(expression).begin));
-
-                recordNodeAsQualifier(expression.getQualifier());
+                default -> {
+                }
             }
         }
     }
 
     private void recordNodeAsQualifier(Type node) {
         if (node != null) {
-            if (node instanceof SimpleType) {
-                recordNodeAsQualifier(((SimpleType) node).getName());
-            } else if (node instanceof QualifiedType) {
-                recordNodeAsQualifier(((QualifiedType) node).getName());
-                recordNodeAsQualifier(((QualifiedType) node).getQualifier());
-            } else if (node instanceof NameQualifiedType) {
-                recordNodeAsQualifier(((NameQualifiedType) node).getName());
-                recordNodeAsQualifier(((NameQualifiedType) node).getQualifier());
+            switch (node) {
+                case SimpleType simpleType -> recordNodeAsQualifier(simpleType.getName());
+                case QualifiedType qualifiedType -> {
+                    recordNodeAsQualifier(qualifiedType.getName());
+                    recordNodeAsQualifier(qualifiedType.getQualifier());
+                }
+                case NameQualifiedType nameQualifiedType -> {
+                    recordNodeAsQualifier(nameQualifiedType.getName());
+                    recordNodeAsQualifier(nameQualifiedType.getQualifier());
+                }
+                default -> {
+                }
             }
         }
     }

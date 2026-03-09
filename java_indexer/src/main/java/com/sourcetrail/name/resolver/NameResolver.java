@@ -5,6 +5,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class NameResolver {
@@ -16,11 +17,7 @@ public abstract class NameResolver {
         m_currentFile = currentFile;
         m_compilationUnit = compilationUnit;
 
-        if (ignoredContexts != null) {
-            m_ignoredContexts = ignoredContexts;
-        } else {
-            m_ignoredContexts = new ContextList();
-        }
+        m_ignoredContexts = Objects.requireNonNullElseGet(ignoredContexts, ContextList::new);
     }
 
     static protected <N> Optional<N> getAncestorOfType(ASTNode node, Class<N> classType) {

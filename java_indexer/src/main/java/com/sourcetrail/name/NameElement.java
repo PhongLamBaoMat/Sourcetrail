@@ -27,7 +27,7 @@ public class NameElement {
     String getNameWithSignature() {
         String nameWithSignature = m_name;
 
-        if (m_prefix.length() > 0 || m_postfix.length() > 0) {
+        if (!m_prefix.isEmpty() || !m_postfix.isEmpty()) {
             nameWithSignature = m_prefix;
             if (!m_name.isEmpty()) {
                 if (!m_prefix.isEmpty()) {

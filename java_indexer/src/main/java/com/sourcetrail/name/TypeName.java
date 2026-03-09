@@ -3,8 +3,8 @@ package com.sourcetrail.name;
 import java.util.List;
 
 public class TypeName implements SymbolName {
-    private DeclName m_parent = null;
-    private String m_name = "";
+    private final DeclName m_parent;
+    private final String m_name;
     private List<String> m_typeParameterNames = null;
     private List<TypeName> m_typeArguments = null;
     private boolean m_isUnsolved = false;
@@ -89,17 +89,17 @@ public class TypeName implements SymbolName {
     }
 
     private String getTypeArgumentString() {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         if (m_typeArguments != null && !m_typeArguments.isEmpty()) {
-            string += "<";
+            string.append("<");
             for (int i = 0; i < m_typeArguments.size(); i++) {
                 if (i != 0) {
-                    string += ", ";
+                    string.append(", ");
                 }
-                string += m_typeArguments.get(i).toString();
+                string.append(m_typeArguments.get(i).toString());
             }
-            string += ">";
+            string.append(">");
         }
-        return string;
+        return string.toString();
     }
 }

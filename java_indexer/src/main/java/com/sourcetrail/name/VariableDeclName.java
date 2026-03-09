@@ -3,8 +3,8 @@ package com.sourcetrail.name;
 import java.util.Optional;
 
 public class VariableDeclName extends DeclName {
-    private TypeName m_typeName = null;
-    private boolean m_isStatic = false;
+    private final TypeName m_typeName;
+    private final boolean m_isStatic;
 
     public VariableDeclName(String name, TypeName typeName, boolean isStatic) {
         super(name);
