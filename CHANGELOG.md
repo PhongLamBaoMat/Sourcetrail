@@ -1,5 +1,13 @@
 ### Changelog
 
+#### 2026.3.21
+released 2026-03-21
+
+* Java: bump JDK from 12 to 25
+* Code: bump LLVM to 21
+* CI: add test and uploading artifacts workflow
+* Docs: add Vietnamses language
+
 #### 2021.4.19
 released 2021-11-30
 
