@@ -35,7 +35,8 @@ std::vector<std::wstring> getRequiredJarNames()
 		L"org.eclipse.osgi-3.24.0.jar",
 		L"org.eclipse.text-3.14.500.jar",
 		L"slf4j-api-2.0.17.jar",
-        L"slf4j-simple-2.0.17.jar"};
+		L"slf4j-simple-2.0.17.jar",
+		L"org.osgi.service.prefs-1.1.2.jar"};
 }
 
 std::string prepareJavaEnvironment()
