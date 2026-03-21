@@ -12,12 +12,15 @@ jobs:
         os: [macos-26, macos-26-intel]
 
     steps:
-      - name: Checkout Source code
+      - name: Checkout source code
         uses: actions/checkout@v6
+
+      - name: Fetch tags
+        run: git fetch --prune --unshallow --tags
 
       - name: Install Dependencies
         run: |
-          brew install qt@5 llvm@21
+          brew install imagemagick qt@5 llvm@21
 
       - name: Setup Java 25
         run: |
