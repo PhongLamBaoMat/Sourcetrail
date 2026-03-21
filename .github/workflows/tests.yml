@@ -1,0 +1,68 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+    path-ignore:
+      - "**.md"
+      - "LICENSE.txt"
+      - "docs/**"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "LICENSE.txt"
+      - "docs/**"
+
+  workflow_dispatch:
+
+jobs:
+  macos-test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-26, macos-26-intel]
+
+    steps:
+      - name: Checkout Source code
+        uses: actions/checkout@v6
+
+      - name: Install Dependencies
+        run: |
+          brew install qt@5 llvm@21
+
+      - name: Setup Java 25
+        run: |
+          if [[ -n "$JAVA_HOME_25_arm" ]]; then
+            JAVA_HOME=$JAVA_HOME_25_arm
+          else
+            JAVA_HOME=$JAVA_HOME_25_X64
+          fi
+          echo JAVA_HOME="${JAVA_HOME}" >> $GITHUB_ENV
+
+      - name: Setup vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git "$HOME/vcpkg" && \
+          VCPKG_ROOT="$HOME/vcpkg"
+          echo VCPKG_ROOT="${VCPKG_ROOT}" >> $GITHUB_ENV
+
+      - name: Configure CMake
+        run: |
+          LLVM_DIR=`brew --prefix llvm@21` && \
+          QT5_DIR=`brew --prefix qt@5` && \
+          cmake --preset=debug -DQt5_DIR="${QT5_DIR}/lib/cmake/Qt5" \
+            -DClang_DIR="${LLVM_DIR}/lib/cmake/clang" \
+            -DBUILD_CXX_LANGUAGE_PACKAGE=ON \
+            -DBUILD_JAVA_LANGUAGE_PACKAGE=ON \
+            -DBUILD_PYTHON_LANGUAGE_PACKAGE=ON
+
+      - name: Build test binary
+        run: |
+          cd build/debug && \
+          ninja Sourcetrail_test
+
+      - name: Run tests
+        run: |
+          cd build/debug/test && \
+          ./Sourcetrail_test

@@ -138,7 +138,7 @@ endif()
 if (BUILD_CXX_LANGUAGE_PACKAGE)
 
     find_package(Clang REQUIRED)
-    find_package(Llvm REQUIRED)
+    # find_package(Llvm REQUIRED)
 
     if (LLVM_FOUND)
         message(STATUS "Found LLVM ${LLVM_VERSION}")
