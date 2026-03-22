@@ -47,14 +47,14 @@ Bạn có thể tham khảo thêm về cách sử dụng `vcpkg` ở [Learn vcpk
 
 2. Cài đặt thư viện, các công cụ hỗ trợ và tải mã nguồn dự án
 ```sh
-brew install qt@5 cmake ninja
+brew install qt@5 cmake ninja imagemagick
 git clone https://github.com/PhongLamBaoMat/Sourcetrail
 ```
 
 3. Khởi tạo môi trường biên dịch ứng dụng cơ sở
 ```sh
 cd Sourcetrail
-cmake --preset=vcpkg -DQt5_DIR=/opt/homebrew/opt/qt@5/lib/cmake/Qt5
+cmake --preset=release -DQt5_DIR=$(brew --prefix qt@5)/lib/cmake/Qt5
 ```
 
 4. Tiến hành lênh biên dịch
